@@ -1,11 +1,12 @@
 {
-  "name": "knoword",
-  "version": "4.0.0",
-  "description": "Expand your vocabulary",
+  "name": "starter",
+  "version": "1.0.0",
+  "description": "A simple React static site development boilerplate",
   "author": "Trevor Blades",
+  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.org/knoword/web.git"
+    "url": "git+https://github.com/trevorblades/starter.git"
   },
   "scripts": {
     "start": "gulp dev",
@@ -40,7 +41,6 @@
     "babelify": "^7.2.0",
     "browser-sync": "^2.9.11",
     "browserify": "^12.0.1",
-    "classnames": "^2.2.3",
     "del": "^2.2.0",
     "eslint": "^1.10.3",
     "eslint-config-planet": "^4.1.0",
