@@ -1,0 +1,49 @@
+.tb-app {
+  .tb-app-header {
+    box-shadow: @box-shadow-large;
+    background-color: @gray-dark;
+    position: relative;
+    h1, h4 {
+      margin: 0;
+    }
+    h1 {
+      padding: 0.75em 2rem;
+      border-bottom: 1px solid @gray-darker;
+      color: @gray-lighter;
+      text-shadow: 2px 2px 1px @gray-darkest;
+    }
+    h4 {
+      padding: 1em 2rem;
+    }
+  }
+  .tb-app-content {
+    padding: 2rem;
+    padding-right: 50%;
+    background-image: url('/assets/rad-cutoff.svg');
+    background-size: 150%;
+    background-position: center top;
+    background-repeat: no-repeat;
+    ul {
+      padding: 0;
+      list-style: none;
+      &:not(:last-child) {
+        margin-bottom: 2rem;
+      }
+
+      li {
+        margin: 1em 0;
+        h5 {
+          margin-bottom: 0.2em;
+          color: @green;
+        }
+        h6 {
+          margin: 0;
+          color: @gray;
+          &:before {
+            content: '// ';
+          }
+        }
+      }
+    }
+  }
+}

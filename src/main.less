@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
+@import 'https://fonts.googleapis.com/css?family=Inconsolata:400,700|Montserrat';
 @import (less) '../node_modules/normalize-css/normalize.css';
 @import './variables';
 
@@ -10,6 +10,54 @@
 
 body, html {
   box-sizing: border-box;
-  font-family: @font-family-sans-serif;
-  color: @gray-darkest;
+  font-family: @font-family-monospace;
+  font-size: 18px;
+  color: @gray-light;
+  letter-spacing: 0.2em;
+  background-color: @gray-dark;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 400;
+}
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  margin-bottom: 1em;
+}
+h1 {
+  font-family: @font-family-display;
+  font-size: 2.5rem;
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.5rem;
+}
+h4 {
+  font-size: 1.25rem;
+}
+h5, p, li {
+  font-size: 1rem;
+}
+h6 {
+  font-size: 0.75rem;
+}
+p {
+  line-height: 1.5em;
+}
+a {
+  color: @orange;
+}
+em {
+  font-style: normal;
+  &:nth-child(4n - 1) {
+    color: @green;
+  }
+  &:nth-child(4n - 2) {
+    color: @blue;
+  }
+  &:nth-child(4n - 3) {
+    color: @red;
+  }
 }
