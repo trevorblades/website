@@ -43,7 +43,12 @@ var App = React.createClass({
       <div className="tb-app">
         <div className="tb-app-header">
           <h1>Trevor Blades</h1>
-          <h4>Web <em>developer</em> and <em>designer</em></h4>
+          <h4>
+            <span>Web </span>
+            <span>developer</span>
+            <span> and </span>
+            <span>designer</span>
+          </h4>
         </div>
         <div className="tb-app-content">
           <h5>I make stuff</h5>

@@ -11,8 +11,34 @@
     }
     h4 {
       padding: 1em 2rem;
-      box-shadow: @box-shadow-large;
-      background-color: @gray-darker;
+      border-top: 2px solid @gray-darker;
+      border-bottom: 2px solid @gray-darker;
+      position: relative;
+      span {
+        padding: 1em 0;
+        &:nth-child(2), &:nth-child(4) {
+          position: relative;
+          &:before {
+            content: '';
+            width: 100%;
+            height: 2px;
+            position: absolute;
+            bottom: -2px;
+          }
+        }
+        &:nth-child(2) {
+          color: @red;
+          &:before {
+            background-color: @red;
+          }
+        }
+        &:nth-child(4) {
+          color: @blue;
+          &:before {
+            background-color: @blue;
+          }
+        }
+      }
     }
   }
   .tb-app-content {
@@ -29,7 +55,7 @@
       &:after {
         content: '';
         flex-grow: 1;
-        height: 1px;
+        height: 2px;
         margin-left: 1rem;
         background-color: @gray-darker;
       }
