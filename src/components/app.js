@@ -72,9 +72,11 @@ var App = React.createClass({
           </ul>
           <h5>Want to chat?</h5>
           <p>
-            <span>Give me a shout </span>
-            <a href="https://twitter.com/trevorblades" target="_blank">@trevorblades on Twitter</a>
-            <span> or get at me on </span>
+            <span>Give me a shout on </span>
+            <a href="https://twitter.com/trevorblades" target="_blank">Twitter</a>
+            <span>, or get at me on </span>
+            <a href="https://github.com/trevorblades" target="_blank">GitHub</a>
+            <span> or </span>
             <a href="https://linkedin.com/in/trevorblades" target="_blank">LinkedIn</a>
             <span> or </span>
             <a href="https://facebook.com/tblades" target="_blank">Facebook</a>
