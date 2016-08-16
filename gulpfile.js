@@ -11,62 +11,67 @@ var gutil = require('gulp-util');
 var buffer = require('vinyl-buffer');
 var source = require('vinyl-source-stream');
 
-var SRC_DIR = './src/';
-var BUILD_DIR = './build/';
+var SRC_DIR = __dirname + '/src';
+var DEV_DIR = __dirname + '/dev';
+var DIST_DIR = __dirname + '/dist';
 
-/**
- * Tasks for generating and watching scripts in development/debug mode.
- */
+// Tasks for building and watching files in development/debug mode
 
 function devMarkup() {
-  return gulp.src(SRC_DIR + 'index.html')
-      .pipe(gulp.dest(BUILD_DIR))
-      .pipe(browserSync.reload({stream: true}));
+  return gulp.src(SRC_DIR + '/index.html')
+    .pipe(gulp.dest(DEV_DIR))
+    .pipe(browserSync.reload({stream: true}));
 }
 gulp.task('dev-markup', devMarkup);
 
-function devScripts() {
-  return browserify(SRC_DIR + 'main.js', {debug: true})
-     .bundle()
-     .pipe(source('main.js'))
-     .pipe(buffer())
-     .pipe(sourcemaps.init({loadMaps: true}))
-     .pipe(sourcemaps.write('./'))
-     .pipe(gulp.dest(BUILD_DIR))
-     .pipe(browserSync.stream());
+var bundler = watchify(browserify(Object.assign({}, watchify.args, {
+  entries: [SRC_DIR + '/main.js'],
+  debug: true
+})));
+
+function bundle() {
+  return bundler.bundle()
+    .on('error', gutil.log.bind(gutil, 'Error Bundling'))
+    .pipe(source('main.js'))
+    .pipe(gulp.dest(DEV_DIR))
+    .pipe(browserSync.reload({stream: true}));
 }
-gulp.task('dev-scripts', devScripts);
+
+bundler.on('update', bundle);
+bundler.on('log', gutil.log);
+
+gulp.task('dev-scripts', bundle);
 
 function devStyles() {
-  var stream = gulp.src(SRC_DIR + 'main.less')
-      .pipe(sourcemaps.init())
-      .pipe(less({
-        relativeUrls: true,
-        plugins: [new LessPluginAutoPrefix()]
-      }))
-      .on('error', function(err) {
-        gutil.log('LESS compilation failed: ' + err.message);
-        browserSync.notify(err.message, 30000);
-        stream.end();
-      })
-      .pipe(sourcemaps.write())
-      .pipe(gulp.dest(BUILD_DIR))
-      .pipe(browserSync.stream());
+  var stream = gulp.src(SRC_DIR + '/main.less')
+    .pipe(sourcemaps.init())
+    .pipe(less({
+      relativeUrls: true,
+      plugins: [new LessPluginAutoPrefix()]
+    }))
+    .on('error', function(err) {
+      gutil.log('LESS compilation failed: ' + err.message);
+      browserSync.notify(err.message, 30000);
+      stream.end();
+    })
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest(DEV_DIR))
+    .pipe(browserSync.stream());
   return stream;
 }
 gulp.task('dev-styles', devStyles);
 
 function devAssets() {
-  return gulp.src(SRC_DIR + '**/assets/**')
-      .pipe(gulp.dest(BUILD_DIR))
-      .pipe(browserSync.stream());
+  return gulp.src(SRC_DIR + '/**/assets/**')
+    .pipe(gulp.dest(DEV_DIR))
+    .pipe(browserSync.stream());
 }
 gulp.task('dev-assets', devAssets);
 
 gulp.task('dev-browser-sync', function(done) {
   return browserSync.init({
     server: {
-      baseDir: BUILD_DIR
+      baseDir: DEV_DIR
     },
     open: false,
     ghostMode: false
@@ -83,52 +88,48 @@ gulp.task('dev-build', gulp.parallel([
 gulp.task('dev-serve', gulp.series('dev-build', 'dev-browser-sync'));
 
 gulp.task('dev-watch', function(done) {
-  gulp.watch(SRC_DIR + 'index.html', devMarkup);
-  gulp.watch(SRC_DIR + '**/*.js', devScripts);
-  gulp.watch(SRC_DIR + '**/*.less', devStyles);
-  gulp.watch(SRC_DIR + '**/assets/**', devAssets);
+  gulp.watch(SRC_DIR + '/index.html', devMarkup);
+  gulp.watch(SRC_DIR + '/**/*.less', devStyles);
+  gulp.watch(SRC_DIR + '/**/assets/**', devAssets);
   done();
 });
 
 gulp.task('dev', gulp.parallel('dev-serve', 'dev-watch'));
 
-/**
- * Tasks for generating markup, scripts, stylesheets, and other assets for
- * distribution/deployment.
- */
+// Tasks for building files for distribution/deployment mode
 
 gulp.task('dist-clean', function() {
-  return del(BUILD_DIR + '**/*');
+  return del(DIST_DIR + '/**/*');
 });
 
 gulp.task('dist-markup', function() {
-  return gulp.src(SRC_DIR + 'index.html').pipe(gulp.dest(BUILD_DIR));
+  return gulp.src(SRC_DIR + '/index.html').pipe(gulp.dest(DIST_DIR));
 });
 
 gulp.task('dist-scripts', function() {
-  return browserify(SRC_DIR + 'main.js').bundle()
-      .pipe(source('main.js'))
-      .pipe(buffer())
-      .pipe(uglify({compress: true}))
-      .pipe(gulp.dest(BUILD_DIR));
+  return browserify(SRC_DIR + '/main.js').bundle()
+    .pipe(source('main.js'))
+    .pipe(buffer())
+    .pipe(uglify({compress: true}))
+    .pipe(gulp.dest(DIST_DIR));
 });
 
 gulp.task('dist-styles', function() {
-  return gulp.src(SRC_DIR + 'main.less')
-      .pipe(less({
-        relativeUrls: true,
-        plugins: [new LessPluginAutoPrefix(), new LessPluginCleanCSS()]
-      }))
-      .on('error', function(err) {
-        gutil.log('LESS compilation failed: ' + err.message);
-        process.exit(1);
-      })
-      .pipe(gulp.dest(BUILD_DIR));
+  return gulp.src(SRC_DIR + '/main.less')
+    .pipe(less({
+      relativeUrls: true,
+      plugins: [new LessPluginAutoPrefix(), new LessPluginCleanCSS()]
+    }))
+    .on('error', function(err) {
+      gutil.log('LESS compilation failed: ' + err.message);
+      process.exit(1);
+    })
+    .pipe(gulp.dest(DIST_DIR));
 });
 
 gulp.task('dist-assets', function() {
-  return gulp.src(SRC_DIR + '**/assets/**')
-      .pipe(gulp.dest(BUILD_DIR));
+  return gulp.src(SRC_DIR + '/**/assets/**')
+    .pipe(gulp.dest(DIST_DIR));
 });
 
 gulp.task('dist-build', gulp.parallel([
