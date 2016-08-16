@@ -84,6 +84,11 @@ var App = React.createClass({
             <a href="mailto:email@trevorblades.com">something</a>
             <span>.</span>
           </p>
+          <p>
+            <span>Check out my crew, </span>
+            <a href="http://reallyawesomedoings.com" target="_blank">Really Awesome Doings</a>
+            <span>.</span>
+          </p>
         </div>
       </div>
     );
