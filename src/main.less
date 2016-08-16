@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
 @import (less) '../node_modules/normalize-css/normalize.css';
+@import './variables';
 
 @import './components/app';
 
@@ -7,6 +8,8 @@
   box-sizing: inherit;
 }
 
-html {
+body, html {
   box-sizing: border-box;
+  font-family: @font-family-sans-serif;
+  color: @gray-darkest;
 }
