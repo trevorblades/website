@@ -1,8 +1,8 @@
 @import 'https://fonts.googleapis.com/css?family=Inconsolata:400,700|Montserrat';
 @import (less) '../node_modules/normalize-css/normalize.css';
-@import './variables';
-
 @import './components/app';
+
+@tablet: ~'only screen and (max-width: 768px)';
 
 *, *:before, *:after {
   box-sizing: inherit;
@@ -10,11 +10,9 @@
 
 body, html {
   box-sizing: border-box;
-  font-family: @font-family-monospace;
+  font-family: 'Inconsolata', 'Courier New', Courier, monospace;
   font-size: 18px;
-  color: @gray-light;
   letter-spacing: 0.125em;
-  background-color: @gray-dark;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -24,7 +22,7 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 h1 {
-  font-family: @font-family-display;
+  font-family: 'Montserrat', 'Helvetica Neue', Helvetica, sans-serif;
   font-size: 2.5rem;
 }
 h2 {
@@ -46,7 +44,7 @@ p {
   line-height: 1.5em;
 }
 a {
-  color: @orange;
+  color: blue;
   &:hover {
     text-decoration: none;
   }

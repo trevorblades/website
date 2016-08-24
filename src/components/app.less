@@ -1,18 +1,12 @@
 .tb-app {
-  background-image: url('/assets/awesome.svg');
-  background-size: 120%;
-  background-position: center bottom;
-  background-repeat: no-repeat;
   .tb-app-header {
     h1 {
       padding: 0.75em 2rem;
-      color: @gray-lighter;
-      text-shadow: 2px 2px 1px @gray-darkest;
     }
     h4 {
       padding: 1em 2rem;
-      border-top: 2px solid @gray-darker;
-      border-bottom: 2px solid @gray-darker;
+      border-top: 2px solid black;
+      border-bottom: 2px solid black;
       position: relative;
       span {
         padding: 1em 0;
@@ -27,15 +21,15 @@
           }
         }
         &:nth-child(2) {
-          color: @red;
+          color: red;
           &:before {
-            background-color: @red;
+            background-color: red;
           }
         }
         &:nth-child(4) {
-          color: @blue;
+          color: blue;
           &:before {
-            background-color: @blue;
+            background-color: blue;
           }
         }
       }
@@ -57,7 +51,7 @@
         flex-grow: 1;
         height: 2px;
         margin-left: 1rem;
-        background-color: @gray-darker;
+        background-color: black;
       }
     }
     ul {
@@ -71,11 +65,9 @@
         margin: 1em 0;
         h5 {
           margin-bottom: 0.2em;
-          color: @green;
         }
         h6 {
           margin: 0;
-          color: @gray;
           &:before {
             content: '// ';
           }
