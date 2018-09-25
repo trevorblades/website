@@ -1,0 +1,8 @@
+{
+  "extends": "@trevorblades/eslint-config/react",
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true
+  }
+}
