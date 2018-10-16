@@ -17,7 +17,7 @@ const Hero = styled(Section)({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  height: '100vh',
+  height: `calc(100vh - ${sectionPadding}px)`,
   color: theme.palette.common.white,
   backgroundImage: getLinearGradient()
 });
@@ -58,7 +58,10 @@ const Home = () => (
           I like to make <Link to="/projects">cool stuff</Link>!
         </Typography>
         <SocialLinks>
-          <SocialLink href="https://github.com/trevorblades" title="Fork me">
+          <SocialLink
+            href="https://github.com/trevorblades"
+            title="I <3 open source"
+          >
             <FaGithub />
           </SocialLink>
           <SocialLink
