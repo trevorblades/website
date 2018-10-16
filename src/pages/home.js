@@ -4,7 +4,7 @@ import pollenize from '../assets/images/pollenize.gif';
 import styled, {css} from 'react-emotion';
 import theme, {getLinearGradient} from '@trevorblades/mui-theme';
 import withProps from 'recompose/withProps';
-import {FaGithub, FaInstagram, FaTwitter} from 'react-icons/fa';
+import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
 import {Link} from 'react-router-dom';
 import {size} from 'polished';
 
@@ -72,6 +72,12 @@ const Home = () => (
             title="Mostly skateboarding videos"
           >
             <FaInstagram />
+          </SocialLink>
+          <SocialLink
+            href="https://twitch.com/trevorblades"
+            title="I stream sometimes"
+          >
+            <FaTwitch />
           </SocialLink>
         </SocialLinks>
       </div>
