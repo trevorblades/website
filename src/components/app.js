@@ -1,7 +1,7 @@
+import Pages from '../pages';
 import PropTypes from 'prop-types';
 import React, {Component} from 'react';
 import ReactGA from 'react-ga';
-import Typography from '@material-ui/core/Typography';
 import compose from 'recompose/compose';
 import {hot} from 'react-hot-loader';
 import {withRouter} from 'react-router-dom';
@@ -22,7 +22,7 @@ class App extends Component {
   }
 
   render() {
-    return <Typography variant="h1">Nice interfaces</Typography>;
+    return <Pages />;
   }
 }
 

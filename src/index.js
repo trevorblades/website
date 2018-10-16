@@ -1,4 +1,5 @@
 import App from './components/app';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import JssProvider from 'react-jss/lib/JssProvider';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -22,6 +23,7 @@ ReactDOM.render(
   <BrowserRouter>
     <JssProvider jss={jss} generateClassName={generateClassName}>
       <MuiThemeProvider theme={theme}>
+        <CssBaseline />
         <App />
       </MuiThemeProvider>
     </JssProvider>
