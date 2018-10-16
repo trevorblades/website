@@ -14,13 +14,17 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: 'babel-loader'
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        use: 'file-loader'
       }
     ]
   },
   plugins: [
-    new EmojiFaviconPlugin('🎃'),
+    new EmojiFaviconPlugin('🔪'),
     new HtmlPlugin({
-      title: 'Trevor',
+      title: 'Trevor Blades',
       template: 'index.html'
     })
   ]

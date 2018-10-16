@@ -4,6 +4,7 @@ import JssProvider from 'react-jss/lib/JssProvider';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga';
+import injectStyles from './styles';
 import theme from '@trevorblades/mui-theme';
 import {BrowserRouter} from 'react-router-dom';
 import {
@@ -17,6 +18,8 @@ import {create} from 'jss';
 const generateClassName = createGenerateClassName();
 const jss = create(jssPreset());
 jss.options.insertionPoint = 'jss-insertion-point';
+
+injectStyles();
 
 ReactGA.initialize('UA-34658521-1');
 ReactDOM.render(
