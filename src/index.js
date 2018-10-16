@@ -2,6 +2,7 @@ import App from './components/app';
 import JssProvider from 'react-jss/lib/JssProvider';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ReactGA from 'react-ga';
 import theme from '@trevorblades/mui-theme';
 import {BrowserRouter} from 'react-router-dom';
 import {
@@ -11,11 +12,12 @@ import {
 } from '@material-ui/core/styles';
 import {create} from 'jss';
 
-// https://material-ui.com/guides/interoperability/
+// from https://material-ui.com/guides/interoperability/
 const generateClassName = createGenerateClassName();
 const jss = create(jssPreset());
 jss.options.insertionPoint = 'jss-insertion-point';
 
+ReactGA.initialize('UA-34658521-1');
 ReactDOM.render(
   <BrowserRouter>
     <JssProvider jss={jss} generateClassName={generateClassName}>
