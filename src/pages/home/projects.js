@@ -55,7 +55,7 @@ const projects = {
     title: 'Planet Stories',
     image: stories,
     description:
-      'Create awesome timelapse movies from daily satellite imagery. I built this shit with my awesome team at Planet.'
+      'Create awesome timelapse movies from daily satellite imagery. I built this thing with my awesome team at Planet <3'
   }
 };
 
