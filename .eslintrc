@@ -5,6 +5,7 @@
     "browser": true
   },
   "globals": {
+    "TITLE": true,
     "GITHUB_TOKEN": true
   }
 }

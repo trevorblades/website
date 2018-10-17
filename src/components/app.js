@@ -1,6 +1,7 @@
+import Helmet from 'react-helmet';
 import Pages from '../pages';
 import PropTypes from 'prop-types';
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import ReactGA from 'react-ga';
 import compose from 'recompose/compose';
 import {hot} from 'react-hot-loader';
@@ -22,7 +23,12 @@ class App extends Component {
   }
 
   render() {
-    return <Pages />;
+    return (
+      <Fragment>
+        <Helmet defaultTitle={TITLE} titleTemplate={`%s · ${TITLE}`} />
+        <Pages />
+      </Fragment>
+    );
   }
 }
 

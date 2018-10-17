@@ -4,6 +4,7 @@ const EmojiFaviconPlugin = require('emoji-favicon-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
+const title = 'Trevor Blades';
 module.exports = {
   context: path.join(__dirname, 'src'),
   entry: ['@babel/polyfill', './index.js'],
@@ -26,10 +27,11 @@ module.exports = {
   plugins: [
     new EmojiFaviconPlugin('🔪'),
     new HtmlPlugin({
-      title: 'Trevor Blades',
+      title,
       template: 'index.html'
     }),
     new webpack.DefinePlugin({
+      TITLE: JSON.stringify(title),
       GITHUB_TOKEN: JSON.stringify(process.env.GITHUB_TOKEN)
     })
   ]
