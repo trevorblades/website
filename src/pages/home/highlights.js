@@ -93,7 +93,7 @@ const Highlights = () => (
         size="large"
         variant="contained"
       >
-        I don&apos;t blame you
+        All projects
       </LinkButton>
     </ProjectsFooter>
   </ConstrainedSection>
