@@ -10,3 +10,7 @@ export const ConstrainedSection = styled(Section)({
   maxWidth: theme.breakpoints.values.lg,
   margin: '0 auto'
 });
+
+export const Spacer = styled.div({
+  height: sectionPadding * 1.5
+});

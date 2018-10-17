@@ -13,7 +13,7 @@ const Header = () => (
   <AppBar elevation={0} color="inherit" position="sticky">
     <Toolbar>
       <Typography variant="h5" className={centered}>
-        🔪
+        {FAVICON}
       </Typography>
     </Toolbar>
     <Divider />

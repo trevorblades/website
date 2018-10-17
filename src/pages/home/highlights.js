@@ -8,16 +8,12 @@ import stories from '../../assets/images/stories.gif';
 import styled, {css} from 'react-emotion';
 import theme from '@trevorblades/mui-theme';
 import withProps from 'recompose/withProps';
-import {ConstrainedSection, sectionPadding} from '../../components';
+import {ConstrainedSection, Spacer, sectionPadding} from '../../components';
 import {Link} from 'react-router-dom';
 
 const GridItem = withProps({
   item: true
 })(Grid);
-
-const Spacer = styled.div({
-  height: sectionPadding * 1.5
-});
 
 const Screenshot = styled.img({
   display: 'block',

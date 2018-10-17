@@ -6,6 +6,7 @@
   },
   "globals": {
     "TITLE": true,
+    "FAVICON": true,
     "GITHUB_TOKEN": true
   }
 }
