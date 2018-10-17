@@ -48,8 +48,18 @@ const ConstrainedSection = styled(Section)({
   maxWidth: theme.breakpoints.values.lg,
   margin: '0 auto'
 });
+const GridContainer = withProps({
+  container: true,
+  spacing: 32
+})(Grid);
 
-const GridItem = withProps({item: true})(Grid);
+const GridItem = withProps({
+  item: true
+})(Grid);
+
+const Spacer = styled.div({
+  height: sectionPadding
+});
 
 const Screenshot = styled.img({
   display: 'block',
@@ -64,8 +74,7 @@ const OffsetScreenshot = styled(Screenshot)({
 
 const LinkButton = withProps({
   component: Link,
-  variant: 'outlined',
-  size: 'small'
+  variant: 'outlined'
 })(Button);
 
 const Home = () => (
@@ -107,7 +116,7 @@ const Home = () => (
       </div>
     </Hero>
     <ConstrainedSection>
-      <Grid container spacing={40}>
+      <GridContainer>
         <GridItem sm={12} md={8}>
           <OffsetScreenshot src={pollenize} />
         </GridItem>
@@ -115,31 +124,29 @@ const Home = () => (
           <Typography gutterBottom variant="h4">
             Pollenize
           </Typography>
-          <Typography gutterBottom>
+          <Typography paragraph>
             My friends and I created a non-profit organization that helps voters
             make informed decisions.
           </Typography>
           <LinkButton to="/projects/pollenize">Learn more</LinkButton>
         </GridItem>
-        <GridItem xs={12}>
-          <Typography align="center" variant="subtitle1" color="textSecondary">
-            something cool
-          </Typography>
+      </GridContainer>
+      <Spacer />
+      <GridContainer direction="row-reverse">
+        <GridItem sm={12} md={8}>
+          <Screenshot src={knoword} />
         </GridItem>
         <GridItem sm={12} md={4}>
           <Typography gutterBottom variant="h4">
             Knoword
           </Typography>
-          <Typography gutterBottom>
+          <Typography paragraph>
             Test your vocabulary skills and have fun doing it! Knoword is an
             educational, addicting word game and a great tool for teachers.
           </Typography>
           <LinkButton to="/projects/knoword">View project</LinkButton>
         </GridItem>
-        <GridItem sm={12} md={8}>
-          <Screenshot src={knoword} />
-        </GridItem>
-      </Grid>
+      </GridContainer>
     </ConstrainedSection>
     <Divider />
     <ConstrainedSection>
