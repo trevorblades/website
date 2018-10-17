@@ -1,11 +1,12 @@
 import Helmet from 'react-helmet';
+import Home from '../pages/home';
 import Pages from '../pages';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import ReactGA from 'react-ga';
 import compose from 'recompose/compose';
+import {Route, Switch, withRouter} from 'react-router-dom';
 import {hot} from 'react-hot-loader';
-import {withRouter} from 'react-router-dom';
 
 class App extends Component {
   static propTypes = {
@@ -26,7 +27,10 @@ class App extends Component {
     return (
       <Fragment>
         <Helmet defaultTitle={TITLE} titleTemplate={`%s · ${TITLE}`} />
-        <Pages />
+        <Switch>
+          <Route path="/" exact render={Home} />
+          <Route render={Pages} />
+        </Switch>
       </Fragment>
     );
   }
