@@ -1,7 +1,9 @@
 import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 import Grid from '@material-ui/core/Grid';
 import React, {Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
+import knoword from '../assets/images/knoword.gif';
 import pollenize from '../assets/images/pollenize.gif';
 import styled, {css} from 'react-emotion';
 import theme, {getLinearGradient} from '@trevorblades/mui-theme';
@@ -49,14 +51,18 @@ const ConstrainedSection = styled(Section)({
 
 const GridItem = withProps({item: true})(Grid);
 
-const StyledImage = styled.img({
+const Screenshot = styled.img({
+  display: 'block',
   width: '100%',
-  marginTop: sectionPadding * -2,
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[10]
 });
 
-const MoreButton = withProps({
+const OffsetScreenshot = styled(Screenshot)({
+  marginTop: sectionPadding * -2
+});
+
+const LinkButton = withProps({
   component: Link,
   variant: 'outlined',
   size: 'small'
@@ -101,9 +107,9 @@ const Home = () => (
       </div>
     </Hero>
     <ConstrainedSection>
-      <Grid container spacing={theme.spacing.unit * 4}>
+      <Grid container spacing={40}>
         <GridItem sm={12} md={8}>
-          <StyledImage src={pollenize} />
+          <OffsetScreenshot src={pollenize} />
         </GridItem>
         <GridItem sm={12} md={4}>
           <Typography gutterBottom variant="h4">
@@ -113,7 +119,12 @@ const Home = () => (
             My friends and I created a non-profit organization that helps voters
             make informed decisions.
           </Typography>
-          <MoreButton to="/projects/pollenize">Learn more</MoreButton>
+          <LinkButton to="/projects/pollenize">Learn more</LinkButton>
+        </GridItem>
+        <GridItem xs={12}>
+          <Typography align="center" variant="subtitle1" color="textSecondary">
+            something cool
+          </Typography>
         </GridItem>
         <GridItem sm={12} md={4}>
           <Typography gutterBottom variant="h4">
@@ -121,11 +132,18 @@ const Home = () => (
           </Typography>
           <Typography gutterBottom>
             Test your vocabulary skills and have fun doing it! Knoword is an
-            educational, addicting word game.
+            educational, addicting word game and a great tool for teachers.
           </Typography>
-          <MoreButton to="/projects/knoword">View project</MoreButton>
+          <LinkButton to="/projects/knoword">View project</LinkButton>
+        </GridItem>
+        <GridItem sm={12} md={8}>
+          <Screenshot src={knoword} />
         </GridItem>
       </Grid>
+    </ConstrainedSection>
+    <Divider />
+    <ConstrainedSection>
+      <Typography variant="h3">Open source</Typography>
     </ConstrainedSection>
   </Fragment>
 );
