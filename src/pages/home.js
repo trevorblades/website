@@ -5,6 +5,7 @@ import React, {Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
 import knoword from '../assets/images/knoword.gif';
 import pollenize from '../assets/images/pollenize.gif';
+import stories from '../assets/images/stories.gif';
 import styled, {css} from 'react-emotion';
 import theme, {getLinearGradient} from '@trevorblades/mui-theme';
 import withProps from 'recompose/withProps';
@@ -58,7 +59,7 @@ const GridItem = withProps({
 })(Grid);
 
 const Spacer = styled.div({
-  height: sectionPadding
+  height: sectionPadding * 1.5
 });
 
 const Screenshot = styled.img({
@@ -73,9 +74,16 @@ const OffsetScreenshot = styled(Screenshot)({
 });
 
 const LinkButton = withProps({
-  component: Link,
-  variant: 'outlined'
+  component: Link
 })(Button);
+
+const OutlinedLinkButton = withProps({
+  variant: 'outlined'
+})(LinkButton);
+
+const ProjectsFooter = styled.div({
+  textAlign: 'center'
+});
 
 const Home = () => (
   <Fragment>
@@ -128,7 +136,9 @@ const Home = () => (
             My friends and I created a non-profit organization that helps voters
             make informed decisions.
           </Typography>
-          <LinkButton to="/projects/pollenize">Learn more</LinkButton>
+          <LinkButton to="/projects/pollenize" variant="outlined">
+            Learn more
+          </LinkButton>
         </GridItem>
       </GridContainer>
       <Spacer />
@@ -144,13 +154,50 @@ const Home = () => (
             Test your vocabulary skills and have fun doing it! Knoword is an
             educational, addicting word game and a great tool for teachers.
           </Typography>
-          <LinkButton to="/projects/knoword">View project</LinkButton>
+          <LinkButton to="/projects/knoword" variant="outlined">
+            View project
+          </LinkButton>
         </GridItem>
       </GridContainer>
+      <Spacer />
+      <GridContainer>
+        <GridItem sm={12} md={8}>
+          <Screenshot src={stories} />
+        </GridItem>
+        <GridItem sm={12} md={4}>
+          <Typography gutterBottom variant="h4">
+            Planet Stories
+          </Typography>
+          <Typography paragraph>
+            Create awesome timelapse movies from daily satellite imagery. I
+            built this shit with my awesome team at Planet.
+          </Typography>
+          <OutlinedLinkButton to="/projects/knoword">
+            View project
+          </OutlinedLinkButton>
+        </GridItem>
+      </GridContainer>
+      <Spacer />
+      <ProjectsFooter>
+        <Typography gutterBottom variant="subtitle1" color="textSecondary">
+          Not satisfied? Want to see more?
+        </Typography>
+        <LinkButton
+          color="primary"
+          to="/projects"
+          size="large"
+          variant="contained"
+        >
+          All projects
+        </LinkButton>
+      </ProjectsFooter>
     </ConstrainedSection>
     <Divider />
     <ConstrainedSection>
-      <Typography variant="h3">Open source</Typography>
+      <Typography gutterBottom variant="h3">
+        Open source
+      </Typography>
+      <Typography variant="subtitle1">countries</Typography>
     </ConstrainedSection>
   </Fragment>
 );
