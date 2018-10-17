@@ -3,5 +3,8 @@
   "parser": "babel-eslint",
   "env": {
     "browser": true
+  },
+  "globals": {
+    "GITHUB_TOKEN": true
   }
 }

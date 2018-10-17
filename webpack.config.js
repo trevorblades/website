@@ -1,6 +1,8 @@
+require('dotenv').config();
 const HtmlPlugin = require('html-webpack-plugin');
 const EmojiFaviconPlugin = require('emoji-favicon-webpack-plugin');
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
   context: path.join(__dirname, 'src'),
@@ -26,6 +28,9 @@ module.exports = {
     new HtmlPlugin({
       title: 'Trevor Blades',
       template: 'index.html'
+    }),
+    new webpack.DefinePlugin({
+      GITHUB_TOKEN: JSON.stringify(process.env.GITHUB_TOKEN)
     })
   ]
 };
