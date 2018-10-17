@@ -1,3 +1,5 @@
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 import React, {Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
 import pollenize from '../assets/images/pollenize.gif';
@@ -9,7 +11,7 @@ import {Link} from 'react-router-dom';
 import {size} from 'polished';
 
 const sectionPadding = theme.spacing.unit * 7;
-const Section = styled.div({
+const Section = styled.section({
   padding: sectionPadding
 });
 
@@ -40,12 +42,25 @@ const SocialLink = withProps({
   })
 );
 
+const ConstrainedSection = styled(Section)({
+  maxWidth: theme.breakpoints.values.lg,
+  margin: '0 auto'
+});
+
+const GridItem = withProps({item: true})(Grid);
+
 const StyledImage = styled.img({
+  width: '100%',
   marginTop: sectionPadding * -2,
-  marginBottom: theme.spacing.unit * 1.5,
   borderRadius: theme.shape.borderRadius,
   boxShadow: theme.shadows[10]
 });
+
+const MoreButton = withProps({
+  component: Link,
+  variant: 'outlined',
+  size: 'small'
+})(Button);
 
 const Home = () => (
   <Fragment>
@@ -55,7 +70,7 @@ const Home = () => (
           I&apos;m Trevor
         </Typography>
         <Typography gutterBottom variant="h2" color="inherit">
-          I like to make <Link to="/projects">cool stuff</Link>!
+          I like to make <Link to="/projects">cool stuff</Link> 🍦
         </Typography>
         <SocialLinks>
           <SocialLink
@@ -85,12 +100,33 @@ const Home = () => (
         </SocialLinks>
       </div>
     </Hero>
-    <Section>
-      <StyledImage src={pollenize} />
-      <Typography>
-        Pollenize is a tool that helps voters make informed decisions
-      </Typography>
-    </Section>
+    <ConstrainedSection>
+      <Grid container spacing={theme.spacing.unit * 4}>
+        <GridItem sm={12} md={8}>
+          <StyledImage src={pollenize} />
+        </GridItem>
+        <GridItem sm={12} md={4}>
+          <Typography gutterBottom variant="h4">
+            Pollenize
+          </Typography>
+          <Typography gutterBottom>
+            My friends and I created a non-profit organization that helps voters
+            make informed decisions.
+          </Typography>
+          <MoreButton to="/projects/pollenize">Learn more</MoreButton>
+        </GridItem>
+        <GridItem sm={12} md={4}>
+          <Typography gutterBottom variant="h4">
+            Knoword
+          </Typography>
+          <Typography gutterBottom>
+            Test your vocabulary skills and have fun doing it! Knoword is an
+            educational, addicting word game.
+          </Typography>
+          <MoreButton to="/projects/knoword">View project</MoreButton>
+        </GridItem>
+      </Grid>
+    </ConstrainedSection>
   </Fragment>
 );
 
