@@ -17,7 +17,6 @@
     "graphql": "^14.0.2",
     "graphql-tag": "^2.10.0",
     "jss": "^9.8.7",
-    "polished": "^2.2.0",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-apollo": "^2.2.4",

@@ -1,12 +1,11 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import styled, {css} from 'react-emotion';
+import styled from 'react-emotion';
 import theme, {getLinearGradient} from '@trevorblades/mui-theme';
 import withProps from 'recompose/withProps';
 import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
 import {Link} from 'react-router-dom';
 import {Section, sectionPadding} from '../../components';
-import {size} from 'polished';
 
 const StyledSection = styled(Section)({
   display: 'flex',
@@ -18,7 +17,8 @@ const StyledSection = styled(Section)({
 });
 
 const SocialLinks = styled.div({
-  display: 'flex'
+  display: 'flex',
+  fontSize: 36
 });
 
 const SocialLink = withProps({
@@ -29,9 +29,9 @@ const SocialLink = withProps({
     ':not(:last-child)': {
       marginRight: theme.spacing.unit * 3
     },
-    svg: css(size(36), {
+    svg: {
       display: 'block'
-    })
+    }
   })
 );
 
