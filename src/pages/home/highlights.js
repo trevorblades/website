@@ -59,7 +59,7 @@ const projects = {
   }
 };
 
-const Projects = () => (
+const Highlights = () => (
   <ConstrainedSection>
     {Object.keys(projects).map((key, index) => {
       const project = projects[key];
@@ -103,4 +103,4 @@ const Projects = () => (
   </ConstrainedSection>
 );
 
-export default Projects;
+export default Highlights;

@@ -1,13 +1,13 @@
 import Divider from '@material-ui/core/Divider';
 import Hero from './hero';
+import Highlights from './highlights';
 import OpenSource from './open-source';
-import Projects from './projects';
 import React, {Fragment} from 'react';
 
 const Home = () => (
   <Fragment>
     <Hero />
-    <Projects />
+    <Highlights />
     <Divider />
     <OpenSource />
   </Fragment>
