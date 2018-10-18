@@ -80,7 +80,7 @@ const OpenSource = () => (
   <ConstrainedSection>
     <Typography variant="h3">Open source</Typography>
     <Typography paragraph variant="subtitle1">
-      Here&apos;s just a few of my favourite open source JavaScript projects
+      Here&apos;s just a few of my favourite open source projects
     </Typography>
     <Query client={client} query={query}>
       {({loading, data}) => {
