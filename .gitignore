@@ -1,4 +1,3 @@
-dev
+.env
 dist
 node_modules
-*.log
