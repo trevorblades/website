@@ -11,6 +11,7 @@ const textAlignCenter = css({
   textAlign: 'center'
 });
 
+const now = new Date();
 const Home = () => (
   <Fragment>
     <Hero />
@@ -28,6 +29,9 @@ const Home = () => (
       </Typography>
       <Spacer />
       <Typography variant="h4">{FAVICON}</Typography>
+      <Typography variant="overline" color="textSecondary">
+        &copy; {now.getFullYear()} Trevor Blades
+      </Typography>
     </ConstrainedSection>
   </Fragment>
 );
