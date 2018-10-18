@@ -71,7 +71,7 @@ const Projects = () => (
         {Object.keys(projects).map(key => {
           const {title, ...project} = projects[key];
           return (
-            <Grid item xs={4} key={key}>
+            <Grid item xs={12} sm={6} md={4} key={key}>
               <Typography gutterBottom variant="h5">
                 {project.url ? (
                   <a
