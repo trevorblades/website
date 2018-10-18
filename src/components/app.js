@@ -19,6 +19,7 @@ class App extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.location.pathname !== this.props.location.pathname) {
+      window.scrollTo(0, 0);
       ReactGA.pageview(this.props.location.pathname);
     }
   }
