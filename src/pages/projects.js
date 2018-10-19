@@ -8,6 +8,7 @@ import knoword from '../assets/images/knoword.gif';
 import pollenize from '../assets/images/pollenize.gif';
 import stories from '../assets/images/stories.gif';
 import {ConstrainedSection, Spacer} from '../components';
+import {Link} from 'react-router-dom';
 
 export const projects = {
   pollenize: {
@@ -73,17 +74,7 @@ const Projects = () => (
           return (
             <Grid item xs={12} sm={6} md={4} key={key}>
               <Typography gutterBottom variant="h5">
-                {project.url ? (
-                  <a
-                    href={project.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {title}
-                  </a>
-                ) : (
-                  title
-                )}
+                <Link to={`/projects/${key}`}>{title}</Link>
               </Typography>
               <Typography>{project.description}</Typography>
             </Grid>

@@ -37,6 +37,10 @@ const offset = css({
   }
 });
 
+const LinkButton = withProps({
+  component: Link
+})(Button);
+
 const ProjectsFooter = styled.div({
   textAlign: 'center'
 });
@@ -67,15 +71,9 @@ const Highlights = props => (
                   {project.title}
                 </Typography>
                 <Typography paragraph>{project.description}</Typography>
-                <Button
-                  component="a"
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="outlined"
-                >
+                <LinkButton to={`/projects/${key}`} variant="outlined">
                   View project
-                </Button>
+                </LinkButton>
               </GridItem>
             </Grid>
             <Spacer />
@@ -86,15 +84,14 @@ const Highlights = props => (
       <Typography gutterBottom variant="subtitle1" color="textSecondary">
         Not satisfied? Want to see more?
       </Typography>
-      <Button
-        component={Link}
+      <LinkButton
         color="primary"
         to="/projects"
         size="large"
         variant="contained"
       >
         All projects
-      </Button>
+      </LinkButton>
     </ProjectsFooter>
   </ConstrainedSection>
 );
