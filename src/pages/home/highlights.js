@@ -1,10 +1,10 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
 import styled, {css} from 'react-emotion';
 import theme from '@trevorblades/mui-theme';
-import toRenderProps from 'recompose/toRenderProps';
 import withProps from 'recompose/withProps';
 import withWidth from '@material-ui/core/withWidth';
 import {ConstrainedSection, Spacer, sectionPadding} from '../../components';
@@ -16,7 +16,6 @@ const GridItem = withProps({
 })(Grid);
 
 const gridSpacing = 40;
-const WithWidth = toRenderProps(withWidth());
 const Screenshot = styled.img(props => ({
   display: 'block',
   width: '100%',
@@ -42,7 +41,7 @@ const ProjectsFooter = styled.div({
   textAlign: 'center'
 });
 
-const Highlights = () => (
+const Highlights = props => (
   <ConstrainedSection>
     {Object.keys(projects)
       .slice(0, 3)
@@ -51,39 +50,34 @@ const Highlights = () => (
         const right = index % 2;
         return (
           <Fragment key={key}>
-            <WithWidth>
-              {({width}) => (
-                <Grid
-                  container
-                  spacing={width === 'xs' ? 0 : gridSpacing}
-                  direction={right ? 'row-reverse' : null}
+            <Grid
+              container
+              spacing={props.width === 'xs' ? 0 : gridSpacing}
+              direction={right ? 'row-reverse' : null}
+            >
+              <GridItem sm={12} md={8}>
+                <Screenshot
+                  src={project.gif}
+                  className={!index && offset}
+                  right={right}
+                />
+              </GridItem>
+              <GridItem sm={12} md={4}>
+                <Typography gutterBottom variant="h4">
+                  {project.title}
+                </Typography>
+                <Typography paragraph>{project.description}</Typography>
+                <Button
+                  component="a"
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="outlined"
                 >
-                  <GridItem sm={12} md={8}>
-                    <Screenshot
-                      src={project.gif}
-                      className={!index && offset}
-                      right={right}
-                    />
-                  </GridItem>
-                  <GridItem sm={12} md={4}>
-                    <Typography gutterBottom variant="h4">
-                      {project.title}
-                    </Typography>
-                    <Typography paragraph>{project.description}</Typography>
-                    <Button
-                      component="a"
-                      href={project.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      variant="outlined"
-                    >
-                      View project
-                    </Button>
-                  </GridItem>
-                </Grid>
-              )}
-            </WithWidth>
-
+                  View project
+                </Button>
+              </GridItem>
+            </Grid>
             <Spacer />
           </Fragment>
         );
@@ -105,4 +99,8 @@ const Highlights = () => (
   </ConstrainedSection>
 );
 
-export default Highlights;
+Highlights.propTypes = {
+  width: PropTypes.string.isRequired
+};
+
+export default withWidth()(Highlights);
