@@ -4,7 +4,9 @@ import React, {Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
 import styled, {css} from 'react-emotion';
 import theme from '@trevorblades/mui-theme';
+import toRenderProps from 'recompose/toRenderProps';
 import withProps from 'recompose/withProps';
+import withWidth from '@material-ui/core/withWidth';
 import {ConstrainedSection, Spacer, sectionPadding} from '../../components';
 import {Link} from 'react-router-dom';
 import {projects} from '../projects';
@@ -13,15 +15,27 @@ const GridItem = withProps({
   item: true
 })(Grid);
 
-const Screenshot = styled.img({
+const gridSpacing = 40;
+const WithWidth = toRenderProps(withWidth());
+const Screenshot = styled.img(props => ({
   display: 'block',
   width: '100%',
   borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[10]
-});
+  boxShadow: theme.shadows[10],
+  [theme.breakpoints.down('xs')]: {
+    width: '100vw',
+    [`margin${props.right ? 'Right' : 'Left'}`]: -sectionPadding,
+    marginBottom: gridSpacing,
+    borderRadius: 0,
+    boxShadow: 'none'
+  }
+}));
 
 const offset = css({
-  marginTop: sectionPadding * -2
+  marginTop: sectionPadding * -2,
+  [theme.breakpoints.down('xs')]: {
+    marginTop: -sectionPadding
+  }
 });
 
 const ProjectsFooter = styled.div({
@@ -34,32 +48,42 @@ const Highlights = () => (
       .slice(0, 3)
       .map((key, index) => {
         const project = projects[key];
+        const right = index % 2;
         return (
           <Fragment key={key}>
-            <Grid
-              container
-              spacing={40}
-              direction={index % 2 ? 'row-reverse' : null}
-            >
-              <GridItem sm={12} md={8}>
-                <Screenshot src={project.gif} className={!index && offset} />
-              </GridItem>
-              <GridItem sm={12} md={4}>
-                <Typography gutterBottom variant="h4">
-                  {project.title}
-                </Typography>
-                <Typography paragraph>{project.description}</Typography>
-                <Button
-                  component="a"
-                  href={project.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variant="outlined"
+            <WithWidth>
+              {({width}) => (
+                <Grid
+                  container
+                  spacing={width === 'xs' ? 0 : gridSpacing}
+                  direction={right ? 'row-reverse' : null}
                 >
-                  View project
-                </Button>
-              </GridItem>
-            </Grid>
+                  <GridItem sm={12} md={8}>
+                    <Screenshot
+                      src={project.gif}
+                      className={!index && offset}
+                      right={right}
+                    />
+                  </GridItem>
+                  <GridItem sm={12} md={4}>
+                    <Typography gutterBottom variant="h4">
+                      {project.title}
+                    </Typography>
+                    <Typography paragraph>{project.description}</Typography>
+                    <Button
+                      component="a"
+                      href={project.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      variant="outlined"
+                    >
+                      View project
+                    </Button>
+                  </GridItem>
+                </Grid>
+              )}
+            </WithWidth>
+
             <Spacer />
           </Fragment>
         );
