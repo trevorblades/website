@@ -70,7 +70,7 @@ const Highlights = props => (
                 <Typography gutterBottom variant="h4">
                   {project.title}
                 </Typography>
-                <Typography paragraph>{project.description}</Typography>
+                <Typography paragraph>{project.summary}</Typography>
                 <LinkButton to={`/projects/${key}`} variant="outlined">
                   View project
                 </LinkButton>
