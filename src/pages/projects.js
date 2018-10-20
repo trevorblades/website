@@ -18,7 +18,15 @@ export const projects = {
   pollenize: {
     title: 'Pollenize',
     summary:
-      'My friends and I created a non-profit organization that helps voters make informed decisions.',
+      'Interactive, unbiased election guides with diverse sources, compare tools, and colorful illustrations',
+    description:
+      'Started in 2010 with a group of friends, Pollenize is a non-profit organization that helps voters make informed decisions. We produce interactive guides that break down popular elections in a way that cuts out political rhetoric and gets straight to the point. Our guides also feature tools to compare candidate stances and keep track of the ones that you agree with.',
+    awards: [
+      {
+        title: '2015 Webby Awards Honoree',
+        win: false
+      }
+    ],
     url: 'https://pollenize.org',
     gif: pollenize,
     images: [
