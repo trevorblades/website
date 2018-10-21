@@ -7,10 +7,17 @@ import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
+import styled from 'react-emotion';
 import withProps from 'recompose/withProps';
 import {ConstrainedSection, Spacer} from '../components';
 
-const GridItem = withProps({item: true})(Grid);
+const GridItem = withProps({
+  item: true
+})(Grid);
+
+const Description = styled(Typography)({
+  whiteSpace: 'pre-wrap'
+});
 
 const Project = props => (
   <Fragment>
@@ -31,19 +38,24 @@ const Project = props => (
       <Spacer />
       <Grid container spacing={40}>
         <GridItem xs={12} sm={8}>
-          <Typography>{props.project.description}</Typography>
+          <Description>{props.project.description}</Description>
         </GridItem>
-        <GridItem xs={12} sm={4}>
-          {props.project.awards.map((award, index, array) => (
-            <Typography
-              key={award.title}
-              gutterBottom={index < array.length - 1}
-              variant="subtitle1"
-            >
-              {award.win ? '🏆' : '🏅'} {award.title}
-            </Typography>
-          ))}
-        </GridItem>
+        {props.project.awards && (
+          <GridItem xs={12} sm={4}>
+            {props.project.awards.map((award, index, array) => {
+              const title = typeof award === 'string' ? award : award.title;
+              return (
+                <Typography
+                  key={title}
+                  paragraph={index < array.length - 1}
+                  variant="body1"
+                >
+                  {award.win ? '🏆' : '🏅'} {title}
+                </Typography>
+              );
+            })}
+          </GridItem>
+        )}
       </Grid>
     </ConstrainedSection>
     <Divider />

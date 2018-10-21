@@ -5,6 +5,7 @@ import Helmet from 'react-helmet';
 import React, {Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
 import america from '../assets/images/pollenize/america.jpg';
+import difficulties from '../assets/images/knoword/difficulties.png';
 import knoword from '../assets/images/knoword.gif';
 import logo from '../assets/images/pollenize/logo.png';
 import pollenize from '../assets/images/pollenize.gif';
@@ -20,19 +21,18 @@ export const projects = {
     summary:
       'Interactive, unbiased election guides with diverse sources, compare tools, and colorful illustrations',
     description:
-      'Started in 2010 with a group of friends, Pollenize is a non-profit organization that helps voters make informed decisions. We produce interactive guides that break down popular elections in a way that cuts out political rhetoric and gets straight to the point. Our guides also feature tools to compare candidate stances and keep track of the ones that you agree with.',
+      'Started in 2014 with a group of friends, Pollenize is a non-profit organization that helps voters make informed decisions. We produce interactive guides that break down popular elections in a way that cuts out political rhetoric and gets straight to the point. Our guides also feature tools to compare candidate stances and keep track of the ones that you agree with.',
     awards: [
-      {
-        title: '2015 Webby Awards Honoree',
-        win: false
-      }
+      '2014 Awwwards Honorable Mention',
+      '2015 Webby Awards Honoree',
+      '2015 Awwwards Honorable Mention'
     ],
     url: 'https://pollenize.org',
     gif: pollenize,
     images: [
       {
         src: logo,
-        title: 'Pollenize logo'
+        title: 'Pollenize logos'
       },
       {
         src: students,
@@ -52,10 +52,23 @@ export const projects = {
   },
   knoword: {
     title: 'Knoword',
-    gif: knoword,
     summary:
-      'Test your vocabulary skills and have fun doing it! Knoword is an educational, addicting word game and a great tool for teachers.',
-    url: 'https://playknoword.com'
+      'Fun, educational online word game enjoyed by logophiles, students, and teachers alike',
+    description:
+      'I created Knoword in 2010 based on a real-life game that I played with my roommate at the time and our two dictionaries. The concept is simple: Given a dictionary definition and the first letter of the word being defined, you must try to guess the word. The added challenge of typing quickly, spelling correctly, and competing against a ticking clock makes Knoword a difficult and addicting game.\n\nToday, Knoword is used by teachers as a fun way to reinforce curriculum vocabulary and engage students in class. Teachers can create their own custom "word packs" and assign them to thier class as coursework or play them as a group at school.',
+    awards: [
+      '2011 AllMyFaves Best Educational Game Nominee',
+      'Top 10 Word Game Apps on iTunes (2012)'
+    ],
+    url: 'https://playknoword.com',
+    gif: knoword,
+    images: [
+      {
+        src: difficulties,
+        title: 'Difficulty selection screen',
+        cols: 2
+      }
+    ]
   },
   stories: {
     title: 'Planet Stories',

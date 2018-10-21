@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import gql from 'graphql-tag';
 import styled, {css} from 'react-emotion';
 import theme from '@trevorblades/mui-theme';
+import withProps from 'recompose/withProps';
 import {ApolloClient} from 'apollo-client';
 import {ConstrainedSection} from '../../components';
 import {GoStar} from 'react-icons/go';
@@ -35,6 +36,11 @@ const Stars = styled.div(flexAlignCenter, {
     marginRight: theme.spacing.unit / 2
   }
 });
+
+const Subtitle = withProps({variant: 'subtitle1'})(Typography);
+const SecondarySubtitle = withProps({
+  color: 'textSecondary'
+})(Subtitle);
 
 const httpLink = createHttpLink({
   uri: 'https://api.github.com/graphql'
@@ -79,12 +85,14 @@ const query = gql`
 const OpenSource = () => (
   <ConstrainedSection>
     <Typography variant="h3">Open source</Typography>
-    <Typography paragraph variant="subtitle1">
-      Here&apos;s just a few of my favourite open source projects
-    </Typography>
+    <Subtitle paragraph>A few of my favourite open source projects</Subtitle>
     <Query client={client} query={query}>
-      {({loading, data}) => {
-        if (loading) return <Typography>Loading...</Typography>;
+      {({loading, error, data}) => {
+        if (loading) return <SecondarySubtitle>Loading...</SecondarySubtitle>;
+        if (error)
+          return (
+            <SecondarySubtitle>Error loading repositories</SecondarySubtitle>
+          );
         return (
           <Repositories>
             {data.repositoryOwner.pinnedRepositories.edges.map(({node}) => (
