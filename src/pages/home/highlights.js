@@ -3,13 +3,13 @@ import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
+import projects from '../../projects';
 import styled, {css} from 'react-emotion';
 import theme from '@trevorblades/mui-theme';
 import withProps from 'recompose/withProps';
 import withWidth from '@material-ui/core/withWidth';
 import {ConstrainedSection, Spacer, sectionPadding} from '../../components';
 import {Link} from 'react-router-dom';
-import {projects} from '../projects';
 
 const GridItem = withProps({
   item: true
@@ -47,39 +47,36 @@ const ProjectsFooter = styled.div({
 
 const Highlights = props => (
   <ConstrainedSection>
-    {Object.keys(projects)
-      .slice(0, 3)
-      .map((key, index) => {
-        const project = projects[key];
-        const right = index % 2;
-        return (
-          <Fragment key={key}>
-            <Grid
-              container
-              spacing={props.width === 'xs' ? 0 : gridSpacing}
-              direction={right ? 'row-reverse' : null}
-            >
-              <GridItem sm={12} md={8}>
-                <Screenshot
-                  src={project.gif}
-                  className={!index && offset}
-                  right={right}
-                />
-              </GridItem>
-              <GridItem sm={12} md={4}>
-                <Typography gutterBottom variant="h4">
-                  {project.title}
-                </Typography>
-                <Typography paragraph>{project.summary}</Typography>
-                <LinkButton to={`/projects/${key}`} variant="outlined">
-                  View project
-                </LinkButton>
-              </GridItem>
-            </Grid>
-            <Spacer />
-          </Fragment>
-        );
-      })}
+    {projects.slice(0, 3).map((project, index) => {
+      const right = index % 2;
+      return (
+        <Fragment key={project.id}>
+          <Grid
+            container
+            spacing={props.width === 'xs' ? 0 : gridSpacing}
+            direction={right ? 'row-reverse' : null}
+          >
+            <GridItem sm={12} md={8}>
+              <Screenshot
+                src={project.attributes.gif}
+                className={!index && offset}
+                right={right}
+              />
+            </GridItem>
+            <GridItem sm={12} md={4}>
+              <Typography gutterBottom variant="h4">
+                {project.attributes.title}
+              </Typography>
+              <Typography paragraph>{project.attributes.summary}</Typography>
+              <LinkButton to={`/projects/${project.id}`} variant="outlined">
+                View project
+              </LinkButton>
+            </GridItem>
+          </Grid>
+          <Spacer />
+        </Fragment>
+      );
+    })}
     <ProjectsFooter>
       <Typography gutterBottom variant="subtitle1" color="textSecondary">
         Not satisfied? Want to see more?

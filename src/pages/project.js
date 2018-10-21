@@ -22,27 +22,33 @@ const Description = styled(Typography)({
 const Project = props => (
   <Fragment>
     <Helmet>
-      <title>{props.project.title}</title>
+      <title>{props.project.attributes.title}</title>
     </Helmet>
     <ConstrainedSection>
       <Typography gutterBottom variant="h2">
-        {props.project.title}
+        {props.project.attributes.title}
       </Typography>
-      <GridList cellHeight={350} cols={3}>
-        {props.project.images.map(image => (
-          <GridListTile key={image.src} cols={image.cols || 1}>
-            <img src={image.src} alt={image.title} />
-          </GridListTile>
-        ))}
-      </GridList>
-      <Spacer />
+      {props.project.attributes.images && (
+        <Fragment>
+          <GridList cellHeight={350} cols={3}>
+            {props.project.attributes.images.map(image => (
+              <GridListTile key={image.src} cols={image.cols || 1}>
+                <img src={image.src} alt={image.title} />
+              </GridListTile>
+            ))}
+          </GridList>
+          <Spacer />
+        </Fragment>
+      )}
       <Grid container spacing={40}>
         <GridItem xs={12} sm={8}>
-          <Description>{props.project.description}</Description>
+          <Description>
+            {props.project.body || props.project.attributes.summary}
+          </Description>
         </GridItem>
-        {props.project.awards && (
+        {props.project.attributes.awards && (
           <GridItem xs={12} sm={4}>
-            {props.project.awards.map((award, index, array) => {
+            {props.project.attributes.awards.map((award, index, array) => {
               const title = typeof award === 'string' ? award : award.title;
               return (
                 <Typography
