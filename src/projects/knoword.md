@@ -16,6 +16,8 @@ images:
     title: Knoword logo
   - src: ./images/knoword/sign.jpg
     title: Sign with Knoword sticker
+  - src: ./images/knoword/words.gif
+    title: Words being answered
     cols: 2
 ---
 I created Knoword in 2010 based on a real-life game that I played with my roommate at the time and our two dictionaries. The concept is simple: Given a dictionary definition and the first letter of the word being defined, you must try to guess the word. The added challenge of typing quickly, spelling correctly, and competing against a ticking clock makes Knoword a difficult and addicting game.

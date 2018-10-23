@@ -8,8 +8,10 @@ url: https://pollenize.org
 gif: ./images/pollenize.gif
 images:
   - src: ./images/pollenize/screencap.gif
-    title: Knoword website screencap
+    title: Pollenize website screencap
     hidden: true
+  - src: ./images/pollenize/logo.png
+    title: Pollenize logo pattern
   - src: ./images/pollenize/students.jpg
     title: Students using Pollenize in class
     cols: 2
