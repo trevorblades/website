@@ -8,10 +8,12 @@ export default r.keys().map(key => {
     id: matches[1],
     attributes: {
       ...project.attributes,
-      images: project.attributes.images.map(image => ({
-        ...image,
-        src: a(image.src)
-      }))
+      images:
+        project.attributes.images &&
+        project.attributes.images.map(image => ({
+          ...image,
+          src: a(image.src)
+        }))
     }
   };
 });

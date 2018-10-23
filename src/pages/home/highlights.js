@@ -45,9 +45,13 @@ const ProjectsFooter = styled.div({
   textAlign: 'center'
 });
 
+const featuredProjects = projects.filter(
+  project => project.attributes.featured
+);
+
 const Highlights = props => (
   <ConstrainedSection>
-    {projects.slice(0, 3).map((project, index) => {
+    {featuredProjects.map((project, index) => {
       const right = index % 2;
       const image = project.attributes.images[0];
       return (
@@ -56,6 +60,7 @@ const Highlights = props => (
             container
             spacing={props.width === 'xs' ? 0 : gridSpacing}
             direction={right ? 'row-reverse' : null}
+            alignItems={!index ? 'flex-start' : 'flex-end'}
           >
             <GridItem sm={12} md={8}>
               <Screenshot

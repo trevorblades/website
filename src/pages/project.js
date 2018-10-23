@@ -7,16 +7,25 @@ import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
+import snarkdown from 'snarkdown';
 import styled from 'react-emotion';
+import theme from '@trevorblades/mui-theme';
 import withProps from 'recompose/withProps';
 import {ConstrainedSection, Spacer} from '../components';
+import {Link} from 'react-router-dom';
+import {MdChevronLeft} from 'react-icons/md';
 
 const GridItem = withProps({
   item: true
 })(Grid);
 
 const Description = styled(Typography)({
-  whiteSpace: 'pre-wrap'
+  whiteSpace: 'pre-wrap',
+  br: {
+    display: 'block',
+    content: "''",
+    marginBottom: '1em'
+  }
 });
 
 const Project = props => (
@@ -25,6 +34,9 @@ const Project = props => (
       <title>{props.project.attributes.title}</title>
     </Helmet>
     <ConstrainedSection>
+      <Typography variant="caption">
+        <Link to="/projects">&lt; All projects</Link>
+      </Typography>
       <Typography gutterBottom variant="h2">
         {props.project.attributes.title}
       </Typography>
@@ -44,9 +56,13 @@ const Project = props => (
       )}
       <Grid container spacing={40}>
         <GridItem xs={12} sm={8}>
-          <Description>
-            {props.project.body || props.project.attributes.summary}
-          </Description>
+          <Description
+            dangerouslySetInnerHTML={{
+              __html:
+                snarkdown(props.project.body) ||
+                props.project.attributes.summary
+            }}
+          />
         </GridItem>
         {props.project.attributes.awards && (
           <GridItem xs={12} sm={4}>

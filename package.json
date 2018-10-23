@@ -28,7 +28,8 @@
     "react-icons": "^3.1.0",
     "react-jss": "^8.6.1",
     "react-router-dom": "^4.3.1",
-    "recompose": "^0.30.0"
+    "recompose": "^0.30.0",
+    "snarkdown": "^1.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",

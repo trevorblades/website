@@ -20,5 +20,6 @@ images:
     cols: 2
   - src: ./images/pollenize/america.jpg
     title: Pollenize America smartphone app
+featured: true
 ---
-Started in 2014 with a group of friends, Pollenize is a non-profit organization that helps voters make informed decisions. We produce interactive guides that break down popular elections in a way that cuts out political rhetoric and gets straight to the point. Our guides also feature tools to compare candidate stances and keep track of the ones that you agree with.
+Started in 2014 with a group of friends, _Pollenize_ is a non-profit organization that helps voters make informed decisions. We produce interactive guides that break down popular elections in a way that cuts out political rhetoric and gets straight to the point. Our guides also feature tools to compare candidate stances and keep track of the ones that you agree with.
