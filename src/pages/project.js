@@ -9,11 +9,9 @@ import React, {Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
 import snarkdown from 'snarkdown';
 import styled from 'react-emotion';
-import theme from '@trevorblades/mui-theme';
 import withProps from 'recompose/withProps';
 import {ConstrainedSection, Spacer} from '../components';
 import {Link} from 'react-router-dom';
-import {MdChevronLeft} from 'react-icons/md';
 
 const GridItem = withProps({
   item: true
