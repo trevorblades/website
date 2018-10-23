@@ -31,11 +31,13 @@ const Project = props => (
       {props.project.attributes.images && (
         <Fragment>
           <GridList cellHeight={350} cols={3}>
-            {props.project.attributes.images.map(image => (
-              <GridListTile key={image.src} cols={image.cols || 1}>
-                <img src={image.src} alt={image.title} />
-              </GridListTile>
-            ))}
+            {props.project.attributes.images
+              .filter(image => !image.hidden)
+              .map(image => (
+                <GridListTile key={image.src} cols={image.cols || 1}>
+                  <img src={image.src} alt={image.title} />
+                </GridListTile>
+              ))}
           </GridList>
           <Spacer />
         </Fragment>

@@ -49,6 +49,7 @@ const Highlights = props => (
   <ConstrainedSection>
     {projects.slice(0, 3).map((project, index) => {
       const right = index % 2;
+      const image = project.attributes.images[0];
       return (
         <Fragment key={project.id}>
           <Grid
@@ -58,7 +59,8 @@ const Highlights = props => (
           >
             <GridItem sm={12} md={8}>
               <Screenshot
-                src={project.attributes.gif}
+                alt={image.alt}
+                src={image.src}
                 className={!index && offset}
                 right={right}
               />

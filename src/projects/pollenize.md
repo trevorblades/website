@@ -7,8 +7,9 @@ awards:
 url: https://pollenize.org
 gif: ./images/pollenize.gif
 images:
-  - src: ./images/pollenize/logo.png
-    title: Pollenize logos
+  - src: ./images/pollenize/screencap.gif
+    title: Knoword website screencap
+    hidden: true
   - src: ./images/pollenize/students.jpg
     title: Students using Pollenize in class
     cols: 2
