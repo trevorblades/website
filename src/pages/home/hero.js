@@ -2,10 +2,9 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import styled from 'react-emotion';
 import theme, {getLinearGradient} from '@trevorblades/mui-theme';
-import withProps from 'recompose/withProps';
 import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
 import {Link} from 'react-router-dom';
-import {Section, sectionPadding} from '../../components';
+import {Section, sectionPadding, withTargetBlank} from '../../components';
 
 const StyledSection = styled(Section)({
   display: 'flex',
@@ -21,10 +20,7 @@ const SocialLinks = styled.div({
   fontSize: 36
 });
 
-const SocialLink = withProps({
-  target: '_blank',
-  rel: 'noopener noreferrer'
-})(
+const SocialLink = withTargetBlank(
   styled.a({
     ':not(:last-child)': {
       marginRight: theme.spacing.unit * 3

@@ -98,13 +98,7 @@ const OpenSource = () => (
             {data.repositoryOwner.pinnedRepositories.edges.map(({node}) => (
               <Respository key={node.id}>
                 <Heading>
-                  <Typography
-                    variant="h6"
-                    component="a"
-                    href={node.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <Typography variant="h6" component="a" href={node.url}>
                     {node.name}
                   </Typography>
                   <Stars>

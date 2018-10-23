@@ -1,4 +1,3 @@
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
@@ -6,14 +5,14 @@ import Typography from '@material-ui/core/Typography';
 import projects from '../../projects';
 import styled, {css} from 'react-emotion';
 import theme from '@trevorblades/mui-theme';
-import withProps from 'recompose/withProps';
 import withWidth from '@material-ui/core/withWidth';
-import {ConstrainedSection, Spacer, sectionPadding} from '../../components';
-import {Link} from 'react-router-dom';
-
-const GridItem = withProps({
-  item: true
-})(Grid);
+import {
+  ConstrainedSection,
+  GridItem,
+  LinkButton,
+  Spacer,
+  sectionPadding
+} from '../../components';
 
 const gridSpacing = 40;
 const Screenshot = styled.img(props => ({
@@ -36,10 +35,6 @@ const offset = css({
     marginTop: -sectionPadding
   }
 });
-
-const LinkButton = withProps({
-  component: Link
-})(Button);
 
 const ProjectsFooter = styled.div({
   textAlign: 'center'
