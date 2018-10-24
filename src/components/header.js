@@ -4,18 +4,9 @@ import Divider from '@material-ui/core/Divider';
 import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import withProps from 'recompose/withProps';
-import {Link} from 'react-router-dom';
-import {css} from 'react-emotion';
+import {centered, withLink} from '.';
 
-const centered = css({
-  margin: '0 auto'
-});
-
-const LinkButtonBase = withProps({
-  component: Link
-})(ButtonBase);
-
+const LinkButtonBase = withLink(ButtonBase);
 const Header = () => (
   <AppBar elevation={0} color="inherit" position="sticky">
     <Toolbar>

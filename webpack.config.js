@@ -22,6 +22,10 @@ module.exports = {
       {
         test: /\.(png|jpg|gif)$/,
         use: 'file-loader'
+      },
+      {
+        test: /\.md$/,
+        use: ['json-loader', 'yaml-frontmatter-loader']
       }
     ]
   },
