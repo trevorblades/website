@@ -8,21 +8,6 @@ import projects from '../projects';
 import {ConstrainedSection, Spacer} from '../components';
 import {Link} from 'react-router-dom';
 
-// export const projects = {
-//   batbstats: {
-//     title: 'BATB Stats',
-//     summary:
-//       'Organizing, charting, and analyzing statistics gleaned from games of S.K.A.T.E. played in the legendary contest series, Battle at the Berrics',
-//     url: 'https://batbstats.trevorblades.com'
-//   },
-//   epicbucketlist: {
-//     title: '#EpicBucketList',
-//     summary:
-//       'A website and contestant management system for a contest hosted by Contiki and The Buried Life. The website is dead, but the video describing the contest lives on!',
-//     url: 'https://www.youtube.com/watch?v=8KRkdZ83rh4'
-//   }
-// };
-
 const Projects = () => (
   <Fragment>
     <Helmet>
