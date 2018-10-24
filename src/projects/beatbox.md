@@ -10,10 +10,10 @@ awards:
   - Webby Awards Honoree (2013)
 url: http://beatboxacademy.ca
 images:
-  - src: ./images/beatbox-academy/drums.gif
+  - src: ./images/beatbox/drums.gif
     title: Drums making mouth noises
     cols: 2
-  - src: ./images/beatbox-academy/parallax.gif
+  - src: ./images/beatbox/parallax.gif
     title: Parallax scrolling between sections
 ---
 I built _Beatbox Academy_ with designer Jeremy Grice at [Spring](https://springadvertising.com) in 2012. The website featured an interactive drum machine that made human beatbox noises, and elegant parallax effects between sections of informative content. It was so stunningly beatiful, and it recieved a fair bit of attention on many "cool website" websites.
