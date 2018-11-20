@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import snarkdown from 'snarkdown';
 import styled, {css} from 'react-emotion';
 import theme from '@trevorblades/mui-theme';
+import twemoji from 'twemoji';
 import {ConstrainedSection, GridItem, Spacer} from '../components';
 import {Link} from 'react-router-dom';
 import {MdExitToApp} from 'react-icons/md';
@@ -94,9 +95,12 @@ class Project extends Component {
                       key={title}
                       paragraph={index < array.length - 1}
                       variant="body1"
-                    >
-                      {award.win ? '🏆' : '🏅'} {title}
-                    </Typography>
+                      dangerouslySetInnerHTML={{
+                        __html: twemoji.parse(
+                          `${award.win ? '🏆' : '🏅'} ${title}`
+                        )
+                      }}
+                    />
                   );
                 })}
               </GridItem>
