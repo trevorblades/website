@@ -6,7 +6,6 @@ import ReactDOM from 'react-dom';
 import ReactGA from 'react-ga';
 import injectStyles from './styles';
 import theme from '@trevorblades/mui-theme';
-import {BrowserRouter} from 'react-router-dom';
 import {
   MuiThemeProvider,
   createGenerateClassName,
@@ -23,13 +22,11 @@ injectStyles();
 
 ReactGA.initialize('UA-34658521-1');
 ReactDOM.render(
-  <BrowserRouter>
-    <JssProvider jss={jss} generateClassName={generateClassName}>
-      <MuiThemeProvider theme={theme}>
-        <CssBaseline />
-        <App />
-      </MuiThemeProvider>
-    </JssProvider>
-  </BrowserRouter>,
+  <JssProvider jss={jss} generateClassName={generateClassName}>
+    <MuiThemeProvider theme={theme}>
+      <CssBaseline />
+      <App />
+    </MuiThemeProvider>
+  </JssProvider>,
   document.getElementById('root')
 );

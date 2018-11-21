@@ -14,7 +14,7 @@ import {
   Spacer,
   sectionPadding
 } from '../../components';
-import {Link} from 'react-router-dom';
+import {Link} from '@reach/router';
 
 const gridSpacing = 40;
 const Screenshot = styled.img(props => ({

@@ -3,9 +3,8 @@ import Typography from '@material-ui/core/Typography';
 import styled from 'react-emotion';
 import theme, {getLinearGradient} from '@trevorblades/mui-theme';
 import twemoji from 'twemoji';
-import withProps from 'recompose/withProps';
 import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
-import {Link} from 'react-router-dom';
+import {Link} from '@reach/router';
 import {Section, sectionPadding} from '../../components';
 
 const StyledSection = styled(Section)({
@@ -30,11 +29,6 @@ const SocialLink = styled.a({
     display: 'block'
   }
 });
-
-withProps({
-  target: '_blank',
-  rel: 'noopener noreferrer'
-})();
 
 const socialLinks = [
   {
