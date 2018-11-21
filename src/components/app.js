@@ -1,12 +1,20 @@
 import Helmet from 'react-helmet';
+import Home from '../pages/home';
+import NotFound from '../pages/not-found';
+import Pages from '../pages';
+import Project from '../pages/project';
+import Projects from '../pages/projects';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import ReactGA from 'react-ga';
+import compose from 'recompose/compose';
+import fromRenderProps from 'recompose/fromRenderProps';
+import identity from 'lodash/identity';
+import {Location, Router} from '@reach/router';
 import {hot} from 'react-hot-loader';
 
 class App extends Component {
   static propTypes = {
-    children: PropTypes.node.isRequired,
     location: PropTypes.object.isRequired
   };
 
@@ -25,10 +33,20 @@ class App extends Component {
     return (
       <Fragment>
         <Helmet defaultTitle={TITLE} titleTemplate={`%s · ${TITLE}`} />
-        {this.props.children}
+        <Router>
+          <Home path="/" />
+          <Pages default>
+            <Projects path="projects" />
+            <Project path="projects/:id" />
+            <NotFound default />
+          </Pages>
+        </Router>
       </Fragment>
     );
   }
 }
 
-export default hot(module)(App);
+export default compose(
+  hot(module),
+  fromRenderProps(Location, identity)
+)(App);
