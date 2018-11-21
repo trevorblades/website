@@ -5,15 +5,17 @@ import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Helmet from 'react-helmet';
+import NotFound from './not-found';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
+import projects from '../projects';
 import snarkdown from 'snarkdown';
 import styled, {css} from 'react-emotion';
 import theme from '@trevorblades/mui-theme';
 import twemoji from 'twemoji';
 import {ConstrainedSection, GridItem, Spacer} from '../components';
-import {Link} from 'react-router-dom';
+import {Link} from '@reach/router';
 import {MdExitToApp} from 'react-icons/md';
 
 const Description = styled(Typography)({
@@ -31,7 +33,7 @@ const marginRight = css({
 
 class Project extends Component {
   static propTypes = {
-    project: PropTypes.object.isRequired
+    id: PropTypes.string
   };
 
   renderLink(url) {
@@ -51,7 +53,9 @@ class Project extends Component {
   }
 
   render() {
-    const {url, title, images, summary, awards} = this.props.project.attributes;
+    const project = projects.find(project => project.id === this.props.id);
+    if (!project) return <NotFound />;
+    const {url, title, images, summary, awards} = project.attributes;
     return (
       <Fragment>
         <Helmet>
@@ -81,7 +85,7 @@ class Project extends Component {
               <Description
                 paragraph={Boolean(url)}
                 dangerouslySetInnerHTML={{
-                  __html: snarkdown(this.props.project.body) || summary
+                  __html: snarkdown(project.body) || summary
                 }}
               />
               {url && this.renderLink(url)}

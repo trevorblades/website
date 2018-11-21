@@ -4,7 +4,7 @@ import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import twemoji from 'twemoji';
-import {Link} from 'react-router-dom';
+import {Link} from '@reach/router';
 import {centered} from '.';
 
 const Header = () => (

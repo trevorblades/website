@@ -6,7 +6,7 @@ import React, {Fragment} from 'react';
 import Typography from '@material-ui/core/Typography';
 import projects from '../projects';
 import {ConstrainedSection, Spacer} from '../components';
-import {Link} from 'react-router-dom';
+import {Link} from '@reach/router';
 
 const Projects = () => (
   <Fragment>
