@@ -30,9 +30,9 @@
     "react-hot-loader": "^4.3.11",
     "react-icons": "^3.1.0",
     "react-jss": "^8.6.1",
+    "react-twemoji": "^0.1.0",
     "recompose": "^0.30.0",
-    "snarkdown": "^1.2.2",
-    "twemoji": "^11.2.0"
+    "snarkdown": "^1.2.2"
   },
   "devDependencies": {
     "@babel/core": "^7.1.0",

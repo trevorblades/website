@@ -1,9 +1,9 @@
 import React from 'react';
+import Twemoji from 'react-twemoji';
 import Typography from '@material-ui/core/Typography';
 import gql from 'graphql-tag';
 import styled, {css} from 'react-emotion';
 import theme from '@trevorblades/mui-theme';
-import twemoji from 'twemoji';
 import withProps from 'recompose/withProps';
 import {ApolloClient} from 'apollo-client';
 import {ConstrainedSection} from '../../components';
@@ -107,11 +107,11 @@ const OpenSource = () => (
                     <Typography>{node.stargazers.edges.length}</Typography>
                   </Stars>
                 </Heading>
-                <Typography
-                  dangerouslySetInnerHTML={{
-                    __html: twemoji.parse(node.description)
-                  }}
-                />
+                <Typography>
+                  <Twemoji noWrapper>
+                    <span>{node.description}</span>
+                  </Twemoji>
+                </Typography>
               </Respository>
             ))}
           </Repositories>

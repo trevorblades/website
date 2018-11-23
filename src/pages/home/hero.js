@@ -1,8 +1,8 @@
 import React from 'react';
+import Twemoji from 'react-twemoji';
 import Typography from '@material-ui/core/Typography';
 import styled from 'react-emotion';
 import theme, {getLinearGradient} from '@trevorblades/mui-theme';
-import twemoji from 'twemoji';
 import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
 import {Link} from '@reach/router';
 import {Section, sectionPadding} from '../../components';
@@ -60,8 +60,9 @@ const Hero = () => (
         I&apos;m Trevor
       </Typography>
       <Typography gutterBottom variant="h2" color="inherit">
-        I like to make <Link to="/projects">cool stuff</Link>{' '}
-        <span dangerouslySetInnerHTML={{__html: twemoji.parse('🍦')}} />
+        <Twemoji>
+          I like to make <Link to="/projects">cool stuff</Link> 🍦
+        </Twemoji>
       </Typography>
       <SocialLinks>
         {socialLinks.map(link => (
