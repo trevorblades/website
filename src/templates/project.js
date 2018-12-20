@@ -1,39 +1,27 @@
 import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
-import Footer from '../components/footer';
 import Grid from '@material-ui/core/Grid';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import Helmet from 'react-helmet';
-import NotFound from './not-found';
+import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React, {Component, Fragment} from 'react';
 import Twemoji from 'react-twemoji';
 import Typography from '@material-ui/core/Typography';
-import projects from '../projects';
-import snarkdown from 'snarkdown';
-import styled, {css} from 'react-emotion';
+import styled from '@emotion/styled';
 import theme from '@trevorblades/mui-theme';
-import {ConstrainedSection, GridItem, Spacer} from '../components';
+import {ConstrainedSection, GridItem, Spacer} from '../components/common';
 import {Link} from '@reach/router';
 import {MdExitToApp} from 'react-icons/md';
+import {graphql} from 'gatsby';
 
-const Description = styled(Typography)({
-  whiteSpace: 'pre-wrap',
-  br: {
-    display: 'block',
-    content: "''",
-    marginBottom: '1em'
-  }
-});
-
-const marginRight = css({
+const ExitToAppIcon = styled(MdExitToApp)({
   marginRight: theme.spacing.unit
 });
 
-class Project extends Component {
+export default class Project extends Component {
   static propTypes = {
-    id: PropTypes.string
+    data: PropTypes.object.isRequired
   };
 
   renderLink(url) {
@@ -46,18 +34,17 @@ class Project extends Component {
         rel="noopener noreferrer"
         variant="outlined"
       >
-        <MdExitToApp className={marginRight} />
+        <ExitToAppIcon />
         {host}
       </Button>
     );
   }
 
   render() {
-    const project = projects.find(project => project.id === this.props.id);
-    if (!project) return <NotFound />;
-    const {url, title, images, summary, awards} = project.attributes;
+    const {frontmatter, html} = this.props.data.markdownRemark;
+    const {url, title, images, summary, awards} = frontmatter;
     return (
-      <Fragment>
+      <Layout>
         <Helmet>
           <title>{title}</title>
         </Helmet>
@@ -71,21 +58,22 @@ class Project extends Component {
           {images && (
             <Fragment>
               <GridList cellHeight={350} cols={3}>
-                {images.filter(image => !image.hidden).map(image => (
-                  <GridListTile key={image.src} cols={image.cols || 1}>
-                    <img src={image.src} alt={image.title} />
-                  </GridListTile>
-                ))}
+                {images
+                  .filter(image => !image.hidden)
+                  .map((image, index) => (
+                    <GridListTile key={index} cols={image.cols || 1}>
+                      <img src={image.src.publicURL} alt={image.title} />
+                    </GridListTile>
+                  ))}
               </GridList>
               <Spacer />
             </Fragment>
           )}
           <Grid container spacing={40}>
             <GridItem xs={12} sm={8}>
-              <Description
-                paragraph={Boolean(url)}
+              <div
                 dangerouslySetInnerHTML={{
-                  __html: snarkdown(project.body) || summary
+                  __html: html || summary
                 }}
               />
               {url && this.renderLink(url)}
@@ -112,11 +100,32 @@ class Project extends Component {
             )}
           </Grid>
         </ConstrainedSection>
-        <Divider />
-        <Footer />
-      </Fragment>
+      </Layout>
     );
   }
 }
 
-export default Project;
+export const query = graphql`
+  query($path: String!) {
+    markdownRemark(fields: {path: {eq: $path}}) {
+      html
+      frontmatter {
+        url
+        title
+        summary
+        images {
+          src {
+            publicURL
+          }
+          title
+          cols
+          hidden
+        }
+        awards {
+          title
+          win
+        }
+      }
+    }
+  }
+`;

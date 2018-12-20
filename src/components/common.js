@@ -1,5 +1,5 @@
 import Grid from '@material-ui/core/Grid';
-import styled, {css} from 'react-emotion';
+import styled from '@emotion/styled';
 import theme from '@trevorblades/mui-theme';
 import withProps from 'recompose/withProps';
 
@@ -8,9 +8,9 @@ export const Section = styled.section({
   padding: sectionPadding
 });
 
-export const centered = css({margin: '0 auto'});
-export const ConstrainedSection = styled(Section)(centered, {
-  maxWidth: theme.breakpoints.values.lg
+export const ConstrainedSection = styled(Section)({
+  maxWidth: theme.breakpoints.values.lg,
+  margin: '0 auto'
 });
 
 export const Spacer = styled.div({

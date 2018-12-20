@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 
 export default function NotFound() {
   return (
-    <Layout>
+    <Layout disableFooter>
       <Helmet>
         <title>Not found</title>
       </Helmet>

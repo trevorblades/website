@@ -4,18 +4,22 @@ import React from 'react';
 import Toolbar from '@material-ui/core/Toolbar';
 import Twemoji from 'react-twemoji';
 import Typography from '@material-ui/core/Typography';
-import {Link} from '@reach/router';
-import {centered} from '.';
+import styled from '@emotion/styled';
+import {Link} from 'gatsby';
 
-const Header = () => (
-  <AppBar elevation={0} color="inherit" position="sticky">
-    <Toolbar>
-      <Typography component={Link} to="/" variant="h5" className={centered}>
-        <Twemoji>{FAVICON}</Twemoji>
-      </Typography>
-    </Toolbar>
-    <Divider />
-  </AppBar>
-);
+const Logo = styled(Typography)({
+  margin: '0 auto'
+});
 
-export default Header;
+export default function Header() {
+  return (
+    <AppBar elevation={0} color="inherit" position="sticky">
+      <Toolbar>
+        <Logo component={Link} to="/" variant="h5">
+          <Twemoji>🔪</Twemoji>
+        </Logo>
+      </Toolbar>
+      <Divider />
+    </AppBar>
+  );
+}
