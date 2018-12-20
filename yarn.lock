@@ -965,6 +965,12 @@
   version "0.0.32"
   resolved "http://registry.npmjs.org/@types/tmp/-/tmp-0.0.32.tgz#0d3cb31022f8427ea58c008af32b80da126ca4e3"
 
+"@wapps/gatsby-plugin-material-ui@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@wapps/gatsby-plugin-material-ui/-/gatsby-plugin-material-ui-1.1.0.tgz#f797ad79bbf94ec03de3f7ed655e6d72a599c56b"
+  dependencies:
+    react-jss "^8.6.1"
+
 "@webassemblyjs/ast@1.7.11":
   version "1.7.11"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.7.11.tgz#b988582cafbb2b095e8b556526f30c90d057cace"
@@ -4486,12 +4492,6 @@ gatsby-plugin-emotion@^4.0.1:
 gatsby-plugin-google-analytics@^2.0.8:
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-google-analytics/-/gatsby-plugin-google-analytics-2.0.8.tgz#bef7913726e70f03533c4d14bfc73f8bd73550e0"
-  dependencies:
-    "@babel/runtime" "^7.0.0"
-
-gatsby-plugin-jss@^2.0.5:
-  version "2.0.5"
-  resolved "https://registry.yarnpkg.com/gatsby-plugin-jss/-/gatsby-plugin-jss-2.0.5.tgz#f16793e1c4df985b11e0871821a778a14bec9804"
   dependencies:
     "@babel/runtime" "^7.0.0"
 

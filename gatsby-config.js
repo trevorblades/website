@@ -1,3 +1,4 @@
+const theme = require('@trevorblades/mui-theme');
 require('dotenv').config();
 
 module.exports = {
@@ -5,9 +6,14 @@ module.exports = {
     title: 'Trevor Blades'
   },
   plugins: [
-    'gatsby-plugin-jss',
     'gatsby-plugin-emotion',
     'gatsby-plugin-react-helmet',
+    {
+      resolve: '@wapps/gatsby-plugin-material-ui',
+      options: {
+        theme
+      }
+    },
     {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
