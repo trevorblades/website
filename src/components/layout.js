@@ -31,11 +31,11 @@ export default function Layout(props) {
                   }
                 },
                 'img.emoji': {
-                  width: '1.25em',
-                  height: '1.25em',
+                  width: '1em',
+                  height: '1em',
                   marginLeft: '0.1em',
                   marginRight: '0.05em',
-                  verticalAlign: '-0.25em'
+                  verticalAlign: '-0.1em'
                 }
               }}
             />
