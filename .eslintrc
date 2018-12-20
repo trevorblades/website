@@ -1,12 +1,4 @@
 {
   "extends": "@trevorblades/eslint-config/react",
-  "parser": "babel-eslint",
-  "env": {
-    "browser": true
-  },
-  "globals": {
-    "TITLE": true,
-    "FAVICON": true,
-    "GITHUB_TOKEN": true
-  }
+  "parser": "babel-eslint"
 }
