@@ -10,6 +10,7 @@ import Twemoji from 'react-twemoji';
 import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
 import theme from '@trevorblades/mui-theme';
+import url from 'url';
 import {ConstrainedSection, GridItem, Spacer} from '../components/common';
 import {Link} from '@reach/router';
 import {MdExitToApp} from 'react-icons/md';
@@ -24,25 +25,9 @@ export default class Project extends Component {
     data: PropTypes.object.isRequired
   };
 
-  renderLink(url) {
-    const {host} = new URL(url);
-    return (
-      <Button
-        component="a"
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        variant="outlined"
-      >
-        <ExitToAppIcon />
-        {host}
-      </Button>
-    );
-  }
-
   render() {
     const {frontmatter, html} = this.props.data.markdownRemark;
-    const {url, title, images, summary, awards} = frontmatter;
+    const {url: projectUrl, title, images, summary, awards} = frontmatter;
     return (
       <Layout>
         <Helmet>
@@ -76,7 +61,18 @@ export default class Project extends Component {
                   __html: html || summary
                 }}
               />
-              {url && this.renderLink(url)}
+              {projectUrl && (
+                <Button
+                  component="a"
+                  href={projectUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  variant="outlined"
+                >
+                  <ExitToAppIcon />
+                  {url.parse(projectUrl).host}
+                </Button>
+              )}
             </GridItem>
             {awards && (
               <GridItem xs={12} sm={4}>
