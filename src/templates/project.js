@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
 import theme from '@trevorblades/mui-theme';
 import url from 'url';
-import {ConstrainedSection, GridItem, Spacer} from '../components/common';
+import {GridItem, Section, Spacer} from '../components/common';
 import {Link} from '@reach/router';
 import {MdExitToApp} from 'react-icons/md';
 import {graphql} from 'gatsby';
@@ -39,7 +39,7 @@ export default class Project extends Component {
         <Helmet>
           <title>{title}</title>
         </Helmet>
-        <ConstrainedSection>
+        <Section>
           <Typography variant="caption">
             <Link to="/projects">&lt; All projects</Link>
           </Typography>
@@ -102,7 +102,7 @@ export default class Project extends Component {
               </GridItem>
             )}
           </Grid>
-        </ConstrainedSection>
+        </Section>
       </Layout>
     );
   }

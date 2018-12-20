@@ -4,8 +4,8 @@ import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import {ConstrainedSection, Spacer} from '../components/common';
 import {Link, graphql} from 'gatsby';
+import {Section, Spacer} from '../components/common';
 
 export default function Projects(props) {
   return (
@@ -13,7 +13,7 @@ export default function Projects(props) {
       <Helmet>
         <title>Projects</title>
       </Helmet>
-      <ConstrainedSection>
+      <Section>
         <Typography variant="h2" gutterBottom>
           I made this
         </Typography>
@@ -35,7 +35,7 @@ export default function Projects(props) {
             );
           })}
         </Grid>
-      </ConstrainedSection>
+      </Section>
     </Layout>
   );
 }

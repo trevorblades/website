@@ -3,9 +3,9 @@ import React, {Fragment} from 'react';
 import Twemoji from 'react-twemoji';
 import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
-import {ConstrainedSection, Spacer} from './common';
+import {Section, Spacer} from './common';
 
-const Container = styled(ConstrainedSection)({
+const Container = styled(Section)({
   textAlign: 'center'
 });
 

@@ -5,12 +5,9 @@ import withProps from 'recompose/withProps';
 
 export const sectionPadding = theme.spacing.unit * 7;
 export const Section = styled.section({
-  padding: sectionPadding
-});
-
-export const ConstrainedSection = styled(Section)({
   maxWidth: theme.breakpoints.values.lg,
-  margin: '0 auto'
+  margin: '0 auto',
+  padding: sectionPadding
 });
 
 export const Spacer = styled.div({

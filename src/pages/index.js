@@ -11,25 +11,21 @@ import theme, {getLinearGradient} from '@trevorblades/mui-theme';
 import toRenderProps from 'recompose/toRenderProps';
 import withProps from 'recompose/withProps';
 import withWidth from '@material-ui/core/withWidth';
-import {
-  ConstrainedSection,
-  GridItem,
-  Section,
-  Spacer,
-  sectionPadding
-} from '../components/common';
 import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
 import {GoStar} from 'react-icons/go';
+import {GridItem, Section, Spacer, sectionPadding} from '../components/common';
 import {Link, graphql} from 'gatsby';
 import {css} from '@emotion/core';
 
-const Hero = styled(Section)({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: `calc(100vh - ${sectionPadding}px)`,
+const Hero = styled.main({
   color: theme.palette.common.white,
   backgroundImage: getLinearGradient()
+});
+
+const HeroContent = styled(Section)({
+  display: 'flex',
+  alignItems: 'center',
+  height: `calc(100vh - ${sectionPadding}px)`
 });
 
 const SocialLinks = styled.div({
@@ -117,31 +113,33 @@ export default function Home(props) {
   return (
     <Layout disableHeader>
       <Hero>
-        <div>
-          <Typography gutterBottom variant="subtitle1" color="inherit">
-            I&apos;m Trevor
-          </Typography>
-          <Typography gutterBottom variant="h2" color="inherit">
-            <Twemoji>
-              I like to make <Link to="/projects">cool stuff</Link> 🍦
-            </Twemoji>
-          </Typography>
-          <SocialLinks>
-            {socialLinks.map(link => (
-              <SocialLink
-                target="_blank"
-                rel="noopener noreferrer"
-                key={link.href}
-                href={link.href}
-                title={link.title}
-              >
-                {link.icon}
-              </SocialLink>
-            ))}
-          </SocialLinks>
-        </div>
+        <HeroContent>
+          <div>
+            <Typography gutterBottom variant="subtitle1" color="inherit">
+              I&apos;m Trevor
+            </Typography>
+            <Typography gutterBottom variant="h2" color="inherit">
+              <Twemoji>
+                I like to make <Link to="/projects">cool stuff</Link> 🍦
+              </Twemoji>
+            </Typography>
+            <SocialLinks>
+              {socialLinks.map(link => (
+                <SocialLink
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  key={link.href}
+                  href={link.href}
+                  title={link.title}
+                >
+                  {link.icon}
+                </SocialLink>
+              ))}
+            </SocialLinks>
+          </div>
+        </HeroContent>
       </Hero>
-      <ConstrainedSection>
+      <Section>
         <WithWidth>
           {({width}) =>
             props.data.allMarkdownRemark.edges.map(({node}, index) => {
@@ -195,9 +193,9 @@ export default function Home(props) {
             All projects
           </LinkButton>
         </ProjectsFooter>
-      </ConstrainedSection>
+      </Section>
       <Divider />
-      <ConstrainedSection>
+      <Section>
         <Typography variant="h3" gutterBottom>
           Open source
         </Typography>
@@ -224,7 +222,7 @@ export default function Home(props) {
             </Respository>
           )
         )}
-      </ConstrainedSection>
+      </Section>
     </Layout>
   );
 }
