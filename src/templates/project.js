@@ -16,6 +16,12 @@ import {Link} from '@reach/router';
 import {MdExitToApp} from 'react-icons/md';
 import {graphql} from 'gatsby';
 
+const Description = styled(Typography)({
+  '> *:first-child': {
+    marginTop: 0
+  }
+});
+
 const ExitToAppIcon = styled(MdExitToApp)({
   marginRight: theme.spacing.unit
 });
@@ -56,7 +62,8 @@ export default class Project extends Component {
           )}
           <Grid container spacing={40}>
             <GridItem xs={12} sm={8}>
-              <div
+              <Description
+                component="div"
                 dangerouslySetInnerHTML={{
                   __html: html || summary
                 }}

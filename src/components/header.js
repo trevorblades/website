@@ -7,18 +7,18 @@ import Typography from '@material-ui/core/Typography';
 import styled from '@emotion/styled';
 import {Link} from 'gatsby';
 
-const Logo = styled(Typography)({
-  margin: '0 auto'
+const StyledToolbar = styled(Toolbar)({
+  justifyContent: 'center'
 });
 
 export default function Header() {
   return (
     <AppBar elevation={0} color="inherit" position="sticky">
-      <Toolbar>
-        <Logo component={Link} to="/" variant="h5">
+      <StyledToolbar>
+        <Typography component={Link} to="/" variant="h5">
           <Twemoji>🔪</Twemoji>
-        </Logo>
-      </Toolbar>
+        </Typography>
+      </StyledToolbar>
       <Divider />
     </AppBar>
   );
