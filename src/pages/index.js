@@ -1,16 +1,6 @@
-import Header from '../components/header';
-import PropTypes from 'prop-types';
-import React, {Fragment} from 'react';
+import Layout from '../components/layout';
+import React from 'react';
 
-export default function Pages(props) {
-  return (
-    <Fragment>
-      <Header />
-      {props.children}
-    </Fragment>
-  );
+export default function Home() {
+  return <Layout>home</Layout>;
 }
-
-Pages.propTypes = {
-  children: PropTypes.node.isRequired
-};

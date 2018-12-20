@@ -1,6 +1,6 @@
 import Helmet from 'react-helmet';
 import Home from '../pages/home';
-import NotFound from '../pages/not-found';
+import NotFound from '../pages/404';
 import Pages from '../pages';
 import Project from '../pages/project';
 import Projects from '../pages/projects';
