@@ -1,118 +1,27 @@
 import Button from '@material-ui/core/Button';
 import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
 import Layout from '../components/layout';
 import PropTypes from 'prop-types';
-import React, {Fragment} from 'react';
-import Twemoji from 'react-twemoji';
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import styled from '@emotion/styled';
-import theme, {getLinearGradient} from '@trevorblades/mui-theme';
-import toRenderProps from 'recompose/toRenderProps';
-import withProps from 'recompose/withProps';
-import withWidth from '@material-ui/core/withWidth';
-import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
+import {Box, styled} from '@material-ui/core';
 import {GoStar} from 'react-icons/go';
-import {GridItem, Section, Spacer, sectionPadding} from '../components/common';
 import {Link, graphql} from 'gatsby';
-import {css} from '@emotion/core';
+// import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
 
-const Hero = styled.main({
-  color: theme.palette.common.white,
-  backgroundImage: getLinearGradient()
-});
-
-const HeroContent = styled(Section)({
-  display: 'flex',
-  alignItems: 'center',
-  height: `calc(100vh - ${sectionPadding}px)`
-});
-
-const SocialLinks = styled.div({
-  display: 'flex',
-  fontSize: 36
-});
-
-const SocialLink = styled.a({
-  ':not(:last-child)': {
-    marginRight: theme.spacing.unit * 3
-  },
-  svg: {
-    display: 'block'
-  }
-});
-
-const gridSpacing = 40;
-const Screenshot = styled.img(props => ({
-  display: 'block',
+const StyledImage = styled('img')({
   width: '100%',
-  marginTop: props.index ? 0 : sectionPadding * -2,
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[10],
-  [theme.breakpoints.down('xs')]: {
-    width: '100vw',
-    [`margin${props.right ? 'Right' : 'Left'}`]: -sectionPadding,
-    marginBottom: gridSpacing,
-    borderRadius: 0,
-    boxShadow: 'none'
-  }
-}));
-
-const ProjectsFooter = styled.div({
-  textAlign: 'center'
+  height: '100%',
+  objectFit: 'cover',
+  position: 'absolute',
+  top: 0,
+  left: 0
 });
-
-const WithWidth = toRenderProps(withWidth());
-const LinkButton = withProps({
-  component: Link
-})(Button);
-
-const Respository = styled.div({
-  ':not(:last-child)': {
-    marginBottom: theme.spacing.unit * 1.5
-  }
-});
-
-const flexAlignCenter = css({
-  display: 'flex',
-  alignItems: 'center'
-});
-
-const Heading = styled.div(flexAlignCenter);
-const Stars = styled.div(flexAlignCenter, {
-  marginLeft: theme.spacing.unit,
-  svg: {
-    marginRight: theme.spacing.unit / 2
-  }
-});
-
-const socialLinks = [
-  {
-    href: 'https://github.com/trevorblades',
-    title: 'I <3 open source',
-    icon: <FaGithub />
-  },
-  {
-    href: 'https://twitter.com/trevorblades',
-    title: "Don't @me",
-    icon: <FaTwitter />
-  },
-  {
-    href: 'https://instagram.com/trevorblades',
-    title: 'Mostly skateboarding videos',
-    icon: <FaInstagram />
-  },
-  {
-    href: 'https://twitch.com/trevorblades',
-    title: 'I stream sometimes',
-    icon: <FaTwitch />
-  }
-];
 
 export default function Home(props) {
   return (
     <Layout disableHeader>
-      <Hero>
+      {/* <Hero>
         <HeroContent>
           <div>
             <Typography gutterBottom variant="subtitle1" color="inherit">
@@ -138,64 +47,71 @@ export default function Home(props) {
             </SocialLinks>
           </div>
         </HeroContent>
-      </Hero>
-      <Section>
-        <WithWidth>
-          {({width}) =>
-            props.data.allMarkdownRemark.edges.map(({node}, index) => {
-              const right = index % 2;
-              const image = node.frontmatter.images[0];
-              const {path} = node.fields;
+      </Hero> */}
+      <div>
+        {props.data.allMdx.edges.map(({node}, index) => {
+          const [image] = node.frontmatter.images;
+          switch (index) {
+            case 0:
               return (
-                <Fragment key={path}>
-                  <Grid
-                    container
-                    spacing={width === 'xs' ? 0 : gridSpacing}
-                    direction={right ? 'row-reverse' : null}
-                    alignItems={!index ? 'flex-start' : 'flex-end'}
-                  >
-                    <GridItem sm={12} md={8}>
-                      <Screenshot
-                        alt={image.title}
-                        src={image.src.publicURL}
-                        right={right}
-                        index={index}
-                      />
-                    </GridItem>
-                    <GridItem sm={12} md={4}>
-                      <Typography gutterBottom variant="h4">
-                        {node.frontmatter.title}
-                      </Typography>
-                      <Typography paragraph>
-                        {node.frontmatter.summary}
-                      </Typography>
-                      <LinkButton to={path} variant="outlined">
-                        View project
-                      </LinkButton>
-                    </GridItem>
-                  </Grid>
-                  <Spacer />
-                </Fragment>
+                <Box width={1 / 2} key={node.id} position="relative">
+                  <Box pb="100%" position="relative">
+                    <StyledImage src={image.src.publicURL} />
+                  </Box>
+                  <Box position="absolute" top="100%">
+                    <Typography gutterBottom variant="h4">
+                      {node.frontmatter.title}
+                    </Typography>
+                  </Box>
+                </Box>
               );
-            })
+            case 1:
+              return (
+                <Box
+                  display="flex"
+                  alignItems="flex-end"
+                  justifyContent="flex-end"
+                >
+                  <Typography gutterBottom variant="h4">
+                    {node.frontmatter.title}
+                  </Typography>
+                  <Box width={1 / 2}>
+                    <Box mt="-50%" pb="150%" position="relative">
+                      <StyledImage src={image.src.publicURL} />
+                    </Box>
+                  </Box>
+                </Box>
+              );
+            default:
+              return (
+                <Box key={node.id}>
+                  <Box pb="50%" position="relative">
+                    <StyledImage src={image.src.publicURL} />
+                  </Box>
+                  <Typography gutterBottom variant="h4">
+                    {node.frontmatter.title}
+                  </Typography>
+                </Box>
+              );
           }
-        </WithWidth>
-        <ProjectsFooter>
+        })}
+        <div>
           <Typography gutterBottom variant="subtitle1" color="textSecondary">
-            Not satisfied? Want to see more?
+            Not impressed? Want to see more?
           </Typography>
-          <LinkButton
+          <Button
+            component={Link}
             color="primary"
             to="/projects"
             size="large"
             variant="contained"
           >
             All projects
-          </LinkButton>
-        </ProjectsFooter>
-      </Section>
+          </Button>
+        </div>
+      </div>
       <Divider />
-      <Section>
+      <div>
         <Typography variant="h3" gutterBottom>
           Open source
         </Typography>
@@ -204,25 +120,21 @@ export default function Home(props) {
         </Typography>
         {props.data.github.repositoryOwner.pinnedRepositories.edges.map(
           ({node}) => (
-            <Respository key={node.id}>
-              <Heading>
+            <div key={node.id}>
+              <div>
                 <Typography variant="h6" component="a" href={node.url}>
                   {node.name}
                 </Typography>
-                <Stars>
+                <div>
                   <GoStar />
                   <Typography>{node.stargazers.edges.length}</Typography>
-                </Stars>
-              </Heading>
-              <Typography>
-                <Twemoji noWrapper>
-                  <span>{node.description}</span>
-                </Twemoji>
-              </Typography>
-            </Respository>
+                </div>
+              </div>
+              <Typography>{node.description}</Typography>
+            </div>
           )
         )}
-      </Section>
+      </div>
     </Layout>
   );
 }
@@ -233,9 +145,10 @@ Home.propTypes = {
 
 export const query = graphql`
   {
-    allMarkdownRemark(filter: {frontmatter: {featured: {eq: true}}}) {
+    allMdx(filter: {frontmatter: {featured: {eq: true}}}) {
       edges {
         node {
+          id
           fields {
             path
           }

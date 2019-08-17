@@ -1,4 +1,3 @@
-const theme = require('@trevorblades/mui-theme');
 require('dotenv').config();
 
 module.exports = {
@@ -6,12 +5,21 @@ module.exports = {
     title: 'Trevor Blades'
   },
   plugins: [
-    'gatsby-plugin-emotion',
     'gatsby-plugin-react-helmet',
+    'gatsby-plugin-mdx',
     {
-      resolve: '@wapps/gatsby-plugin-material-ui',
+      resolve: 'gatsby-theme-material-ui',
       options: {
-        theme
+        webFontsConfig: {
+          fonts: {
+            google: [
+              {
+                family: 'Fira Mono',
+                variants: ['400', '500', '700']
+              }
+            ]
+          }
+        }
       }
     },
     {
@@ -21,19 +29,12 @@ module.exports = {
       }
     },
     {
-      resolve: 'gatsby-plugin-emoji-favicon',
-      options: {
-        emoji: '🔪'
-      }
-    },
-    {
       resolve: 'gatsby-source-filesystem',
       options: {
         path: `${__dirname}/src/projects`,
         name: 'projects'
       }
     },
-    'gatsby-transformer-remark',
     {
       resolve: 'gatsby-source-graphql',
       options: {
