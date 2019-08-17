@@ -2,12 +2,12 @@ import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ice from '../assets/ice.jpg';
-// import useWindowScroll from 'react-use/lib/useWindowScroll';
 import {Box, Divider, Grid, Typography, useTheme} from '@material-ui/core';
 import {Button, IconButton, Link} from 'gatsby-theme-material-ui';
 import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
 import {GoStar} from 'react-icons/go';
 import {graphql} from 'gatsby';
+// import useWindowScroll from 'react-use/lib/useWindowScroll';
 
 const sectionPadding = 8;
 const gridSpacing = 5;
@@ -15,7 +15,6 @@ const gridSpacing = 5;
 export default function Home(props) {
   // const {y} = useWindowScroll();
   const {spacing} = useTheme();
-  console.log(spacing(sectionPadding));
   return (
     <Layout disableHeader>
       {/* <Box
@@ -44,6 +43,7 @@ export default function Home(props) {
           backgroundImage: `url(${ice})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center'
+          // transform: `translateY(${y / 3}px)`
         }}
       >
         <div>
@@ -76,25 +76,23 @@ export default function Home(props) {
         <Box mt={sectionPadding * -2 - gridSpacing / 2}>
           <Grid container spacing={gridSpacing}>
             {props.data.allMdx.edges.map(({node}) => {
-              const {publicURL} = node.frontmatter.image;
+              const {video, title, summary} = node.frontmatter;
               return (
                 <Grid item xs={4} key={node.id}>
-                  <Box
-                    pb="100%"
-                    mb={2}
-                    position="relative"
-                    style={{
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      backgroundImage: [
-                        'linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.6))',
-                        `url(${publicURL})`
-                      ]
-                    }}
-                  />
-                  <Typography variant="h4">{node.frontmatter.title}</Typography>
+                  {video && (
+                    <Box mb={2}>
+                      <video
+                        muted
+                        width="100%"
+                        autoPlay
+                        loop
+                        src={video.publicURL}
+                      />
+                    </Box>
+                  )}
+                  <Typography variant="h4">{title}</Typography>
                   <Typography paragraph variant="subtitle1">
-                    {node.frontmatter.summary}
+                    {summary}
                   </Typography>
                   <Button variant="outlined" size="small" to={node.fields.path}>
                     View project
@@ -158,7 +156,7 @@ Home.propTypes = {
 
 export const query = graphql`
   {
-    allMdx(filter: {frontmatter: {featured: {eq: true}}}) {
+    allMdx(sort: {fields: frontmatter___order, order: DESC}) {
       edges {
         node {
           id
@@ -168,7 +166,7 @@ export const query = graphql`
           frontmatter {
             title
             summary
-            image {
+            video {
               publicURL
             }
           }
