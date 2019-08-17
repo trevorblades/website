@@ -1,20 +1,24 @@
 import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
-import useWindowScroll from 'react-use/lib/useWindowScroll';
-import {Box, Divider, Grid, Typography} from '@material-ui/core';
-import {Button} from 'gatsby-theme-material-ui';
+import ice from '../assets/ice.jpg';
+// import useWindowScroll from 'react-use/lib/useWindowScroll';
+import {Box, Divider, Grid, Typography, useTheme} from '@material-ui/core';
+import {Button, IconButton, Link} from 'gatsby-theme-material-ui';
+import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
 import {GoStar} from 'react-icons/go';
 import {graphql} from 'gatsby';
-// import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
+
+const sectionPadding = 8;
+const gridSpacing = 5;
 
 export default function Home(props) {
-  const {y} = useWindowScroll();
-  console.log(y);
+  // const {y} = useWindowScroll();
+  const {spacing} = useTheme();
+  console.log(spacing(sectionPadding));
   return (
     <Layout disableHeader>
-      <Box bgcolor="black" color="white">
-        <Box
+      {/* <Box
           display="flex"
           alignItems="center"
           px={3}
@@ -28,75 +32,121 @@ export default function Home(props) {
           }}
         >
           <Typography variant="h5">Trevor Blades</Typography>
-        </Box>
-        <Box p={8} height={`calc(100vh - ${64 * 2}px)`}>
-          Stuff
-        </Box>
-        <Box p={8} color="initial" bgcolor="background.default">
-          <Box mt={-16 - 2.5}>
-            <Grid container spacing={5}>
-              {props.data.allMdx.edges.map(({node}) => {
-                const {publicURL} = node.frontmatter.image;
-                return (
-                  <Grid item xs={4} key={node.id}>
-                    <Box
-                      pb="100%"
-                      mb={2}
-                      position="relative"
-                      style={{
-                        backgroundSize: 'cover',
-                        backgroundPosition: 'center',
-                        backgroundImage: [
-                          'linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.6))',
-                          `url(${publicURL})`
-                        ]
-                      }}
-                    />
-                    <Typography gutterBottom variant="h4">
-                      {node.frontmatter.title}
-                    </Typography>
-                  </Grid>
-                );
-              })}
-            </Grid>
-          </Box>
-          <Typography gutterBottom variant="subtitle1" color="textSecondary">
-            Not impressed? Want to see more?
-          </Typography>
-          <Button
-            color="primary"
-            to="/projects"
-            size="large"
-            variant="contained"
-          >
-            All projects
-          </Button>
-        </Box>
-        <Divider />
+        </Box> */}
+      <Box
+        p={sectionPadding}
+        height={`calc(100vh - ${spacing(sectionPadding)}px)`}
+        display="flex"
+        alignItems="center"
+        bgcolor="black"
+        color="white"
+        style={{
+          backgroundImage: `url(${ice})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center'
+        }}
+      >
         <div>
-          <Typography variant="h3" gutterBottom>
-            Open source
+          <Typography display="block" variant="overline">
+            I&apos;m Trevor, and I like to
           </Typography>
-          <Typography paragraph variant="subtitle1">
-            A handful of my open source projects
+          <Typography paragraph variant="h1">
+            design/build stuff
           </Typography>
-          {props.data.github.repositoryOwner.pinnedRepositories.edges.map(
-            ({node}) => (
-              <div key={node.id}>
-                <div>
-                  <Typography variant="h6" component="a" href={node.url}>
-                    {node.name}
-                  </Typography>
-                  <div>
-                    <GoStar />
-                    <Typography>{node.stargazers.edges.length}</Typography>
-                  </div>
-                </div>
-                <Typography>{node.description}</Typography>
-              </div>
-            )
-          )}
+          <Box ml={-1.5}>
+            <IconButton color="inherit" href="https://github.com/trevorblades">
+              <FaGithub size={40} />
+            </IconButton>
+            <IconButton color="inherit" href="https://twitter.com/trevorblades">
+              <FaTwitter size={40} />
+            </IconButton>
+            <IconButton color="inherit" href="https://twitch.com/trevorblades">
+              <FaTwitch size={40} />
+            </IconButton>
+            <IconButton
+              color="inherit"
+              href="https://instagram.com/trevorblades"
+            >
+              <FaInstagram size={40} />
+            </IconButton>
+          </Box>
         </div>
+      </Box>
+      <Box p={sectionPadding}>
+        <Box mt={sectionPadding * -2 - gridSpacing / 2}>
+          <Grid container spacing={gridSpacing}>
+            {props.data.allMdx.edges.map(({node}) => {
+              const {publicURL} = node.frontmatter.image;
+              return (
+                <Grid item xs={4} key={node.id}>
+                  <Box
+                    pb="100%"
+                    mb={2}
+                    position="relative"
+                    style={{
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundImage: [
+                        'linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.6))',
+                        `url(${publicURL})`
+                      ]
+                    }}
+                  />
+                  <Typography variant="h4">{node.frontmatter.title}</Typography>
+                  <Typography paragraph variant="subtitle1">
+                    {node.frontmatter.summary}
+                  </Typography>
+                  <Button variant="outlined" size="small" to={node.fields.path}>
+                    View project
+                  </Button>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Box>
+      </Box>
+      <Divider />
+      <Box p={sectionPadding}>
+        <Typography display="block" variant="overline">
+          Some open source projects
+        </Typography>
+        <Typography variant="h2" gutterBottom>
+          that I&apos;m proud of
+        </Typography>
+        {props.data.github.repositoryOwner.pinnedRepositories.edges.map(
+          ({node}) => (
+            <Box mt={3} key={node.id}>
+              <Box mb={1} display="flex" alignItems="center">
+                <Link color="inherit" variant="h6" href={node.url}>
+                  {node.name}
+                </Link>
+                <Box ml={1} display="flex" alignItems="center">
+                  <GoStar style={{marginRight: 4}} />
+                  <Typography>{node.stargazers.edges.length}</Typography>
+                </Box>
+              </Box>
+              <Typography>{node.description}</Typography>
+            </Box>
+          )
+        )}
+      </Box>
+      <Divider />
+      <Box textAlign="center" p={sectionPadding}>
+        <Box mb={8}>
+          <Typography gutterBottom variant="h3">
+            Call me maybe
+          </Typography>
+          <Typography>
+            Want to get in touch? Send me an email at{' '}
+            <Link href="mailto:tdblades@gmail.com">tdblades@gmail.com</Link>.
+          </Typography>
+        </Box>
+        <Typography paragraph component="span" display="block" variant="h2">
+          🔪
+        </Typography>
+        <Typography variant="subtitle2">
+          &copy; {new Date().getFullYear()} Trevor Blades
+        </Typography>
       </Box>
     </Layout>
   );
