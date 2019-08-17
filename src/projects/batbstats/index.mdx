@@ -6,6 +6,19 @@ video: batbstats.webm
 order: 0
 ---
 
+import {Box, GridList, GridListTile} from '@material-ui/core';
+
+<Box mb={4}>
+  <GridList cellHeight={300} cols={3}>
+    <GridListTile cols={1}>
+      <img src="logo.png" alt="Lightning bolt logo" />
+    </GridListTile>
+    <GridListTile cols={2}>
+      <img src="bracket.jpg" alt="Battle at the Berrics bracket" />
+    </GridListTile>
+  </GridList>
+</Box>
+
 _BATB Stats_ is a resource for detailed breakdowns of games played in the Battle at the Berrics tournament series. We make all of our data available to explore using charts, tables, brackets, and game transcripts.
 
 I'm serving this data over a public GraphQL API, so other skateboard-loving developers can use it in their apps, too!
