@@ -1,106 +1,69 @@
-import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
 import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import {Box, styled} from '@material-ui/core';
+import useWindowScroll from 'react-use/lib/useWindowScroll';
+import {Box, Divider, Grid, Typography} from '@material-ui/core';
+import {Button} from 'gatsby-theme-material-ui';
 import {GoStar} from 'react-icons/go';
-import {Link, graphql} from 'gatsby';
+import {graphql} from 'gatsby';
 // import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
 
-const StyledImage = styled('img')({
-  width: '100%',
-  height: '100%',
-  objectFit: 'cover',
-  position: 'absolute',
-  top: 0,
-  left: 0
-});
-
 export default function Home(props) {
+  const {y} = useWindowScroll();
+  console.log(y);
   return (
     <Layout disableHeader>
-      {/* <Hero>
-        <HeroContent>
-          <div>
-            <Typography gutterBottom variant="subtitle1" color="inherit">
-              I&apos;m Trevor
-            </Typography>
-            <Typography gutterBottom variant="h2" color="inherit">
-              <Twemoji>
-                I like to make <Link to="/projects">cool stuff</Link> 🍦
-              </Twemoji>
-            </Typography>
-            <SocialLinks>
-              {socialLinks.map(link => (
-                <SocialLink
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  key={link.href}
-                  href={link.href}
-                  title={link.title}
-                >
-                  {link.icon}
-                </SocialLink>
-              ))}
-            </SocialLinks>
-          </div>
-        </HeroContent>
-      </Hero> */}
-      <div>
-        {props.data.allMdx.edges.map(({node}, index) => {
-          const [image] = node.frontmatter.images;
-          switch (index) {
-            case 0:
-              return (
-                <Box width={1 / 2} key={node.id} position="relative">
-                  <Box pb="100%" position="relative">
-                    <StyledImage src={image.src.publicURL} />
-                  </Box>
-                  <Box position="absolute" top="100%">
+      <Box bgcolor="black" color="white">
+        <Box
+          display="flex"
+          alignItems="center"
+          px={3}
+          height={64}
+          color="white"
+          position="sticky"
+          top={0}
+          zIndex="appBar"
+          style={{
+            backgroundColor: y > 100 ? 'black' : 'transparent'
+          }}
+        >
+          <Typography variant="h5">Trevor Blades</Typography>
+        </Box>
+        <Box p={8} height={`calc(100vh - ${64 * 2}px)`}>
+          Stuff
+        </Box>
+        <Box p={8} color="initial" bgcolor="background.default">
+          <Box mt={-16 - 2.5}>
+            <Grid container spacing={5}>
+              {props.data.allMdx.edges.map(({node}) => {
+                const {publicURL} = node.frontmatter.image;
+                return (
+                  <Grid item xs={4} key={node.id}>
+                    <Box
+                      pb="100%"
+                      mb={2}
+                      position="relative"
+                      style={{
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backgroundImage: [
+                          'linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.6))',
+                          `url(${publicURL})`
+                        ]
+                      }}
+                    />
                     <Typography gutterBottom variant="h4">
                       {node.frontmatter.title}
                     </Typography>
-                  </Box>
-                </Box>
-              );
-            case 1:
-              return (
-                <Box
-                  display="flex"
-                  alignItems="flex-end"
-                  justifyContent="flex-end"
-                >
-                  <Typography gutterBottom variant="h4">
-                    {node.frontmatter.title}
-                  </Typography>
-                  <Box width={1 / 2}>
-                    <Box mt="-50%" pb="150%" position="relative">
-                      <StyledImage src={image.src.publicURL} />
-                    </Box>
-                  </Box>
-                </Box>
-              );
-            default:
-              return (
-                <Box key={node.id}>
-                  <Box pb="50%" position="relative">
-                    <StyledImage src={image.src.publicURL} />
-                  </Box>
-                  <Typography gutterBottom variant="h4">
-                    {node.frontmatter.title}
-                  </Typography>
-                </Box>
-              );
-          }
-        })}
-        <div>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </Box>
           <Typography gutterBottom variant="subtitle1" color="textSecondary">
             Not impressed? Want to see more?
           </Typography>
           <Button
-            component={Link}
             color="primary"
             to="/projects"
             size="large"
@@ -108,33 +71,33 @@ export default function Home(props) {
           >
             All projects
           </Button>
-        </div>
-      </div>
-      <Divider />
-      <div>
-        <Typography variant="h3" gutterBottom>
-          Open source
-        </Typography>
-        <Typography paragraph variant="subtitle1">
-          A handful of my open source projects
-        </Typography>
-        {props.data.github.repositoryOwner.pinnedRepositories.edges.map(
-          ({node}) => (
-            <div key={node.id}>
-              <div>
-                <Typography variant="h6" component="a" href={node.url}>
-                  {node.name}
-                </Typography>
+        </Box>
+        <Divider />
+        <div>
+          <Typography variant="h3" gutterBottom>
+            Open source
+          </Typography>
+          <Typography paragraph variant="subtitle1">
+            A handful of my open source projects
+          </Typography>
+          {props.data.github.repositoryOwner.pinnedRepositories.edges.map(
+            ({node}) => (
+              <div key={node.id}>
                 <div>
-                  <GoStar />
-                  <Typography>{node.stargazers.edges.length}</Typography>
+                  <Typography variant="h6" component="a" href={node.url}>
+                    {node.name}
+                  </Typography>
+                  <div>
+                    <GoStar />
+                    <Typography>{node.stargazers.edges.length}</Typography>
+                  </div>
                 </div>
+                <Typography>{node.description}</Typography>
               </div>
-              <Typography>{node.description}</Typography>
-            </div>
-          )
-        )}
-      </div>
+            )
+          )}
+        </div>
+      </Box>
     </Layout>
   );
 }
@@ -155,11 +118,8 @@ export const query = graphql`
           frontmatter {
             title
             summary
-            images {
-              src {
-                publicURL
-              }
-              title
+            image {
+              publicURL
             }
           }
         }
