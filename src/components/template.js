@@ -2,24 +2,28 @@ import Footer from './footer';
 import Layout from './layout';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {Box, Divider, Typography, styled} from '@material-ui/core';
+import rehypeReact from 'rehype-react';
+import {
+  Box,
+  Divider,
+  GridList,
+  GridListTile,
+  Typography
+} from '@material-ui/core';
 import {Link} from 'gatsby-theme-material-ui';
-import {MDXProvider} from '@mdx-js/react';
-import {MDXRenderer} from 'gatsby-plugin-mdx';
 import {graphql} from 'gatsby';
 import {withProps} from 'recompose';
 
-const components = {
-  p: withProps({paragraph: true})(Typography),
-  img: styled('img')({
-    width: '100%',
-    height: '100%',
-    objectFit: 'cover'
-  })
-};
+const renderAst = new rehypeReact({
+  createElement: React.createElement,
+  components: {
+    p: withProps({paragraph: true})(Typography),
+    a: Link
+  }
+}).Compiler;
 
 export default function Template(props) {
-  const {frontmatter, body} = props.data.mdx;
+  const {frontmatter, htmlAst} = props.data.markdownRemark;
   return (
     <Layout>
       <Box
@@ -29,23 +33,35 @@ export default function Template(props) {
         alignItems="center"
         justifyContent="center"
         bgcolor="background.paper"
+        position="sticky"
+        top={0}
+        zIndex="appBar"
       >
-        <Link color="inherit" to="/" variant="h5">
-          Trevor&apos;s website
+        <Link underline="none" color="inherit" to="/" variant="h4">
+          🔪
         </Link>
       </Box>
       <Box p={8}>
         <Typography display="block" variant="overline" color="inherit">
           <Link to="/" color="inherit">
-            &lt; Go back
+            &lt; Back to home
           </Link>
         </Typography>
         <Typography variant="h3" gutterBottom>
           {frontmatter.title}
         </Typography>
-        <MDXProvider components={components}>
-          <MDXRenderer>{body}</MDXRenderer>
-        </MDXProvider>
+        {frontmatter.images && (
+          <Box mb={4}>
+            <GridList cellHeight={400} cols={3}>
+              {frontmatter.images.map((image, index) => (
+                <GridListTile cols={image.cols} key={index}>
+                  <img src={image.src.publicURL} alt={image.alt} />
+                </GridListTile>
+              ))}
+            </GridList>
+          </Box>
+        )}
+        {renderAst(htmlAst)}
       </Box>
       <Divider />
       <Footer />
@@ -59,11 +75,18 @@ Template.propTypes = {
 
 export const pageQuery = graphql`
   query ProjectQuery($id: String) {
-    mdx(id: {eq: $id}) {
+    markdownRemark(id: {eq: $id}) {
       frontmatter {
         title
+        images {
+          src {
+            publicURL
+          }
+          alt
+          cols
+        }
       }
-      body
+      htmlAst
     }
   }
 `;

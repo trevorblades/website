@@ -7,9 +7,16 @@ module.exports = {
   plugins: [
     'gatsby-plugin-react-helmet',
     {
-      resolve: 'gatsby-plugin-mdx',
+      resolve: 'gatsby-source-filesystem',
       options: {
-        gatsbyRemarkPlugins: [
+        path: `${__dirname}/src/projects`,
+        name: 'projects'
+      }
+    },
+    {
+      resolve: 'gatsby-transformer-remark',
+      options: {
+        plugins: [
           {
             resolve: 'gatsby-remark-copy-linked-files',
             options: {
@@ -38,13 +45,6 @@ module.exports = {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
         trackingId: 'UA-34658521-1'
-      }
-    },
-    {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        path: `${__dirname}/src/projects`,
-        name: 'projects'
       }
     },
     {

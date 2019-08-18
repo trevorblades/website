@@ -3,38 +3,34 @@ import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ice from '../assets/ice.jpg';
-import {Box, Divider, Grid, Typography, useTheme} from '@material-ui/core';
+import useWindowScroll from 'react-use/lib/useWindowScroll';
+import {Box, Grid, Typography, makeStyles, useTheme} from '@material-ui/core';
 import {Button, IconButton, Link} from 'gatsby-theme-material-ui';
 import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
 import {GoStar} from 'react-icons/go';
 import {graphql} from 'gatsby';
-// import useWindowScroll from 'react-use/lib/useWindowScroll';
 
+const gridSpacing = 4;
 const sectionPadding = 8;
-const gridSpacing = 5;
+
+const useStyles = makeStyles({
+  hero: {
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    willChange: 'transform'
+  }
+});
 
 export default function Home(props) {
-  // const {y} = useWindowScroll();
+  const {y} = useWindowScroll();
+  const {hero} = useStyles();
   const {spacing} = useTheme();
+  const {allMarkdownRemark, github} = props.data;
   return (
     <Layout disableHeader>
-      {/* <Box
-          display="flex"
-          alignItems="center"
-          px={3}
-          height={64}
-          color="white"
-          position="sticky"
-          top={0}
-          zIndex="appBar"
-          style={{
-            backgroundColor: y > 100 ? 'black' : 'transparent'
-          }}
-        >
-          <Typography variant="h5">Trevor Blades</Typography>
-        </Box> */}
       <Box
         p={sectionPadding}
+        className={hero}
         height={`calc(100vh - ${spacing(sectionPadding)}px)`}
         display="flex"
         alignItems="center"
@@ -42,9 +38,7 @@ export default function Home(props) {
         color="white"
         style={{
           backgroundImage: `url(${ice})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center'
-          // transform: `translateY(${y / 3}px)`
+          transform: `translateY(${y / 3}px)`
         }}
       >
         <div>
@@ -73,15 +67,15 @@ export default function Home(props) {
           </Box>
         </div>
       </Box>
-      <Box p={sectionPadding}>
+      <Box p={sectionPadding} bgcolor="background.default" position="relative">
         <Box mt={sectionPadding * -2 - gridSpacing / 2}>
           <Grid container spacing={gridSpacing}>
-            {props.data.allMdx.edges.map(({node}) => {
+            {allMarkdownRemark.edges.map(({node}) => {
               const {video, title, summary} = node.frontmatter;
               return (
-                <Grid item xs={4} key={node.id}>
+                <Grid item xs={12} sm={6} md={4} xl={3} key={node.id}>
                   {video && (
-                    <Box mb={2}>
+                    <Box mb={1}>
                       <video
                         muted
                         width="100%"
@@ -104,32 +98,32 @@ export default function Home(props) {
           </Grid>
         </Box>
       </Box>
-      <Divider />
-      <Box p={sectionPadding}>
+      <Box p={sectionPadding} bgcolor="background.paper">
         <Typography display="block" variant="overline">
           Some open source projects
         </Typography>
         <Typography variant="h2" gutterBottom>
           that I&apos;m proud of
         </Typography>
-        {props.data.github.repositoryOwner.pinnedRepositories.edges.map(
-          ({node}) => (
-            <Box mt={3} key={node.id}>
-              <Box mb={1} display="flex" alignItems="center">
-                <Link color="inherit" variant="h6" href={node.url}>
-                  {node.name}
-                </Link>
-                <Box ml={1} display="flex" alignItems="center">
+        <Grid container spacing={3}>
+          {github.repositoryOwner.pinnedRepositories.edges.map(({node}) => (
+            <Grid item xs={12} md={6} lg={4} xl={3} key={node.id}>
+              <Box p={2} height={1} border={1} borderColor="divider">
+                <Typography gutterBottom variant="h6">
+                  <Link color="inherit" href={node.url}>
+                    {node.name}
+                  </Link>
+                </Typography>
+                <Typography paragraph>{node.description}</Typography>
+                <Box display="flex" alignItems="center">
                   <GoStar style={{marginRight: 4}} />
                   <Typography>{node.stargazers.edges.length}</Typography>
                 </Box>
               </Box>
-              <Typography>{node.description}</Typography>
-            </Box>
-          )
-        )}
+            </Grid>
+          ))}
+        </Grid>
       </Box>
-      <Divider />
       <Footer />
     </Layout>
   );
@@ -141,7 +135,7 @@ Home.propTypes = {
 
 export const query = graphql`
   {
-    allMdx(sort: {fields: frontmatter___order, order: DESC}) {
+    allMarkdownRemark(sort: {fields: frontmatter___order, order: DESC}) {
       edges {
         node {
           id
