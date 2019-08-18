@@ -5,21 +5,21 @@ awards:
   - title: Top 10 Word Game Apps on iTunes (2012)
   - title: AllMyFaves Best Educational Site Nominee (2011)
 url: https://playknoword.com
-images: 
-  - src: ./screencap.gif
-    title: Knoword website screencap
-    hidden: true
-  - src: ./difficulties.png
-    title: Difficulty selection screen
+video: knoword.webm
+order: 100
+images:
+  - src: logo.png
+    alt: Knoword logo
+    cols: 1
+  - src: words.gif
+    alt: Answering words
     cols: 2
-  - src: ./logo.png
-    title: Knoword logo
-  - src: ./sign.jpg
-    title: Sign with Knoword sticker
-  - src: ./words.gif
-    title: Words being answered
+  - src: difficulties.png
+    alt: Homepage with difficulties
     cols: 2
-featured: true
+  - src: sign.jpg
+    alt: Knoword sticker on a sign
+    cols: 1
 ---
 
 I created _Knoword_ in 2010 based on a real-life game that I played with my roommate at the time and our two dictionaries. The concept is simple: Given a dictionary definition and the first letter of the word being defined, you must try to guess the word. The added challenge of typing quickly, spelling correctly, and competing against a ticking clock makes Knoword a difficult and addicting game.

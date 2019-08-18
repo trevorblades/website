@@ -1,228 +1,130 @@
-import Button from '@material-ui/core/Button';
-import Divider from '@material-ui/core/Divider';
-import Grid from '@material-ui/core/Grid';
+import Footer from '../components/footer';
 import Layout from '../components/layout';
 import PropTypes from 'prop-types';
-import React, {Fragment} from 'react';
-import Twemoji from 'react-twemoji';
-import Typography from '@material-ui/core/Typography';
-import styled from '@emotion/styled';
-import theme, {getLinearGradient} from '@trevorblades/mui-theme';
-import toRenderProps from 'recompose/toRenderProps';
-import withProps from 'recompose/withProps';
-import withWidth from '@material-ui/core/withWidth';
+import React from 'react';
+import ice from '../assets/ice.jpg';
+import useWindowScroll from 'react-use/lib/useWindowScroll';
+import {Box, Grid, Typography, makeStyles, useTheme} from '@material-ui/core';
+import {Button, IconButton, Link} from 'gatsby-theme-material-ui';
 import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
 import {GoStar} from 'react-icons/go';
-import {GridItem, Section, Spacer, sectionPadding} from '../components/common';
-import {Link, graphql} from 'gatsby';
-import {css} from '@emotion/core';
+import {graphql} from 'gatsby';
 
-const Hero = styled.main({
-  color: theme.palette.common.white,
-  backgroundImage: getLinearGradient()
-});
+const gridSpacing = 4;
+const sectionPadding = 8;
 
-const HeroContent = styled(Section)({
-  display: 'flex',
-  alignItems: 'center',
-  height: `calc(100vh - ${sectionPadding}px)`
-});
-
-const SocialLinks = styled.div({
-  display: 'flex',
-  fontSize: 36
-});
-
-const SocialLink = styled.a({
-  ':not(:last-child)': {
-    marginRight: theme.spacing.unit * 3
-  },
-  svg: {
-    display: 'block'
+const useStyles = makeStyles({
+  hero: {
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    willChange: 'transform'
   }
 });
-
-const gridSpacing = 40;
-const Screenshot = styled.img(props => ({
-  display: 'block',
-  width: '100%',
-  marginTop: props.index ? 0 : sectionPadding * -2,
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[10],
-  [theme.breakpoints.down('xs')]: {
-    width: '100vw',
-    [`margin${props.right ? 'Right' : 'Left'}`]: -sectionPadding,
-    marginBottom: gridSpacing,
-    borderRadius: 0,
-    boxShadow: 'none'
-  }
-}));
-
-const ProjectsFooter = styled.div({
-  textAlign: 'center'
-});
-
-const WithWidth = toRenderProps(withWidth());
-const LinkButton = withProps({
-  component: Link
-})(Button);
-
-const Respository = styled.div({
-  ':not(:last-child)': {
-    marginBottom: theme.spacing.unit * 1.5
-  }
-});
-
-const flexAlignCenter = css({
-  display: 'flex',
-  alignItems: 'center'
-});
-
-const Heading = styled.div(flexAlignCenter);
-const Stars = styled.div(flexAlignCenter, {
-  marginLeft: theme.spacing.unit,
-  svg: {
-    marginRight: theme.spacing.unit / 2
-  }
-});
-
-const socialLinks = [
-  {
-    href: 'https://github.com/trevorblades',
-    title: 'I <3 open source',
-    icon: <FaGithub />
-  },
-  {
-    href: 'https://twitter.com/trevorblades',
-    title: "Don't @me",
-    icon: <FaTwitter />
-  },
-  {
-    href: 'https://instagram.com/trevorblades',
-    title: 'Mostly skateboarding videos',
-    icon: <FaInstagram />
-  },
-  {
-    href: 'https://twitch.com/trevorblades',
-    title: 'I stream sometimes',
-    icon: <FaTwitch />
-  }
-];
 
 export default function Home(props) {
+  const {y} = useWindowScroll();
+  const {hero} = useStyles();
+  const {spacing} = useTheme();
+  const {allMarkdownRemark, github} = props.data;
   return (
     <Layout disableHeader>
-      <Hero>
-        <HeroContent>
-          <div>
-            <Typography gutterBottom variant="subtitle1" color="inherit">
-              I&apos;m Trevor
-            </Typography>
-            <Typography gutterBottom variant="h2" color="inherit">
-              <Twemoji>
-                I like to make <Link to="/projects">cool stuff</Link> 🍦
-              </Twemoji>
-            </Typography>
-            <SocialLinks>
-              {socialLinks.map(link => (
-                <SocialLink
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  key={link.href}
-                  href={link.href}
-                  title={link.title}
-                >
-                  {link.icon}
-                </SocialLink>
-              ))}
-            </SocialLinks>
-          </div>
-        </HeroContent>
-      </Hero>
-      <Section>
-        <WithWidth>
-          {({width}) =>
-            props.data.allMarkdownRemark.edges.map(({node}, index) => {
-              const right = index % 2;
-              const image = node.frontmatter.images[0];
-              const {path} = node.fields;
-              return (
-                <Fragment key={path}>
-                  <Grid
-                    container
-                    spacing={width === 'xs' ? 0 : gridSpacing}
-                    direction={right ? 'row-reverse' : null}
-                    alignItems={!index ? 'flex-start' : 'flex-end'}
-                  >
-                    <GridItem sm={12} md={8}>
-                      <Screenshot
-                        alt={image.title}
-                        src={image.src.publicURL}
-                        right={right}
-                        index={index}
-                      />
-                    </GridItem>
-                    <GridItem sm={12} md={4}>
-                      <Typography gutterBottom variant="h4">
-                        {node.frontmatter.title}
-                      </Typography>
-                      <Typography paragraph>
-                        {node.frontmatter.summary}
-                      </Typography>
-                      <LinkButton to={path} variant="outlined">
-                        View project
-                      </LinkButton>
-                    </GridItem>
-                  </Grid>
-                  <Spacer />
-                </Fragment>
-              );
-            })
-          }
-        </WithWidth>
-        <ProjectsFooter>
-          <Typography gutterBottom variant="subtitle1" color="textSecondary">
-            Not satisfied? Want to see more?
+      <Box
+        p={sectionPadding}
+        className={hero}
+        height={`calc(100vh - ${spacing(sectionPadding)}px)`}
+        display="flex"
+        alignItems="center"
+        bgcolor="black"
+        color="white"
+        style={{
+          backgroundImage: `url(${ice})`,
+          transform: `translateY(${y / 3}px)`
+        }}
+      >
+        <div>
+          <Typography display="block" variant="overline">
+            I&apos;m Trevor, and I like to
           </Typography>
-          <LinkButton
-            color="primary"
-            to="/projects"
-            size="large"
-            variant="contained"
-          >
-            All projects
-          </LinkButton>
-        </ProjectsFooter>
-      </Section>
-      <Divider />
-      <Section>
-        <Typography variant="h3" gutterBottom>
-          Open source
+          <Typography paragraph variant="h1">
+            design/build stuff
+          </Typography>
+          <Box ml={-1.5}>
+            <IconButton color="inherit" href="https://github.com/trevorblades">
+              <FaGithub size={40} />
+            </IconButton>
+            <IconButton color="inherit" href="https://twitter.com/trevorblades">
+              <FaTwitter size={40} />
+            </IconButton>
+            <IconButton color="inherit" href="https://twitch.com/trevorblades">
+              <FaTwitch size={40} />
+            </IconButton>
+            <IconButton
+              color="inherit"
+              href="https://instagram.com/trevorblades"
+            >
+              <FaInstagram size={40} />
+            </IconButton>
+          </Box>
+        </div>
+      </Box>
+      <Box p={sectionPadding} bgcolor="background.default" position="relative">
+        <Box mt={sectionPadding * -2 - gridSpacing / 2}>
+          <Grid container spacing={gridSpacing}>
+            {allMarkdownRemark.edges.map(({node}) => {
+              const {video, title, summary} = node.frontmatter;
+              return (
+                <Grid item xs={12} sm={6} md={4} xl={3} key={node.id}>
+                  {video && (
+                    <Box mb={1}>
+                      <video
+                        muted
+                        width="100%"
+                        autoPlay
+                        loop
+                        src={video.publicURL}
+                      />
+                    </Box>
+                  )}
+                  <Typography variant="h4">{title}</Typography>
+                  <Typography paragraph variant="subtitle1">
+                    {summary}
+                  </Typography>
+                  <Button variant="outlined" size="small" to={node.fields.path}>
+                    View project
+                  </Button>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Box>
+      </Box>
+      <Box p={sectionPadding} bgcolor="background.paper">
+        <Typography display="block" variant="overline">
+          Some open source projects
         </Typography>
-        <Typography paragraph variant="subtitle1">
-          A handful of my open source projects
+        <Typography variant="h2" gutterBottom>
+          that I&apos;m proud of
         </Typography>
-        {props.data.github.repositoryOwner.pinnedRepositories.edges.map(
-          ({node}) => (
-            <Respository key={node.id}>
-              <Heading>
-                <Typography variant="h6" component="a" href={node.url}>
-                  {node.name}
+        <Grid container spacing={3}>
+          {github.repositoryOwner.pinnedRepositories.edges.map(({node}) => (
+            <Grid item xs={12} md={6} lg={4} xl={3} key={node.id}>
+              <Box p={2} height={1} border={1} borderColor="divider">
+                <Typography gutterBottom variant="h6">
+                  <Link color="inherit" href={node.url}>
+                    {node.name}
+                  </Link>
                 </Typography>
-                <Stars>
-                  <GoStar />
+                <Typography paragraph>{node.description}</Typography>
+                <Box display="flex" alignItems="center">
+                  <GoStar style={{marginRight: 4}} />
                   <Typography>{node.stargazers.edges.length}</Typography>
-                </Stars>
-              </Heading>
-              <Typography>
-                <Twemoji noWrapper>
-                  <span>{node.description}</span>
-                </Twemoji>
-              </Typography>
-            </Respository>
-          )
-        )}
-      </Section>
+                </Box>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+      <Footer />
     </Layout>
   );
 }
@@ -233,20 +135,18 @@ Home.propTypes = {
 
 export const query = graphql`
   {
-    allMarkdownRemark(filter: {frontmatter: {featured: {eq: true}}}) {
+    allMarkdownRemark(sort: {fields: frontmatter___order, order: DESC}) {
       edges {
         node {
+          id
           fields {
             path
           }
           frontmatter {
             title
             summary
-            images {
-              src {
-                publicURL
-              }
-              title
+            video {
+              publicURL
             }
           }
         }

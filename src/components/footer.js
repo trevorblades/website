@@ -1,35 +1,24 @@
-import Divider from '@material-ui/core/Divider';
-import React, {Fragment} from 'react';
-import Twemoji from 'react-twemoji';
-import Typography from '@material-ui/core/Typography';
-import styled from '@emotion/styled';
-import {Section, Spacer} from './common';
-
-const Container = styled(Section)({
-  textAlign: 'center'
-});
+import React from 'react';
+import {Box, Link, Typography} from '@material-ui/core';
 
 export default function Footer() {
-  const now = new Date();
   return (
-    <Fragment>
-      <Divider />
-      <Container>
+    <Box textAlign="center" p={8}>
+      <Box mb={8}>
         <Typography gutterBottom variant="h3">
           Call me maybe
         </Typography>
-        <Typography variant="subtitle1">
+        <Typography>
           Want to get in touch? Send me an email at{' '}
-          <a href="mailto:tdblades@gmail.com">tdblades@gmail.com</a>.
+          <Link href="mailto:tdblades@gmail.com">tdblades@gmail.com</Link>.
         </Typography>
-        <Spacer />
-        <Typography variant="h4">
-          <Twemoji>🔪</Twemoji>
-        </Typography>
-        <Typography variant="overline" color="textSecondary">
-          &copy; {now.getFullYear()} Trevor Blades
-        </Typography>
-      </Container>
-    </Fragment>
+      </Box>
+      <Typography paragraph component="span" display="block" variant="h2">
+        🔪
+      </Typography>
+      <Typography variant="subtitle2">
+        &copy; {new Date().getFullYear()} Trevor Blades
+      </Typography>
+    </Box>
   );
 }
