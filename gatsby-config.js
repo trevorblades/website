@@ -7,26 +7,13 @@ module.exports = {
   plugins: [
     'gatsby-plugin-react-helmet',
     'gatsby-transformer-remark',
+    'gatsby-plugin-top-layout',
+    'gatsby-plugin-material-ui',
     {
       resolve: 'gatsby-source-filesystem',
       options: {
         path: `${__dirname}/src/projects`,
         name: 'projects'
-      }
-    },
-    {
-      resolve: 'gatsby-theme-material-ui',
-      options: {
-        webFontsConfig: {
-          fonts: {
-            google: [
-              {
-                family: 'Fira Mono',
-                variants: ['400', '500', '700']
-              }
-            ]
-          }
-        }
       }
     },
     {
