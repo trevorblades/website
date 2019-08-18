@@ -6,10 +6,12 @@ import rehypeReact from 'rehype-react';
 import {
   Box,
   Divider,
+  Grid,
   GridList,
   GridListTile,
   Typography
 } from '@material-ui/core';
+import {Helmet} from 'react-helmet';
 import {Link} from 'gatsby-theme-material-ui';
 import {graphql} from 'gatsby';
 import {withProps} from 'recompose';
@@ -24,8 +26,12 @@ const renderAst = new rehypeReact({
 
 export default function Template(props) {
   const {frontmatter, htmlAst} = props.data.markdownRemark;
+  const {title, awards, images} = frontmatter;
   return (
     <Layout>
+      <Helmet>
+        <title>{title}</title>
+      </Helmet>
       <Box
         px={3}
         height={64}
@@ -48,12 +54,12 @@ export default function Template(props) {
           </Link>
         </Typography>
         <Typography variant="h3" gutterBottom>
-          {frontmatter.title}
+          {title}
         </Typography>
-        {frontmatter.images && (
+        {images && (
           <Box mb={4}>
             <GridList cellHeight={400} cols={3}>
-              {frontmatter.images.map((image, index) => (
+              {images.map((image, index) => (
                 <GridListTile cols={image.cols} key={index}>
                   <img src={image.src.publicURL} alt={image.alt} />
                 </GridListTile>
@@ -61,7 +67,26 @@ export default function Template(props) {
             </GridList>
           </Box>
         )}
-        {renderAst(htmlAst)}
+        <Grid container spacing={4}>
+          <Grid item xs={12} md={8}>
+            {renderAst(htmlAst)}
+          </Grid>
+          {awards && (
+            <Grid item xs={12} md={4}>
+              <Typography gutterBottom variant="h6">
+                Accolades
+              </Typography>
+              {awards.map((award, index, array) => {
+                const title = typeof award === 'string' ? award : award.title;
+                return (
+                  <Typography key={title} paragraph={index < array.length - 1}>
+                    {award.win ? '🏆' : '🏅'} {title}
+                  </Typography>
+                );
+              })}
+            </Grid>
+          )}
+        </Grid>
       </Box>
       <Divider />
       <Footer />
@@ -78,6 +103,10 @@ export const pageQuery = graphql`
     markdownRemark(id: {eq: $id}) {
       frontmatter {
         title
+        awards {
+          title
+          win
+        }
         images {
           src {
             publicURL
