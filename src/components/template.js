@@ -14,12 +14,15 @@ import {
 import {Helmet} from 'react-helmet';
 import {Link} from 'gatsby-theme-material-ui';
 import {graphql} from 'gatsby';
-import {withProps} from 'recompose';
+
+function Paragraph(props) {
+  return <Typography paragraph {...props} />;
+}
 
 const renderAst = new rehypeReact({
   createElement: React.createElement,
   components: {
-    p: withProps({paragraph: true})(Typography),
+    p: Paragraph,
     a: Link
   }
 }).Compiler;
