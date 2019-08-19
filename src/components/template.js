@@ -11,9 +11,11 @@ import {
   GridListTile,
   Typography
 } from '@material-ui/core';
+import {Button, Link} from 'gatsby-theme-material-ui';
 import {Helmet} from 'react-helmet';
-import {Link} from 'gatsby-theme-material-ui';
+import {MdExitToApp} from 'react-icons/md';
 import {graphql} from 'gatsby';
+import {parse} from 'url';
 
 function Paragraph(props) {
   return <Typography paragraph {...props} />;
@@ -29,7 +31,7 @@ const renderAst = new rehypeReact({
 
 export default function Template(props) {
   const {frontmatter, htmlAst} = props.data.markdownRemark;
-  const {title, awards, images} = frontmatter;
+  const {url, title, awards, images} = frontmatter;
   return (
     <Layout>
       <Helmet>
@@ -73,6 +75,18 @@ export default function Template(props) {
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
             {renderAst(htmlAst)}
+            {url && (
+              <Button
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="outlined"
+                size="large"
+              >
+                {parse(url).host}
+                <MdExitToApp size={24} style={{marginLeft: 12}} />
+              </Button>
+            )}
           </Grid>
           {awards && (
             <Grid item xs={12} md={4}>
@@ -106,6 +120,7 @@ export const pageQuery = graphql`
     markdownRemark(id: {eq: $id}) {
       frontmatter {
         title
+        url
         awards {
           title
           win

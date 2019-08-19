@@ -5,7 +5,12 @@ import React from 'react';
 import ice from '../assets/ice.jpg';
 import useWindowScroll from 'react-use/lib/useWindowScroll';
 import {Box, Grid, Typography, makeStyles, useTheme} from '@material-ui/core';
-import {Button, IconButton, Link} from 'gatsby-theme-material-ui';
+import {
+  Button,
+  CardActionArea,
+  IconButton,
+  Link
+} from 'gatsby-theme-material-ui';
 import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
 import {GoStar} from 'react-icons/go';
 import {graphql} from 'gatsby';
@@ -74,17 +79,15 @@ export default function Home(props) {
               const {video, title, summary} = node.frontmatter;
               return (
                 <Grid item xs={12} sm={6} md={4} xl={3} key={node.id}>
-                  {video && (
-                    <Box mb={1}>
-                      <video
-                        muted
-                        width="100%"
-                        autoPlay
-                        loop
-                        src={video.publicURL}
-                      />
-                    </Box>
-                  )}
+                  <Box component={CardActionArea} to={node.fields.path} mb={1}>
+                    <video
+                      muted
+                      width="100%"
+                      autoPlay
+                      loop
+                      src={video.publicURL}
+                    />
+                  </Box>
                   <Typography variant="h4">{title}</Typography>
                   <Typography paragraph variant="subtitle1">
                     {summary}

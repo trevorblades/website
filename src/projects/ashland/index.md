@@ -1,7 +1,7 @@
 ---
 title: Ashland
 summary: Prop design for a series of music videos set in the future
-url: https://www.youtube.com/watch?v=eatLz2y749Y
+url: https://youtube.com/watch?v=eatLz2y749Y
 video: ashland.webm
 order: 0
 images:
