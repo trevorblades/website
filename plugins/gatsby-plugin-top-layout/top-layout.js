@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
-import theme from './theme';
-import {CssBaseline} from '@material-ui/core';
+import {CssBaseline, MuiThemeProvider} from '@material-ui/core';
 import {Helmet} from 'react-helmet';
-import {ThemeProvider} from '@material-ui/styles';
+import {theme} from '@trevorblades/mui-theme';
 
 export default function TopLayout(props) {
   return (
@@ -14,10 +13,10 @@ export default function TopLayout(props) {
           href="https://fonts.googleapis.com/css?family=Fira+Mono:400,500,700&display=swap"
         />
       </Helmet>
-      <ThemeProvider theme={theme}>
+      <MuiThemeProvider theme={theme}>
         <CssBaseline />
         {props.children}
-      </ThemeProvider>
+      </MuiThemeProvider>
     </Fragment>
   );
 }
