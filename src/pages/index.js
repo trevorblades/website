@@ -79,13 +79,15 @@ export default function Home(props) {
               const {video, title, summary} = node.frontmatter;
               return (
                 <Grid item xs={12} sm={6} md={4} xl={3} key={node.id}>
-                  <Box component={CardActionArea} to={node.fields.path} mb={1}>
-                    <video
-                      muted
-                      width="100%"
-                      autoPlay
-                      loop
+                  <Box component={CardActionArea} to={node.fields.path} mb={2}>
+                    <Box
+                      component="video"
                       src={video.publicURL}
+                      display="block"
+                      width={1}
+                      autoPlay
+                      muted
+                      loop
                     />
                   </Box>
                   <Typography variant="h4">{title}</Typography>
@@ -102,12 +104,12 @@ export default function Home(props) {
         </Box>
       </Box>
       <Box p={sectionPadding} bgcolor="background.paper">
-        <Typography display="block" variant="overline">
-          Some open source projects
-        </Typography>
-        <Typography variant="h2" gutterBottom>
-          that I&apos;m proud of
-        </Typography>
+        <Box mb={4}>
+          <Typography display="block" variant="overline">
+            Some open source projects
+          </Typography>
+          <Typography variant="h2">that I&apos;m proud of</Typography>
+        </Box>
         <Grid container spacing={3}>
           {github.repositoryOwner.pinnedRepositories.edges.map(({node}) => (
             <Grid item xs={12} md={6} lg={4} xl={3} key={node.id}>
