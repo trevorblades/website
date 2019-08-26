@@ -79,16 +79,18 @@ export default function Home(props) {
               const {video, title, summary} = node.frontmatter;
               return (
                 <Grid item xs={12} sm={6} md={4} xl={3} key={node.id}>
-                  <Box component={CardActionArea} to={node.fields.path} mb={2}>
-                    <Box
-                      component="video"
-                      src={video.publicURL}
-                      display="block"
-                      width={1}
-                      autoPlay
-                      muted
-                      loop
-                    />
+                  <Box mb={2}>
+                    <CardActionArea to={node.fields.path}>
+                      <Box
+                        component="video"
+                        src={video.publicURL}
+                        display="block"
+                        width={1}
+                        autoPlay
+                        muted
+                        loop
+                      />
+                    </CardActionArea>
                   </Box>
                   <Typography variant="h4">{title}</Typography>
                   <Typography paragraph variant="subtitle1">
