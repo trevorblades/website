@@ -1,6 +1,6 @@
 ---
 title: Beatbox Academy
-summary: Keyboard-based beatbox website... kinda like a drum machine
+summary: Award-winning, keyboard-based beatbox website... kinda like a drum machine
 awards:
   - title: W3 Awards Best in Show (2013)
     win: true
