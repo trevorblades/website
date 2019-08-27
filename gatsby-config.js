@@ -1,4 +1,7 @@
-require('dotenv').config();
+const dotenv = require('dotenv');
+const {webFontsConfig} = require('@trevorblades/mui-theme');
+
+dotenv.config();
 
 module.exports = {
   siteMetadata: {
@@ -9,18 +12,7 @@ module.exports = {
     'gatsby-transformer-remark',
     {
       resolve: 'gatsby-theme-material-ui',
-      options: {
-        webFontsConfig: {
-          fonts: {
-            google: [
-              {
-                family: 'Fira Mono',
-                variants: ['400', '500', '700']
-              }
-            ]
-          }
-        }
-      }
+      options: {webFontsConfig}
     },
     {
       resolve: 'gatsby-source-filesystem',
