@@ -81,15 +81,17 @@ export default function Home(props) {
                 <Grid item xs={12} sm={6} md={4} xl={3} key={node.id}>
                   <Box mb={2}>
                     <CardActionArea to={node.fields.path}>
-                      <Box
-                        component="video"
-                        src={video.publicURL}
-                        display="block"
-                        width={1}
-                        autoPlay
-                        muted
-                        loop
-                      />
+                      {video && (
+                        <Box
+                          component="video"
+                          src={video.publicURL}
+                          display="block"
+                          width={1}
+                          autoPlay
+                          muted
+                          loop
+                        />
+                      )}
                     </CardActionArea>
                   </Box>
                   <Typography variant="h4">{title}</Typography>
