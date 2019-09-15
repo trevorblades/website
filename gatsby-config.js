@@ -11,6 +11,12 @@ module.exports = {
     'gatsby-plugin-react-helmet',
     'gatsby-transformer-remark',
     {
+      resolve: 'gatsby-plugin-emoji-favicon',
+      options: {
+        emoji: '🔪'
+      }
+    },
+    {
       resolve: 'gatsby-theme-material-ui',
       options: {webFontsConfig}
     },
