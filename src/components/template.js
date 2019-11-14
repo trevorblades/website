@@ -1,5 +1,6 @@
 import Footer from './footer';
 import Layout from './layout';
+import Logo from './logo';
 import PropTypes from 'prop-types';
 import React from 'react';
 import rehypeReact from 'rehype-react';
@@ -11,10 +12,11 @@ import {
   GridListTile,
   Typography
 } from '@material-ui/core';
-import {Button, Link} from 'gatsby-theme-material-ui';
+import {Button, Link as MuiLink} from 'gatsby-theme-material-ui';
 import {Helmet} from 'react-helmet';
+import {Link, graphql} from 'gatsby';
+import {LogoTitleProps} from '@trevorblades/mui-theme';
 import {MdExitToApp} from 'react-icons/md';
-import {graphql} from 'gatsby';
 import {parse} from 'url';
 
 function Paragraph(props) {
@@ -25,7 +27,7 @@ const renderAst = new rehypeReact({
   createElement: React.createElement,
   components: {
     p: Paragraph,
-    a: Link
+    a: MuiLink
   }
 }).Compiler;
 
@@ -48,15 +50,15 @@ export default function Template(props) {
         top={0}
         zIndex="appBar"
       >
-        <Link underline="none" color="inherit" to="/" variant="h4">
-          🔪
-        </Link>
+        <Box {...LogoTitleProps.root} component={Link} to="/">
+          <Box {...LogoTitleProps.logo} component={Logo} />
+        </Box>
       </Box>
       <Box p={8}>
         <Typography display="block" variant="overline" color="inherit">
-          <Link to="/" color="inherit">
+          <MuiLink to="/" color="inherit">
             &lt; Back to home
-          </Link>
+          </MuiLink>
         </Typography>
         <Typography variant="h3" gutterBottom>
           {title}
