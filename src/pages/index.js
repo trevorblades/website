@@ -2,9 +2,16 @@ import Footer from '../components/footer';
 import Layout from '../components/layout';
 import PropTypes from 'prop-types';
 import React from 'react';
-import ice from '../assets/ice.jpg';
 import useWindowScroll from 'react-use/lib/useWindowScroll';
-import {Box, Grid, Typography, makeStyles, useTheme} from '@material-ui/core';
+import {
+  Box,
+  Grid,
+  MuiThemeProvider,
+  Typography,
+  createMuiTheme,
+  makeStyles,
+  useTheme
+} from '@material-ui/core';
 import {
   Button,
   CardActionArea,
@@ -14,6 +21,7 @@ import {
 import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
 import {GoStar} from 'react-icons/go';
 import {graphql} from 'gatsby';
+import {themeOptions} from '@trevorblades/mui-theme';
 
 const gridSpacing = 4;
 const sectionPadding = 8;
@@ -26,6 +34,14 @@ const useStyles = makeStyles({
   }
 });
 
+const darkTheme = createMuiTheme({
+  ...themeOptions,
+  palette: {
+    ...themeOptions.palette,
+    type: 'dark'
+  }
+});
+
 export default function Home(props) {
   const {y} = useWindowScroll();
   const {hero} = useStyles();
@@ -33,45 +49,59 @@ export default function Home(props) {
   const {allMarkdownRemark, github} = props.data;
   return (
     <Layout disableHeader>
-      <Box
-        p={sectionPadding}
-        className={hero}
-        height={`calc(100vh - ${spacing(sectionPadding)}px)`}
-        display="flex"
-        alignItems="center"
-        bgcolor="black"
-        color="white"
-        style={{
-          backgroundImage: `url(${ice})`,
-          transform: `translateY(${y / 3}px)`
-        }}
-      >
-        <div>
-          <Typography display="block" variant="overline">
-            I&apos;m Trevor, and I like to
-          </Typography>
-          <Typography paragraph variant="h1">
-            design/build stuff
-          </Typography>
-          <Box ml={-1.5}>
-            <IconButton color="inherit" href="https://github.com/trevorblades">
-              <FaGithub size={40} />
-            </IconButton>
-            <IconButton color="inherit" href="https://twitter.com/trevorblades">
-              <FaTwitter size={40} />
-            </IconButton>
-            <IconButton color="inherit" href="https://twitch.com/trevorblades">
-              <FaTwitch size={40} />
-            </IconButton>
-            <IconButton
-              color="inherit"
-              href="https://instagram.com/trevorblades"
-            >
-              <FaInstagram size={40} />
-            </IconButton>
-          </Box>
-        </div>
-      </Box>
+      <MuiThemeProvider theme={darkTheme}>
+        <Box
+          p={sectionPadding}
+          className={hero}
+          height={`calc(100vh - ${spacing(sectionPadding)}px)`}
+          display="flex"
+          alignItems="center"
+          color="text.primary"
+          style={{
+            backgroundImage: `linear-gradient(${[
+              'to bottom right',
+              'slategrey',
+              'black'
+            ]})`,
+            transform: `translateY(${y / 3}px)`
+          }}
+        >
+          <div>
+            <Typography display="block" variant="overline">
+              I&apos;m Trevor, and I like to
+            </Typography>
+            <Typography paragraph variant="h1">
+              design/build stuff
+            </Typography>
+            <Box ml={-1.5}>
+              <IconButton
+                color="inherit"
+                href="https://github.com/trevorblades"
+              >
+                <FaGithub size={40} />
+              </IconButton>
+              <IconButton
+                color="inherit"
+                href="https://twitter.com/trevorblades"
+              >
+                <FaTwitter size={40} />
+              </IconButton>
+              <IconButton
+                color="inherit"
+                href="https://twitch.com/trevorblades"
+              >
+                <FaTwitch size={40} />
+              </IconButton>
+              <IconButton
+                color="inherit"
+                href="https://instagram.com/trevorblades"
+              >
+                <FaInstagram size={40} />
+              </IconButton>
+            </Box>
+          </div>
+        </Box>
+      </MuiThemeProvider>
       <Box p={sectionPadding} bgcolor="background.default" position="relative">
         <Box mt={sectionPadding * -2 - gridSpacing / 2}>
           <Grid container spacing={gridSpacing}>
