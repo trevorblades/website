@@ -87,6 +87,13 @@ Project.defaultProps = {
   tags: []
 };
 
+const SECTION_PADDING = {
+  xs: 5,
+  sm: 6,
+  md: 7,
+  lg: 8
+};
+
 export default function Home(props) {
   const {y} = useWindowScroll();
   const {spacing} = useTheme();
@@ -95,7 +102,7 @@ export default function Home(props) {
       <Helmet defaultTitle="Trevor Blades" titleTemplate="%s - Trevor Blades" />
       <MuiThemeProvider theme={darkTheme}>
         <Box
-          p={8}
+          p={SECTION_PADDING}
           height={`calc(100vh - ${spacing(16)}px)`}
           display="flex"
           alignItems="center"
@@ -117,7 +124,7 @@ export default function Home(props) {
               I&apos;m Trevor, and I like to
             </Typography>
             <Typography paragraph variant="h1">
-              design/build stuff
+              design + build stuff
             </Typography>
             <Box ml={-1.5}>
               <IconButton
@@ -148,7 +155,7 @@ export default function Home(props) {
           </div>
         </Box>
       </MuiThemeProvider>
-      <Box p={8} bgcolor="background.default" position="relative">
+      <Box p={SECTION_PADDING} bgcolor="background.default" position="relative">
         <Typography display="block" variant="overline">
           These are a few of
         </Typography>
@@ -254,8 +261,8 @@ export default function Home(props) {
         </Typography>
       </Box>
       <Divider />
-      <Box p={8} textAlign="center">
-        <Box mb={8}>
+      <Box p={SECTION_PADDING} textAlign="center">
+        <Box mb={SECTION_PADDING}>
           <Typography gutterBottom variant="h3">
             Call me maybe
           </Typography>
