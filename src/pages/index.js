@@ -34,6 +34,13 @@ const darkTheme = createMuiTheme({
   }
 });
 
+const PROJECT_ICON_SIZE = {
+  xs: 48,
+  sm: 56,
+  md: 64,
+  lg: 72
+};
+
 function Project(props) {
   const hasTags = props.tags.length > 0;
   return (
@@ -42,13 +49,18 @@ function Project(props) {
         xs: 1,
         md: 2 / 3
       }}
-      my={6}
+      my={{
+        xs: 3,
+        sm: 4,
+        md: 5,
+        lg: 6
+      }}
       display="flex"
       alignItems="flex-start"
     >
       <Box
-        width={72}
-        height={72}
+        width={PROJECT_ICON_SIZE}
+        height={PROJECT_ICON_SIZE}
         borderRadius="25%"
         bgcolor="red"
         flexShrink={0}
@@ -56,7 +68,17 @@ function Project(props) {
         component="img"
         src={props.image}
       />
-      <Box ml={3} mt={1}>
+      <Box
+        ml={{
+          xs: 2,
+          sm: 3
+        }}
+        mt={{
+          xs: 0,
+          sm: 1 / 2,
+          md: 1
+        }}
+      >
         <Typography gutterBottom variant="h4">
           <Link color="inherit" href={props.url}>
             {props.title}
@@ -202,11 +224,22 @@ export default function Home(props) {
           Just-for-fun fantasy CS:GO esports contest
         </Project>
         <Box
-          p={5}
-          my={8}
-          bgcolor="background.paper"
-          border={2}
-          borderColor="primary.main"
+          p={{
+            xs: 0,
+            sm: 5
+          }}
+          my={SECTION_PADDING}
+          bgcolor={{
+            xs: 'none',
+            sm: 'background.paper'
+          }}
+          border={{
+            xs: 0,
+            sm: 2
+          }}
+          borderColor={{
+            sm: 'primary.main'
+          }}
         >
           <Box mb={4}>
             <Typography display="block" variant="overline">
