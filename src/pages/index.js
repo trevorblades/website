@@ -10,6 +10,7 @@ import useWindowScroll from 'react-use/lib/useWindowScroll';
 import {
   Box,
   CardActionArea,
+  Divider,
   Grid,
   Link,
   MuiThemeProvider,
@@ -195,7 +196,7 @@ export default function Home(props) {
         </Project>
         <Box
           p={5}
-          my={12}
+          my={8}
           bgcolor="background.paper"
           border={2}
           borderColor="primary.main"
@@ -210,49 +211,51 @@ export default function Home(props) {
             {props.data.github.repositoryOwner.pinnedRepositories.edges.map(
               ({node}) => (
                 <Grid item xs={12} md={6} lg={4} xl={3} key={node.id}>
-                  <Box height={1} border={1} borderColor="divider">
-                    <CardActionArea
-                      component="a"
-                      href={node.url}
-                      style={{height: 'inherit'}}
+                  <CardActionArea
+                    component="a"
+                    href={node.url}
+                    style={{height: '100%'}}
+                  >
+                    <Box
+                      p={3}
+                      height="inherit"
+                      border={1}
+                      borderColor="divider"
                     >
-                      <Box p={3} height="inherit">
-                        <Typography gutterBottom variant="h6">
-                          {node.name}
-                        </Typography>
-                        <Typography paragraph>{node.description}</Typography>
-                        <Box display="flex" alignItems="center">
-                          <GoStar style={{marginRight: 4}} />
-                          <Typography>
-                            {node.stargazers.edges.length}
-                          </Typography>
-                        </Box>
+                      <Typography gutterBottom variant="h6">
+                        {node.name}
+                      </Typography>
+                      <Typography paragraph>{node.description}</Typography>
+                      <Box display="flex" alignItems="center">
+                        <GoStar style={{marginRight: 4}} />
+                        <Typography>{node.stargazers.edges.length}</Typography>
                       </Box>
-                    </CardActionArea>
-                  </Box>
+                    </Box>
+                  </CardActionArea>
                 </Grid>
               )
             )}
           </Grid>
         </Box>
-        <Box my={12}>
-          <Typography gutterBottom variant="h2">
-            Accolades 👏👏👏
-          </Typography>
-          <Typography gutterBottom variant="h6">
-            🏆 W3 Awards Best in Show (2013)
-          </Typography>
-          <Typography gutterBottom variant="h6">
-            🏆 Lotus Awards Best Website or Microsite (2012)
-          </Typography>
-          <Typography gutterBottom variant="h6">
-            🏆 Awwwards Site of the Day (2012)
-          </Typography>
-          <Typography gutterBottom variant="h6">
-            🏅 Webby Awards Honoree (2016, 2013)
-          </Typography>
-        </Box>
-        <Box textAlign="center" mb={8}>
+        <Typography gutterBottom variant="h2">
+          Accolades 👏👏👏
+        </Typography>
+        <Typography gutterBottom variant="h6">
+          🏆 W3 Awards Best in Show (2013)
+        </Typography>
+        <Typography gutterBottom variant="h6">
+          🏆 Lotus Awards Best Website or Microsite (2012)
+        </Typography>
+        <Typography gutterBottom variant="h6">
+          🏆 Awwwards Site of the Day (2012)
+        </Typography>
+        <Typography gutterBottom variant="h6">
+          🏅 Webby Awards Honoree (2016, 2013)
+        </Typography>
+      </Box>
+      <Divider />
+      <Box p={8} textAlign="center">
+        <Box mb={8}>
           <Typography gutterBottom variant="h3">
             Call me maybe
           </Typography>
