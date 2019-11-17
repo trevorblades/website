@@ -38,7 +38,12 @@ function Project(props) {
         borderRadius="calc(100% / 3)"
         bgcolor="red"
         flexShrink={0}
-        boxShadow={10}
+        boxShadow={{
+          xs: 7,
+          sm: 8,
+          md: 9,
+          lg: 10
+        }}
         component="img"
         src={props.image}
       />
