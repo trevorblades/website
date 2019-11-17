@@ -47,7 +47,7 @@ export default function Hero(props) {
             I&apos;m Trevor, and I like to
           </Typography>
           <Typography paragraph variant="h1">
-            design + build stuff
+            design + build
           </Typography>
           <Box ml={-1.5}>
             <IconButton color="inherit" href="https://github.com/trevorblades">

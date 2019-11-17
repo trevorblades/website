@@ -19,7 +19,7 @@ export default function Accolades() {
   return (
     <Fragment>
       <Typography gutterBottom variant="h2">
-        accolades n&apos; stuff
+        accolades
       </Typography>
       <Accolade win>W3 Awards Best in Show (2013)</Accolade>
       <Accolade win>Lotus Awards Best Website or Microsite (2012)</Accolade>
