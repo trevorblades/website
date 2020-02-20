@@ -138,7 +138,7 @@ export default function Projects() {
       >
         Timelapse movies made from daily satellite imagery
       </Project>
-      <Project image={superteam} title="Superteam" url="https://superteam.gg">
+      <Project image={superteam} title="Superteam" url="https://superteam.trevorblades.com">
         Just-for-fun fantasy CS:GO esports contest
       </Project>
     </Fragment>
