@@ -17,7 +17,12 @@ const SECTION_PADDING = {
 export default function Home() {
   return (
     <Fragment>
-      <Helmet defaultTitle="Trevor Blades" titleTemplate="%s - Trevor Blades" />
+      <Helmet defaultTitle="Trevor Blades" titleTemplate="%s - Trevor Blades">
+        <link
+          rel="icon"
+          href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/259/kitchen-knife_1f52a.png"
+        />
+      </Helmet>
       <Hero p={SECTION_PADDING} />
       <Box p={SECTION_PADDING} bgcolor="background.default" position="relative">
         <Projects />
