@@ -4,6 +4,7 @@ module.exports = {
     title: 'Trevor Blades'
   },
   plugins: [
+    'gatsby-plugin-mdx',
     'gatsby-plugin-react-helmet',
     {
       resolve: 'gatsby-plugin-google-analytics',

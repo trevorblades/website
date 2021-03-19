@@ -1,6 +1,19 @@
 import React from 'react';
 import mushroom from '../mushroom.svg';
-import {Box, Heading, Img, Text, chakra} from '@chakra-ui/react';
+import {
+  Box,
+  ButtonGroup,
+  HStack,
+  Heading,
+  IconButton,
+  Img,
+  Link,
+  Text,
+  chakra,
+  useColorModeValue
+} from '@chakra-ui/react';
+import {FaGithub, FaTwitch, FaTwitter} from 'react-icons/fa';
+import {Link as GatsbyLink} from 'gatsby';
 import {Helmet} from 'react-helmet';
 import {keyframes} from '@emotion/react';
 
@@ -14,6 +27,7 @@ const hue = keyframes({
 });
 
 export default function HomePage() {
+  const colorShade = useColorModeValue(500, 300);
   return (
     <>
       <Helmet defaultTitle="Trevor Blades" titleTemplate="%s - Trevor Blades">
@@ -22,11 +36,11 @@ export default function HomePage() {
           href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/271/mushroom_1f344.png"
         />
       </Helmet>
-      <Box p="10">
+      <Box p="12">
         <Heading
           display="flex"
           fontSize="5xl"
-          mb="16"
+          mb="6"
           fontWeight="medium"
           position="relative"
           lineHeight="none"
@@ -44,9 +58,9 @@ export default function HomePage() {
               backgroundClip: 'text',
               backgroundImage: `linear-gradient(${[
                 'to bottom right',
-                theme.colors.red[300],
-                theme.colors.cyan[300],
-                theme.colors.yellow[300]
+                theme.colors.red[colorShade],
+                theme.colors.cyan[colorShade],
+                theme.colors.yellow[colorShade]
               ]})`,
               animation: `${hue} 5s infinite linear`,
               WebkitTextFillColor: 'transparent'
@@ -75,20 +89,40 @@ export default function HomePage() {
             </chakra.table>
           </Box>
         </Heading>
-        <Heading mb="2" color="cyan.300" size="md" fontWeight="medium">
-          Latest post
-        </Heading>
-        <Heading mb="4" size="2xl">
-          Infinite scrolling with Apollo Client 3
-        </Heading>
-        <Text fontSize="lg">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat. Duis aute irure dolor in
-          reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-          pariatur.
-        </Text>
+        <HStack spacing="6" mb="16">
+          <Heading fontSize="lg">Web developer developing the web</Heading>
+          <ButtonGroup variant="ghost" size="sm">
+            <IconButton
+              icon={<FaTwitter />}
+              fontSize="xl"
+              colorScheme="twitter"
+            />
+            <IconButton
+              icon={<FaTwitch />}
+              fontSize="xl"
+              colorScheme="purple"
+            />
+            <IconButton icon={<FaGithub />} fontSize="xl" />
+          </ButtonGroup>
+        </HStack>
+        <Box maxW="container.md">
+          <Heading mb="2" color="cyan.300" size="md" fontWeight="medium">
+            Latest post
+          </Heading>
+          <Heading mb="4" size="2xl">
+            <Link as={GatsbyLink} to="/blog/page">
+              Infinite scrolling with Apollo Client 3
+            </Link>
+          </Heading>
+          <Text fontSize="lg">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
+            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+            aliquip ex ea commodo consequat. Duis aute irure dolor in
+            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+            pariatur.
+          </Text>
+        </Box>
       </Box>
     </>
   );
