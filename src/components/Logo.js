@@ -19,7 +19,7 @@ export default function Logo(props) {
       role="group"
       bgImage={`url(${mf1})`}
       bgSize="cover"
-      bgPos="bottom"
+      bgPos="center"
       {...props}
     >
       <Heading

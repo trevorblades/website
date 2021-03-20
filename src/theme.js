@@ -5,6 +5,9 @@ const theme = extendTheme({
     global: {
       '::selection': {
         bgColor: 'pink.500'
+      },
+      mark: {
+        bgColor: 'cyan.300'
       }
     }
   },

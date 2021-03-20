@@ -5,9 +5,20 @@ import SocialLinks from '../components/SocialLinks';
 import brick from '../assets/brick.svg';
 import cartman from '../assets/cartman.jpg';
 import goingHome from '../assets/going-home.gif';
+import me from '../assets/me.jpg';
 import useNumber from 'react-use/lib/useNumber';
+import yolo from '../assets/yolo.png';
 import {ReactComponent as Apollo} from '../assets/apollo.svg';
-import {Box, Center, Flex, Heading, Link, Stack, Text} from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Flex,
+  Heading,
+  Img,
+  Link,
+  Stack,
+  Text
+} from '@chakra-ui/react';
 import {Link as GatsbyLink} from 'gatsby';
 import {Helmet} from 'react-helmet';
 import {ReactComponent as Knoword} from '../assets/knoword.svg';
@@ -35,6 +46,34 @@ function BlogPost() {
 
 function ProjectLogo(props) {
   return <Box h="full" fill="current" {...props} />;
+}
+
+function HomeButton(props) {
+  return (
+    <Center
+      boxSize="full"
+      pos="absolute"
+      top="0"
+      left="0"
+      transitionProperty="opacity visibility"
+      transitionDuration="1000ms"
+      transitionTimingFunction="ease"
+      role="group"
+      {...props}
+    >
+      <Center
+        boxSize="50%"
+        bgImage={`url(${cartman})`}
+        bgSize="cover"
+        bgPos="center"
+        _groupHover={{bgImage: `url(${goingHome})`}}
+      >
+        <Heading as="span" size="3xl" color="black">
+          Home
+        </Heading>
+      </Center>
+    </Center>
+  );
 }
 
 const secondColumn = 1 - 1 / GOLDEN_RATIO;
@@ -83,32 +122,13 @@ export default function HomePage() {
           left="0"
           transform={`scale(${secondColumn})`}
           transformOrigin="top left"
-          role={isHome ? 'region' : 'group'}
           style={!isHome ? {cursor: 'pointer'} : null}
         >
-          <Center
-            bgImage={`url(${cartman})`}
-            bgSize="cover"
-            boxSize="full"
-            bgPos="center"
-            pos="absolute"
-            top="0"
-            left="0"
-            transition="opacity 1000ms ease"
-            style={{opacity: isHome ? 0 : 1}}
-            onClick={() => incRotations()}
-            _groupHover={{bgImage: `url(${goingHome})`}}
-          >
-            <Heading as="span" fontSize="8xl" color="black">
-              Home
-            </Heading>
-          </Center>
           <GoldenGrid
             transform="rotate(180deg)"
             transition="opacity 1000ms ease"
             style={{
-              pointerEvents: isHome ? 'all' : 'none',
-              opacity: isHome ? 1 : 0
+              pointerEvents: isHome ? 'all' : 'none'
             }}
           >
             <Logo
@@ -118,18 +138,34 @@ export default function HomePage() {
                 incRotations();
               }}
             />
-            <GridItem bgImage={`url(${brick})`}>
-              <Text mb="4" fontSize="lg">
-                I&apos;m Trevor, a web developer who loves working on
-                challenging problems and helping others learn new things.
-              </Text>
-              <SocialLinks />
-            </GridItem>
+            <Box bgImage={`url(${brick})`} bgPos="center">
+              <Img
+                mt="-6"
+                ml="6"
+                w={`calc(100% * ${secondColumn})`}
+                float="right"
+                src={me}
+              />
+              <GridItem>
+                <Text mb="6" fontSize="xl">
+                  I&apos;m Trevor, a <mark>web developer</mark> who loves
+                  working on challenging problems and helping others learn new
+                  things.
+                </Text>
+                <SocialLinks />
+                <Img src={yolo} w="89px" />
+              </GridItem>
+            </Box>
             <GridItem>
-              <Flex h="14" justifyContent="space-evenly" mb="16">
+              <Flex
+                h="14"
+                justifyContent="space-evenly"
+                mb="16"
+                color="gray.500"
+              >
                 <ProjectLogo as={Apollo} />
-                <ProjectLogo as={Planet} />
                 <ProjectLogo p="1" as={Knoword} />
+                <ProjectLogo as={Planet} />
                 <ProjectLogo p="1" as={Pollenize} />
               </Flex>
               <Heading mb="2" color="cyan.300" size="md" fontWeight="medium">
@@ -150,6 +186,13 @@ export default function HomePage() {
               </Text>
             </GridItem>
           </GoldenGrid>
+          <HomeButton
+            style={{
+              opacity: isHome ? 0 : 1,
+              visibility: isHome ? 'hidden' : 'visible'
+            }}
+            onClick={() => incRotations()}
+          />
         </Box>
       </Box>
     </>
