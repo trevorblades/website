@@ -13,8 +13,6 @@ const hue = keyframes({
   }
 });
 
-const LOGO_SHADE = 400;
-
 export default function Logo(props) {
   return (
     <Center
@@ -46,9 +44,9 @@ export default function Logo(props) {
             WebkitTextFillColor: 'transparent',
             backgroundImage: `linear-gradient(${[
               'to bottom right',
-              theme.colors.red[LOGO_SHADE],
-              theme.colors.cyan[LOGO_SHADE],
-              theme.colors.yellow[LOGO_SHADE]
+              theme.colors.red[400],
+              theme.colors.cyan[400],
+              theme.colors.yellow[400]
             ]})`
           })}
           _groupHover={{
