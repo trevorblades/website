@@ -1,16 +1,18 @@
 import GoldenGrid, {GOLDEN_RATIO, GridItem} from '../components/GoldenGrid';
 import Logo from '../components/Logo';
-import React, {useState} from 'react';
+import React, {useMemo} from 'react';
 import SocialLinks from '../components/SocialLinks';
 import brick from '../assets/brick.svg';
 import cartman from '../assets/cartman.jpg';
 import goingHome from '../assets/going-home.gif';
+import useNumber from 'react-use/lib/useNumber';
 import {ReactComponent as Apollo} from '../assets/apollo.svg';
 import {Box, Center, Flex, Heading, Link, Stack, Text} from '@chakra-ui/react';
 import {Link as GatsbyLink} from 'gatsby';
 import {Helmet} from 'react-helmet';
 import {ReactComponent as Knoword} from '../assets/knoword.svg';
 import {ReactComponent as Planet} from '../assets/planet.svg';
+import {ReactComponent as Pollenize} from '../assets/pollenize.svg';
 
 function BlogPost() {
   return (
@@ -31,13 +33,18 @@ function BlogPost() {
   );
 }
 
+function ProjectLogo(props) {
+  return <Box h="full" fill="current" {...props} />;
+}
+
 const secondColumn = 1 - 1 / GOLDEN_RATIO;
 const transformOrigin = (secondColumn / 2) * 100;
 const scaleUp = 1 / (1 - 1 / GOLDEN_RATIO);
 const translate = transformOrigin / -GOLDEN_RATIO;
 
 export default function HomePage() {
-  const [home, setHome] = useState(true);
+  const [rotations, {inc: incRotations}] = useNumber();
+  const isHome = useMemo(() => rotations % 2 === 0, [rotations]);
   return (
     <>
       <Helmet defaultTitle="Trevor Blades" titleTemplate="%s - Trevor Blades">
@@ -52,9 +59,9 @@ export default function HomePage() {
         transition="transform 1000ms ease"
         transformOrigin={`${transformOrigin}% ${transformOrigin}%`}
         style={{
-          transform: `rotate(${home ? 180 : 0}deg) scale(${
-            home ? scaleUp : 1
-          }) translate(${home ? `${translate}%, ${translate}%` : 0})`
+          transform: `rotate(${180 - 180 * rotations}deg) scale(${
+            isHome ? scaleUp : 1
+          }) translate(${isHome ? `${translate}%, ${translate}%` : 0})`
         }}
       >
         <GoldenGrid>
@@ -76,9 +83,8 @@ export default function HomePage() {
           left="0"
           transform={`scale(${secondColumn})`}
           transformOrigin="top left"
-          role={home ? 'region' : 'group'}
-          onClick={() => setHome(true)}
-          style={!home ? {cursor: 'pointer'} : null}
+          role={isHome ? 'region' : 'group'}
+          style={!isHome ? {cursor: 'pointer'} : null}
         >
           <Center
             bgImage={`url(${cartman})`}
@@ -89,7 +95,8 @@ export default function HomePage() {
             top="0"
             left="0"
             transition="opacity 1000ms ease"
-            style={{opacity: home ? 0 : 1}}
+            style={{opacity: isHome ? 0 : 1}}
+            onClick={() => incRotations()}
             _groupHover={{bgImage: `url(${goingHome})`}}
           >
             <Heading as="span" fontSize="8xl" color="black">
@@ -100,15 +107,15 @@ export default function HomePage() {
             transform="rotate(180deg)"
             transition="opacity 1000ms ease"
             style={{
-              pointerEvents: home ? 'all' : 'none',
-              opacity: home ? 1 : 0
+              pointerEvents: isHome ? 'all' : 'none',
+              opacity: isHome ? 1 : 0
             }}
           >
             <Logo
               cursor="pointer"
               onClick={event => {
                 event.stopPropagation();
-                setHome(false);
+                incRotations();
               }}
             />
             <GridItem bgImage={`url(${brick})`}>
@@ -120,11 +127,10 @@ export default function HomePage() {
             </GridItem>
             <GridItem>
               <Flex h="14" justifyContent="space-evenly" mb="16">
-                <Box as={Apollo} h="full" fill="current" />
-                <Box as={Planet} h="full" fill="current" />
-                <Box p="1" flexShrink="0">
-                  <Box as={Knoword} h="full" fill="current" />
-                </Box>
+                <ProjectLogo as={Apollo} />
+                <ProjectLogo as={Planet} />
+                <ProjectLogo p="1" as={Knoword} />
+                <ProjectLogo p="1" as={Pollenize} />
               </Flex>
               <Heading mb="2" color="cyan.300" size="md" fontWeight="medium">
                 Latest post
