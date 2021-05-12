@@ -1,16 +1,14 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import Spiral from 'react-spiral';
 import useWindowScroll from 'react-use/lib/useWindowScroll';
 import useWindowSize from 'react-use/lib/useWindowSize';
-import {Box, Center, Heading, Text, useTheme} from '@chakra-ui/react';
+import {Box, Center, useTheme} from '@chakra-ui/react';
 
 export default function Test() {
-  // const [sides, setSides] = useState(3);
   const {colors} = useTheme();
   const {y} = useWindowScroll();
   const {height} = useWindowSize();
-  const sides = 3 + Math.floor(y / (height / 2));
-
+  const sides = useMemo(() => 3 + Math.floor(y / (height / 2)), [y, height]);
   return (
     <>
       <Box
@@ -28,28 +26,31 @@ export default function Test() {
           textTransform="uppercase"
           position="sticky"
           top="0"
+          overflow="hidden"
         >
-          <Spiral
-            fontSize={30}
-            boxSize={600}
-            sides={sides}
-            spacing={100}
-            segments={[
-              "I'm a web",
-              'developer',
-              'who enjoys',
-              'solving',
-              'puzzles',
-              'with',
-              'JS and',
-              'CSS.',
-              'Check',
-              'out',
-              'some of',
-              'my work',
-              'below'
-            ]}
-          />
+          <div style={{transform: `scale(${1 + y / height / 4})`}}>
+            <Spiral
+              fontSize={30}
+              boxSize={600}
+              sides={sides}
+              spacing={100}
+              segments={[
+                "I'm a web",
+                'developer',
+                'who enjoys',
+                'solving',
+                'puzzles',
+                'with',
+                'JS and',
+                'CSS.',
+                'Check',
+                'out',
+                'some of',
+                'my work',
+                'below'
+              ]}
+            />
+          </div>
         </Center>
       </Box>
       {/* <Box px="10" py="16">
