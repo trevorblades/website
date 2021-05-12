@@ -18,7 +18,7 @@ export default function Test() {
         color="white"
         bgImage={`linear-gradient(${[
           colors.red[500],
-          colors.green[500],
+          colors.yellow[500],
           colors.blue[500]
         ]})`}
       >
@@ -39,19 +39,23 @@ export default function Test() {
               'developer',
               'who enjoys',
               'solving',
-              'complex',
               'puzzles',
               'with',
               'JS and',
-              'CSS'
+              'CSS.',
+              'Check',
+              'out',
+              'some of',
+              'my work',
+              'below'
             ]}
           />
         </Center>
       </Box>
-      <Box px="10" py="16">
+      {/* <Box px="10" py="16">
         <Heading mb="4">stuff about me</Heading>
         <Text fontSize="lg">Yo i did these things and build this and that</Text>
-      </Box>
+      </Box> */}
     </>
   );
 }
