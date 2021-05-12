@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 import {Center} from '@chakra-ui/react';
 
 function getFeatures(size, sides, centralAngle) {
@@ -24,25 +24,30 @@ function getFeatures(size, sides, centralAngle) {
   };
 }
 
-function Spiral({size, sides, spacing, segments}) {
+function Spiral({boxSize, fontSize, sides, spacing, segments}) {
   const centralAngle = (Math.PI * 2) / sides;
-  const {sideLength, height} = getFeatures(size, sides, centralAngle);
   const interiorAngle = Math.PI - centralAngle;
   const inset = Math.cos(interiorAngle) * spacing * 2;
-  const spacingRatio = spacing / size;
+
+  const totalSize = boxSize - fontSize;
+  const {sideLength, height} = getFeatures(totalSize, sides, centralAngle);
+  const spacingRatio = spacing / totalSize;
+
   return (
     <div
       style={{
         overflow: 'hidden',
-        padding: '0.5em'
+        lineHeight: 1,
+        fontSize,
+        padding: fontSize / 2
       }}
     >
       <div
         style={{
-          width: size,
-          height: size,
-          paddingTop: (size - height) / 2,
-          paddingLeft: (size - sideLength) / 2
+          width: totalSize,
+          height: totalSize,
+          paddingTop: (totalSize - height) / 2,
+          paddingLeft: (totalSize - sideLength) / 2
         }}
       >
         {segments
@@ -94,38 +99,50 @@ function Spiral({size, sides, spacing, segments}) {
 }
 
 Spiral.propTypes = {
+  boxSize: PropTypes.number.isRequired,
+  fontSize: PropTypes.number.isRequired,
   sides: PropTypes.number.isRequired,
-  size: PropTypes.number.isRequired,
   spacing: PropTypes.number.isRequired,
   segments: PropTypes.arrayOf(PropTypes.node).isRequired
 };
 
 export default function Test() {
+  const [sides, setSides] = useState(3);
+  console.log(sides);
   return (
-    <Center
-      height="100vh"
-      fontWeight="bold"
-      fontSize="3xl"
-      textTransform="uppercase"
-    >
-      <Spiral
-        size={500}
-        sides={4}
-        spacing={100}
-        segments={[
-          'canelo is the',
-          'best in the',
-          'world right',
-          'now. he might',
-          'be able',
-          'to hit',
-          'him dude',
-          'tune in',
-          'may 19',
-          '2020',
-          'trev.tv'
-        ]}
-      />
+    <Center height="100vh" fontWeight="bold" textTransform="uppercase">
+      <div>
+        <input
+          type="range"
+          value={sides}
+          onChange={event => setSides(event.target.value)}
+          min={3}
+          max={8}
+          step={1}
+        />
+        <p>Sides: {sides}</p>
+        <Spiral
+          fontSize={30}
+          boxSize={600}
+          sides={sides}
+          spacing={100}
+          segments={[
+            'hi kids!',
+            'do you like',
+            'violence?',
+            'you wanna',
+            'see me',
+            'stick',
+            '9-inch',
+            'nails',
+            'through',
+            'each',
+            'one',
+            'of my',
+            'eyelids?'
+          ]}
+        />
+      </div>
     </Center>
   );
 }
