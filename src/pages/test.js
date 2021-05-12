@@ -1,148 +1,57 @@
-import PropTypes from 'prop-types';
-import React, {useState} from 'react';
-import {Center} from '@chakra-ui/react';
-
-function getFeatures(size, sides, centralAngle) {
-  if (sides % 2) {
-    // odd number of sides
-    const circumradius =
-      size / Math.sin(((sides - 1) / (sides * 2)) * Math.PI) / 2;
-    const inradius = Math.cos(centralAngle / 2) * circumradius;
-    const a = circumradius ** 2 * 2;
-    return {
-      sideLength: Math.sqrt(a - a * Math.cos(centralAngle)),
-      height: inradius + circumradius
-    };
-  }
-
-  const radius = size / 2;
-  const isHalfOdd = (sides / 2) % 2;
-  const ratio = isHalfOdd ? Math.sin : Math.tan;
-  return {
-    sideLength: radius * (ratio(centralAngle / 2) * 2),
-    height: (isHalfOdd ? Math.cos(centralAngle / 2) * radius : radius) * 2
-  };
-}
-
-function Spiral({boxSize, fontSize, sides, spacing, segments}) {
-  const centralAngle = (Math.PI * 2) / sides;
-  const interiorAngle = Math.PI - centralAngle;
-  const inset = Math.cos(interiorAngle) * spacing * 2;
-
-  const totalSize = boxSize - fontSize;
-  const {sideLength, height} = getFeatures(totalSize, sides, centralAngle);
-  const spacingRatio = spacing / totalSize;
-
-  return (
-    <div
-      style={{
-        overflow: 'hidden',
-        lineHeight: 1,
-        fontSize,
-        padding: fontSize / 2
-      }}
-    >
-      <div
-        style={{
-          width: totalSize,
-          height: totalSize,
-          paddingTop: (totalSize - height) / 2,
-          paddingLeft: (totalSize - sideLength) / 2
-        }}
-      >
-        {segments
-          .slice()
-          .reverse()
-          .reduce((child, value, index, array) => {
-            const side = array.length - index;
-            const [a, b, c] = Array.from({length: 3}, (value, index) =>
-              Math.max(Math.floor((side - index) / sides), 0)
-            );
-            const innerWidth = sideLength - (a + c) * spacing - inset * b;
-
-            if (innerWidth < spacing) {
-              return null;
-            }
-
-            return (
-              <div
-                style={{
-                  display: 'flex',
-                  transformOrigin: 'left',
-                  transform:
-                    side > 1
-                      ? `rotate(${centralAngle * (180 / Math.PI)}deg)`
-                      : 'translateY(-50%)'
-                }}
-              >
-                <span
-                  style={{
-                    flexShrink: 0,
-                    display: 'flex',
-                    whiteSpace: 'pre',
-                    justifyContent: 'space-evenly',
-                    width: innerWidth,
-                    padding: `0 ${(innerWidth * spacingRatio) / 2}px`
-                  }}
-                >
-                  {value.split('').map((char, index) => (
-                    <span key={index}>{char}</span>
-                  ))}
-                </span>
-                {child}
-              </div>
-            );
-          }, null)}
-      </div>
-    </div>
-  );
-}
-
-Spiral.propTypes = {
-  boxSize: PropTypes.number.isRequired,
-  fontSize: PropTypes.number.isRequired,
-  sides: PropTypes.number.isRequired,
-  spacing: PropTypes.number.isRequired,
-  segments: PropTypes.arrayOf(PropTypes.node).isRequired
-};
+import React from 'react';
+import Spiral from 'react-spiral';
+import useWindowScroll from 'react-use/lib/useWindowScroll';
+import useWindowSize from 'react-use/lib/useWindowSize';
+import {Box, Center, Heading, Text, useTheme} from '@chakra-ui/react';
 
 export default function Test() {
-  const [sides, setSides] = useState(3);
-  console.log(sides);
+  // const [sides, setSides] = useState(3);
+  const {colors} = useTheme();
+  const {y} = useWindowScroll();
+  const {height} = useWindowSize();
+  const sides = 3 + Math.floor(y / (height / 2));
+
   return (
-    <Center height="100vh" fontWeight="bold" textTransform="uppercase">
-      <div>
-        <input
-          type="range"
-          value={sides}
-          onChange={event => setSides(event.target.value)}
-          min={3}
-          max={8}
-          step={1}
-        />
-        <p>Sides: {sides}</p>
-        <Spiral
-          fontSize={30}
-          boxSize={600}
-          sides={sides}
-          spacing={100}
-          segments={[
-            'hi kids!',
-            'do you like',
-            'violence?',
-            'you wanna',
-            'see me',
-            'stick',
-            '9-inch',
-            'nails',
-            'through',
-            'each',
-            'one',
-            'of my',
-            'eyelids?'
-          ]}
-        />
-      </div>
-    </Center>
+    <>
+      <Box
+        height="300vh"
+        color="white"
+        bgImage={`linear-gradient(${[
+          colors.red[500],
+          colors.green[500],
+          colors.blue[500]
+        ]})`}
+      >
+        <Center
+          height="100vh"
+          fontWeight="bold"
+          textTransform="uppercase"
+          position="sticky"
+          top="0"
+        >
+          <Spiral
+            fontSize={30}
+            boxSize={600}
+            sides={sides}
+            spacing={100}
+            segments={[
+              "I'm a web",
+              'developer',
+              'who enjoys',
+              'solving',
+              'complex',
+              'puzzles',
+              'with',
+              'JS and',
+              'CSS'
+            ]}
+          />
+        </Center>
+      </Box>
+      <Box px="10" py="16">
+        <Heading mb="4">stuff about me</Heading>
+        <Text fontSize="lg">Yo i did these things and build this and that</Text>
+      </Box>
+    </>
   );
 }
