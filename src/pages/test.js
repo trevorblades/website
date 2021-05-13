@@ -1,19 +1,21 @@
 import React, {useMemo} from 'react';
 import Spiral from 'react-spiral';
-import useWindowScroll from 'react-use/lib/useWindowScroll';
-import useWindowSize from 'react-use/lib/useWindowSize';
 import {Box, Center, Circle, Heading, Text, useTheme} from '@chakra-ui/react';
+import {useWindowScroll, useWindowSize} from 'react-use';
 
 export default function Test() {
   const {colors} = useTheme();
+
   const {y} = useWindowScroll();
   const {width, height} = useWindowSize();
+
   const sides = useMemo(() => 3 + Math.floor(y / (height / 2)), [y, height]);
   const circleSize = useMemo(() => {
     const diameter = Math.sqrt(width ** 2 + height ** 2);
     const vmax = Math.max(width, height);
     return 100 * (diameter / vmax) + 'vmax';
   }, [width, height]);
+
   return (
     <>
       <Box
@@ -71,7 +73,7 @@ export default function Test() {
           />
         </Center>
       </Box>
-      <Box px="10" bgColor="black" color="white">
+      <Box h="100vh" px="10" bgColor="black" color="white" id="about">
         <Heading mb="4">stuff about me</Heading>
         <Text fontSize="lg">Yo i did these things and build this and that</Text>
       </Box>
