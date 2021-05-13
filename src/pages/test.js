@@ -9,8 +9,11 @@ export default function Test() {
   const {y} = useWindowScroll();
   const {width, height} = useWindowSize();
   const sides = useMemo(() => 3 + Math.floor(y / (height / 2)), [y, height]);
-  const aspectRatio = useMemo(() => width / height, [width, height]);
-  console.log(aspectRatio);
+  const circleSize = useMemo(() => {
+    const diameter = Math.sqrt(width ** 2 + height ** 2);
+    const vmax = Math.max(width, height);
+    return 100 * (diameter / vmax) + 'vmax';
+  }, [width, height]);
   return (
     <>
       <Box
@@ -54,7 +57,7 @@ export default function Test() {
             />
           </div>
           <Circle
-            size={100 * Math.sqrt(2) + 'vmax'}
+            size={circleSize}
             bgColor="black"
             pos="absolute"
             top="50%"
@@ -68,7 +71,7 @@ export default function Test() {
           />
         </Center>
       </Box>
-      <Box px="10" py="16" bgColor="black" color="white">
+      <Box px="10" bgColor="black" color="white">
         <Heading mb="4">stuff about me</Heading>
         <Text fontSize="lg">Yo i did these things and build this and that</Text>
       </Box>
