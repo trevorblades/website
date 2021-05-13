@@ -2,13 +2,15 @@ import React, {useMemo} from 'react';
 import Spiral from 'react-spiral';
 import useWindowScroll from 'react-use/lib/useWindowScroll';
 import useWindowSize from 'react-use/lib/useWindowSize';
-import {Box, Center, useTheme} from '@chakra-ui/react';
+import {Box, Center, Circle, Heading, Text, useTheme} from '@chakra-ui/react';
 
 export default function Test() {
   const {colors} = useTheme();
   const {y} = useWindowScroll();
-  const {height} = useWindowSize();
+  const {width, height} = useWindowSize();
   const sides = useMemo(() => 3 + Math.floor(y / (height / 2)), [y, height]);
+  const aspectRatio = useMemo(() => width / height, [width, height]);
+  console.log(aspectRatio);
   return (
     <>
       <Box
@@ -51,12 +53,25 @@ export default function Test() {
               ]}
             />
           </div>
+          <Circle
+            size={100 * Math.sqrt(2) + 'vmax'}
+            bgColor="black"
+            pos="absolute"
+            top="50%"
+            left="50%"
+            style={{
+              transform: `translate(-50%, -50%) scale(${Math.min(
+                1,
+                Math.max(0, y - height) / height
+              )})`
+            }}
+          />
         </Center>
       </Box>
-      {/* <Box px="10" py="16">
+      <Box px="10" py="16" bgColor="black" color="white">
         <Heading mb="4">stuff about me</Heading>
         <Text fontSize="lg">Yo i did these things and build this and that</Text>
-      </Box> */}
+      </Box>
     </>
   );
 }

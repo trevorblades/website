@@ -1,7 +1,11 @@
 import React from 'react';
 import theme from './src/theme';
-import {ChakraProvider} from '@chakra-ui/react';
+import {CSSReset, GlobalStyle, ThemeProvider} from '@chakra-ui/react';
 
 export const wrapRootElement = ({element}) => (
-  <ChakraProvider theme={theme}>{element}</ChakraProvider>
+  <>
+    <CSSReset />
+    <GlobalStyle />
+    <ThemeProvider theme={theme}>{element}</ThemeProvider>
+  </>
 );
