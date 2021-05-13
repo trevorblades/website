@@ -11,6 +11,8 @@ export default function Test() {
 
   const sides = useMemo(() => 3 + Math.floor(y / (height / 2)), [y, height]);
   const circleSize = useMemo(() => {
+    // http://mathcentral.uregina.ca/QQ/database/QQ.09.06/s/benneth1.html
+    // https://courses.lumenlearning.com/boundless-algebra/chapter/trigonometry-and-right-triangles/
     const diameter = Math.sqrt(width ** 2 + height ** 2);
     const vmax = Math.max(width, height);
     return 100 * (diameter / vmax) + 'vmax';
