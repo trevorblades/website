@@ -61,12 +61,13 @@ export default function Test() {
             />
           </div>
           <Circle
-            size={circleSize}
             bgColor="black"
             pos="absolute"
             top="50%"
             left="50%"
             style={{
+              width: circleSize,
+              height: circleSize,
               transform: `translate(-50%, -50%) scale(${Math.min(
                 1,
                 Math.max(0, y - height) / height
