@@ -134,8 +134,9 @@ export default function Test() {
                 </Link>
                 .
               </Text>
-              <SyntaxHighlighter language="jsx" style={a11yDark}>
-                {outdent`
+              <div>
+                <SyntaxHighlighter language="jsx" style={a11yDark}>
+                  {outdent`
                   import Spiral from 'react-spiral';
 
                   function MyComponent() {
@@ -148,7 +149,8 @@ export default function Test() {
                     )
                   }
                 `}
-              </SyntaxHighlighter>
+                </SyntaxHighlighter>
+              </div>
             </Stack>
           </Grid>
           <chakra.footer py="16">
