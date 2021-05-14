@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import Spiral from 'react-spiral';
 import {Box, Center, Circle, Heading, Text, useTheme} from '@chakra-ui/react';
 import {useMount, useWindowScroll, useWindowSize} from 'react-use';
