@@ -2,13 +2,21 @@ import React, {useMemo, useState} from 'react';
 import Spiral from 'react-spiral';
 import {
   Box,
+  Button,
   Center,
   Circle,
   Flex,
+  HStack,
   Heading,
+  Link,
+  Stack,
   Text,
+  chakra,
   useTheme
 } from '@chakra-ui/react';
+import {FaTwitch} from 'react-icons/fa';
+import {Link as GatsbyLink} from 'gatsby';
+import {Global} from '@emotion/react';
 import {useMount, useWindowScroll, useWindowSize} from 'react-use';
 
 export default function Test() {
@@ -30,8 +38,16 @@ export default function Test() {
   }, [width, height]);
 
   return (
-    <>
+    <div key={now}>
+      <Global
+        styles={{
+          html: {
+            scrollPaddingTop: 48
+          }
+        }}
+      />
       <Flex
+        w="full"
         h="12"
         px="4"
         color="white"
@@ -40,6 +56,9 @@ export default function Test() {
         pos="fixed"
         top="0"
         zIndex="1"
+        style={{
+          backgroundColor: y >= height * 2 && 'black'
+        }}
       >
         <Circle
           size="6"
@@ -61,6 +80,23 @@ export default function Test() {
         >
           Trevor Blades
         </Heading>
+        <HStack spacing="4" ml="auto">
+          <Link href="#about">about me</Link>
+          <Link href="#projects">projects</Link>
+          <Link as={GatsbyLink} to="/garden">
+            garden
+          </Link>
+          <Button
+            as="a"
+            href="https://twitch.tv/trevorblades"
+            size="sm"
+            fontSize="md"
+            colorScheme="purple"
+            rightIcon={<FaTwitch />}
+          >
+            follow
+          </Button>
+        </HStack>
       </Flex>
       <Box
         height="300vh"
@@ -72,7 +108,6 @@ export default function Test() {
         ]})`}
       >
         <Center
-          key={now}
           height="100vh"
           fontWeight="bold"
           fontFamily="heading"
@@ -120,10 +155,23 @@ export default function Test() {
           />
         </Center>
       </Box>
-      <Box h="100vh" px="10" bgColor="black" color="white" id="about">
-        <Heading mb="4">stuff about me</Heading>
-        <Text fontSize="lg">Yo i did these things and build this and that</Text>
+      <Box px="10" bgColor="black" color="white">
+        <Stack spacing="20">
+          <div id="about">
+            <Heading mb="4">stuff about me</Heading>
+            <Text fontSize="lg">
+              Yo i did these things and build this and that
+            </Text>
+          </div>
+          <div id="projects">
+            <Heading mb="4">my projects</Heading>
+            <Text fontSize="lg">
+              Yo i did these things and build this and that
+            </Text>
+          </div>
+        </Stack>
+        <chakra.footer py="16">&copy; {new Date().getFullYear()}</chakra.footer>
       </Box>
-    </>
+    </div>
   );
 }
