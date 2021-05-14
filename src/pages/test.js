@@ -1,12 +1,15 @@
+import Header from '../components/Header';
 import React, {useMemo, useState} from 'react';
+import SocialButtons from '../components/SocialButtons';
 import Spiral from 'react-spiral';
+import jsx from 'react-syntax-highlighter/dist/esm/languages/prism/jsx';
 import {
   Box,
-  Button,
   Center,
   Circle,
-  Flex,
-  HStack,
+  Code,
+  DarkMode,
+  Grid,
   Heading,
   Link,
   Stack,
@@ -14,10 +17,12 @@ import {
   chakra,
   useTheme
 } from '@chakra-ui/react';
-import {FaTwitch} from 'react-icons/fa';
-import {Link as GatsbyLink} from 'gatsby';
-import {Global} from '@emotion/react';
+import {PrismLight as SyntaxHighlighter} from 'react-syntax-highlighter';
+import {a11yDark} from 'react-syntax-highlighter/dist/esm/styles/prism';
+import {outdent} from 'outdent';
 import {useMount, useWindowScroll, useWindowSize} from 'react-use';
+
+SyntaxHighlighter.registerLanguage('jsx', jsx);
 
 export default function Test() {
   const {colors} = useTheme();
@@ -39,65 +44,11 @@ export default function Test() {
 
   return (
     <div key={now}>
-      <Global
-        styles={{
-          html: {
-            scrollPaddingTop: 48
-          }
-        }}
-      />
-      <Flex
-        w="full"
-        h="12"
-        px="4"
-        color="white"
-        align="center"
-        as="header"
-        pos="fixed"
-        top="0"
-        zIndex="1"
+      <Header
         style={{
           backgroundColor: y >= height * 2 && 'black'
         }}
-      >
-        <Circle
-          size="6"
-          mr="2"
-          borderWidth="2px"
-          borderColor="current"
-          fontFamily="heading"
-          fontWeight="semibold"
-          lineHeight="none"
-          fontSize="xl"
-        >
-          t
-        </Circle>
-        <Heading
-          as="h1"
-          fontSize="2xl"
-          letterSpacing="tighter"
-          lineHeight="none"
-        >
-          Trevor Blades
-        </Heading>
-        <HStack spacing="4" ml="auto">
-          <Link href="#about">about me</Link>
-          <Link href="#projects">projects</Link>
-          <Link as={GatsbyLink} to="/garden">
-            garden
-          </Link>
-          <Button
-            as="a"
-            href="https://twitch.tv/trevorblades"
-            size="sm"
-            fontSize="md"
-            colorScheme="purple"
-            rightIcon={<FaTwitch />}
-          >
-            follow
-          </Button>
-        </HStack>
-      </Flex>
+      />
       <Box
         height="300vh"
         color="white"
@@ -155,23 +106,56 @@ export default function Test() {
           />
         </Center>
       </Box>
-      <Box px="10" bgColor="black" color="white">
-        <Stack spacing="20">
-          <div id="about">
-            <Heading mb="4">stuff about me</Heading>
-            <Text fontSize="lg">
-              Yo i did these things and build this and that
-            </Text>
-          </div>
-          <div id="projects">
-            <Heading mb="4">my projects</Heading>
-            <Text fontSize="lg">
-              Yo i did these things and build this and that
-            </Text>
-          </div>
-        </Stack>
-        <chakra.footer py="16">&copy; {new Date().getFullYear()}</chakra.footer>
-      </Box>
+      <DarkMode>
+        <Box px="10" bgColor="black" color="white">
+          <Grid templateColumns="2fr 1fr">
+            <Stack spacing="20">
+              <div id="about">
+                <Heading mb="4">stuff about me</Heading>
+                <Text mb="4" fontSize="lg">
+                  Yo i did these things and build this and that
+                </Text>
+                <SocialButtons />
+              </div>
+              <div id="projects">
+                <Heading mb="4">my projects</Heading>
+                <Text fontSize="lg">
+                  Yo i did these things and build this and that
+                </Text>
+              </div>
+            </Stack>
+            <Stack spacing="4">
+              <Text>
+                The spiral text on the homepage was made using{' '}
+                <Code>react-spiral</Code>. You can learn how to use it and read
+                about how I made it at its{' '}
+                <Link href="https://github.com/trevorblades/react-spiral">
+                  GitHub repository
+                </Link>
+                .
+              </Text>
+              <SyntaxHighlighter language="jsx" style={a11yDark}>
+                {outdent`
+                  import Spiral from 'react-spiral';
+
+                  function MyComponent() {
+                    return (
+                      <Spiral
+                        sides={3}
+                        boxSize={500}
+                        fontSize={32}
+                      />
+                    )
+                  }
+                `}
+              </SyntaxHighlighter>
+            </Stack>
+          </Grid>
+          <chakra.footer py="16">
+            &copy; {new Date().getFullYear()}
+          </chakra.footer>
+        </Box>
+      </DarkMode>
     </div>
   );
 }
