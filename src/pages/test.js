@@ -1,10 +1,13 @@
-import React, {useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Spiral from 'react-spiral';
 import {Box, Center, Circle, Heading, Text, useTheme} from '@chakra-ui/react';
-import {useWindowScroll, useWindowSize} from 'react-use';
+import {useMount, useWindowScroll, useWindowSize} from 'react-use';
 
 export default function Test() {
   const {colors} = useTheme();
+  const [now, setNow] = useState(Date.now());
+
+  useMount(() => setNow(Date.now()));
 
   const {y} = useWindowScroll();
   const {width, height} = useWindowSize();
@@ -37,43 +40,45 @@ export default function Test() {
           top="0"
           overflow="hidden"
         >
-          <div style={{transform: `scale(${1 + y / height / 4})`}}>
-            <Spiral
-              fontSize={30}
-              boxSize={600}
-              sides={sides}
-              spacing={100}
-              segments={[
-                "I'm a web",
-                'developer',
-                'who enjoys',
-                'solving',
-                'puzzles',
-                'with',
-                'JS and',
-                'CSS.',
-                'Check',
-                'out',
-                'some of',
-                'my work',
-                'below'
-              ]}
+          <div key={now}>
+            <div style={{transform: `scale(${1 + y / height / 4})`}}>
+              <Spiral
+                fontSize={30}
+                boxSize={600}
+                sides={sides}
+                spacing={100}
+                segments={[
+                  "I'm a web",
+                  'developer',
+                  'who enjoys',
+                  'solving',
+                  'puzzles',
+                  'with',
+                  'JS and',
+                  'CSS.',
+                  'Check',
+                  'out',
+                  'some of',
+                  'my work',
+                  'below'
+                ]}
+              />
+            </div>
+            <Circle
+              bgColor="black"
+              pos="absolute"
+              top="50%"
+              left="50%"
+              style={{
+                width: circleSize,
+                height: circleSize,
+                transform: `translate(-50%, -50%) scale(${Math.min(
+                  1,
+                  Math.max(0, y - height) / height
+                )})`
+              }}
             />
           </div>
-          <Circle
-            bgColor="black"
-            pos="absolute"
-            top="50%"
-            left="50%"
-            style={{
-              width: circleSize,
-              height: circleSize,
-              transform: `translate(-50%, -50%) scale(${Math.min(
-                1,
-                Math.max(0, y - height) / height
-              )})`
-            }}
-          />
         </Center>
       </Box>
       <Box h="100vh" px="10" bgColor="black" color="white" id="about">
