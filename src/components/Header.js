@@ -18,7 +18,6 @@ export default function Header(props) {
         w="full"
         h="12"
         px="4"
-        color="white"
         align="center"
         as="header"
         pos="fixed"
