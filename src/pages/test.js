@@ -203,6 +203,16 @@ export default function Test() {
               </Flex>
             )}
           </Circle>
+          <Box
+            pos="absolute"
+            top="50%"
+            left="50%"
+            transform="translate(-50%, -50%)"
+            color="white"
+            style={{opacity: (circleScale - 1 / 3) * 3}}
+          >
+            <Heading size="3xl">i ❤️ dev</Heading>
+          </Box>
         </Center>
       </Box>
       <HomePageContent />
