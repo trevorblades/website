@@ -1,13 +1,10 @@
 import {extendTheme} from '@chakra-ui/react';
 
 const theme = extendTheme({
-  config: {
-    initialColorMode: 'dark'
-  },
   styles: {
     global: {
       '::selection': {
-        bgColor: 'pink.500'
+        bgColor: 'pink.400'
       },
       mark: {
         bgColor: 'cyan.300'

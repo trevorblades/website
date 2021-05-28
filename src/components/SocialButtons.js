@@ -1,9 +1,9 @@
 import React from 'react';
-import {ButtonGroup, IconButton} from '@chakra-ui/react';
+import {ButtonGroup, IconButton, Link} from '@chakra-ui/react';
 import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
 
 function SocialButton(props) {
-  return <IconButton as="a" target="_blank" fontSize="3xl" {...props} />;
+  return <IconButton as={Link} isExternal fontSize="3xl" {...props} />;
 }
 
 export default function SocialButtons() {

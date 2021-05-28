@@ -1,32 +1,23 @@
 import Header from '../components/Header';
+import HomePageContent from '../components/HomePageContent';
 import PropTypes from 'prop-types';
 import React, {useMemo, useState} from 'react';
-import SocialButtons from '../components/SocialButtons';
 import Spiral from 'react-spiral';
 import jsx from 'react-syntax-highlighter/dist/esm/languages/prism/jsx';
-import {ReactComponent as Apollo} from '../assets/apollo.svg';
 import {
   Box,
   Center,
   Circle,
-  Code,
   Flex,
   FormControl,
   FormLabel,
-  Grid,
   Heading,
-  Link,
-  SimpleGrid,
   Stack,
   Switch,
   Text,
   chakra,
   useTheme
 } from '@chakra-ui/react';
-import {ReactComponent as Knoword} from '../assets/knoword.svg';
-import {ReactComponent as Planet} from '../assets/planet.svg';
-import {ReactComponent as Playback} from '../assets/playback.svg';
-import {ReactComponent as Pollenize} from '../assets/pollenize.svg';
 import {PrismLight as SyntaxHighlighter} from 'react-syntax-highlighter';
 import {a11yDark} from 'react-syntax-highlighter/dist/esm/styles/prism';
 import {outdent} from 'outdent';
@@ -36,8 +27,8 @@ SyntaxHighlighter.registerLanguage('jsx', jsx);
 
 function GridItem({icon, title, description, ...props}) {
   return (
-    <Box p="6" {...props}>
-      <Box height="12" fill="current" as={icon} mb="4" />
+    <Box p="6" color="white" {...props}>
+      <Box height="12" as={icon} mb="4" fill="current" />
       <Heading size="lg">{title}</Heading>
       <Text>{description}</Text>
     </Box>
@@ -47,7 +38,8 @@ function GridItem({icon, title, description, ...props}) {
 GridItem.propTypes = {
   icon: PropTypes.element,
   title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired
+  description: PropTypes.string.isRequired,
+  iconColor: PropTypes.string
 };
 
 export default function Test() {
@@ -60,8 +52,6 @@ export default function Test() {
   const {y} = useWindowScroll();
   const {width, height} = useWindowSize();
 
-  const sides = useMemo(() => 3 + Math.floor(y / (height / 2)), [y, height]);
-
   const {diameter, interiorAngle} = useMemo(() => {
     // http://mathcentral.uregina.ca/QQ/database/QQ.09.06/s/benneth1.html
     // https://courses.lumenlearning.com/boundless-algebra/chapter/trigonometry-and-right-triangles/
@@ -72,6 +62,8 @@ export default function Test() {
     };
   }, [width, height]);
 
+  const sides = useMemo(() => 3 + Math.floor(y / (height / 2)), [y, height]);
+  const isHeaderDark = useMemo(() => y >= height * 2, [y, height]);
   const circleScale = useMemo(
     () => Math.min(1, Math.max(0, y - height) / height),
     [y, height]
@@ -80,9 +72,8 @@ export default function Test() {
   return (
     <div key={now}>
       <Header
-        style={{
-          backgroundColor: y >= height * 2 && 'black'
-        }}
+        bgColor={isHeaderDark && 'gray.800'}
+        color={isHeaderDark && 'white'}
       />
       <Box
         height="300vh"
@@ -122,7 +113,7 @@ export default function Test() {
             />
           </Box>
           <Circle
-            bgColor="black"
+            bgColor="current"
             pos="absolute"
             top="50%"
             left="50%"
@@ -132,8 +123,9 @@ export default function Test() {
               transform: `translate(-50%, -50%) scale(${circleScale})`
             }}
           >
-            {debug ? (
+            {debug && (
               <Flex
+                color="white"
                 direction="column"
                 w="100vw"
                 h="100vh"
@@ -209,106 +201,24 @@ export default function Test() {
                   </div>
                 </Stack>
               </Flex>
-            ) : (
-              <Box style={{transform: `scale(${(3 * circleScale) ** 2})`}}>
-                u ready?
-              </Box>
             )}
           </Circle>
         </Center>
       </Box>
-      <Box p="10">
-        <Grid templateColumns="2fr 1fr" gap="16">
-          <Stack spacing="20">
-            <SimpleGrid minChildWidth="300px" spacing="8">
-              <GridItem
-                icon={Knoword}
-                title="Knoword"
-                description="Educational game"
-                bgColor="#ff4e1e"
-              />
-              <GridItem
-                icon={Apollo}
-                title="Apollo Odyssey"
-                description="Learning platform"
-                bgColor="#583bc9"
-              />
-              <GridItem
-                icon={Playback}
-                title="Playback"
-                description="Filmmaking tool"
-                bgColor="#e91e63"
-              />
-              <GridItem
-                icon={Pollenize}
-                title="Pollenize"
-                description="Election education"
-                bgColor="gray.800"
-              />
-              <GridItem
-                icon={Planet}
-                title="Planet Stories"
-                description="Editorial/research tool"
-                bgColor="#009da5"
-              />
-            </SimpleGrid>
-            <div id="about">
-              <Heading mb="4">stuff about me</Heading>
-              <Text mb="4" fontSize="lg">
-                Yo i did these things and build this and that
-              </Text>
-              <SocialButtons />
-            </div>
-            <div id="projects">
-              <Heading mb="4">my projects</Heading>
-              <Text fontSize="lg">
-                Yo i did these things and build this and that
-              </Text>
-            </div>
-          </Stack>
-          <Stack spacing="4" borderWidth="1px" p="6">
-            <FormControl display="flex" alignItems="center">
-              <FormLabel htmlFor="debug-mode" mb="0" ml="auto">
-                Debug mode
-              </FormLabel>
-              <Switch
-                id="debug-mode"
-                isChecked={debug}
-                onChange={event => setDebug(event.target.checked)}
-              />
-            </FormControl>
-            <Text>
-              The spiral text at the top of the page was made using{' '}
-              <Code>react-spiral</Code>. You can learn how to use it and read
-              about how I made it at its{' '}
-              <Link href="https://github.com/trevorblades/react-spiral">
-                GitHub repository
-              </Link>
-              .
-            </Text>
-            <div>
-              <SyntaxHighlighter language="jsx" style={a11yDark}>
-                {outdent`
-                  import Spiral from 'react-spiral';
-
-                  function MyComponent() {
-                    return (
-                      <Spiral
-                        sides={3}
-                        boxSize={500}
-                        fontSize={32}
-                      />
-                    )
-                  }
-                `}
-              </SyntaxHighlighter>
-            </div>
-          </Stack>
-        </Grid>
-      </Box>
-      <chakra.footer py="16" px="10">
-        &copy; {new Date().getFullYear()}
-      </chakra.footer>
+      <HomePageContent />
+      <Flex as="footer" align="center" py="16" px="10">
+        <span>&copy; {new Date().getFullYear()}</span>
+        <FormControl w="auto" ml="auto" display="flex" alignItems="center">
+          <FormLabel htmlFor="debug-mode" mb="0" ml="auto">
+            Debug mode
+          </FormLabel>
+          <Switch
+            id="debug-mode"
+            isChecked={debug}
+            onChange={event => setDebug(event.target.checked)}
+          />
+        </FormControl>
+      </Flex>
     </div>
   );
 }
