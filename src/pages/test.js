@@ -12,12 +12,16 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  Link,
+  Square,
   Stack,
   Switch,
   Text,
   chakra,
   useTheme
 } from '@chakra-ui/react';
+import {FaNpm} from 'react-icons/fa';
+import {FiDownload} from 'react-icons/fi';
 import {PrismLight as SyntaxHighlighter} from 'react-syntax-highlighter';
 import {a11yDark} from 'react-syntax-highlighter/dist/esm/styles/prism';
 import {outdent} from 'outdent';
@@ -69,6 +73,13 @@ export default function Test() {
     [y, height]
   );
 
+  const textOpacity = useMemo(() => {
+    const vmin = Math.min(height, width);
+    const ratio = vmin / diameter;
+    const opacity = (circleScale - ratio) * (1 / (1 - ratio));
+    return Math.min(1, Math.max(0, opacity));
+  }, [circleScale, width, height, diameter]);
+
   return (
     <div key={now}>
       <Header
@@ -84,6 +95,54 @@ export default function Test() {
         ]})`}
       >
         <Center height="100vh" position="sticky" top="0" overflow="hidden">
+          <Flex
+            as={Link}
+            isExternal
+            href="https://npm.im/react-spiral"
+            fontFamily="mono"
+            bgColor="white"
+            align="center"
+            pos="absolute"
+            bottom="4"
+            right="4"
+            rounded="md"
+            overflow="hidden"
+            role="group"
+            _hover={{textDecor: 'none'}}
+          >
+            <Square
+              p="2"
+              bgColor="red.500"
+              color="white"
+              sx={{
+                svg: {
+                  transitionProperty: 'transform, opacity',
+                  transitionDuration: '250ms'
+                }
+              }}
+            >
+              <Box
+                as={FaNpm}
+                fontSize="2xl"
+                _groupHover={{
+                  transform: 'rotate(-90deg)',
+                  opacity: 0
+                }}
+              />
+              <Box
+                as={FiDownload}
+                pos="absolute"
+                fontSize="xl"
+                opacity="0"
+                transform="rotate(90deg)"
+                _groupHover={{
+                  transform: 'none',
+                  opacity: 1
+                }}
+              />
+            </Square>
+            <Box px="3">npm i react-spiral</Box>
+          </Flex>
           <Box
             fontWeight="bold"
             fontFamily="heading"
@@ -204,14 +263,16 @@ export default function Test() {
             )}
           </Circle>
           <Box
+            maxW="100vmin"
+            textAlign="center"
             pos="absolute"
             top="50%"
             left="50%"
             transform="translate(-50%, -50%)"
             color="white"
-            style={{opacity: (circleScale - 1 / 3) * 3}}
+            style={{opacity: textOpacity}}
           >
-            <Heading size="3xl">i ❤️ dev</Heading>
+            <Heading size="3xl">i ❤️ web dev</Heading>
           </Box>
         </Center>
       </Box>

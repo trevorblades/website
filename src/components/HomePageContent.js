@@ -48,49 +48,49 @@ export default function HomePageContent() {
       <Grid templateColumns="2fr 1fr" alignItems="flex-start" gap="16">
         <Stack spacing="20">
           <div id="about">
-            <Heading mb="4">stuff about me</Heading>
+            <Heading mb="2">stuff about me</Heading>
             <Text mb="4" fontSize="lg">
               Yo i did these things and build this and that
             </Text>
             <SocialButtons />
           </div>
-          <SimpleGrid minChildWidth="300px" spacing="8">
-            <GridItem
-              icon={Knoword}
-              title="Knoword"
-              description="Educational game"
-              bgColor="#ff4e1e"
-            />
-            <GridItem
-              icon={Apollo}
-              title="Apollo Odyssey"
-              description="Learning platform"
-              bgColor="#583bc9"
-            />
-            <GridItem
-              icon={Playback}
-              title="Playback"
-              description="Filmmaking tool"
-              bgColor="#e91e63"
-            />
-            <GridItem
-              icon={Pollenize}
-              title="Pollenize"
-              description="Election education"
-              bgColor="gray.800"
-            />
-            <GridItem
-              icon={Planet}
-              title="Planet Stories"
-              description="Editorial/research tool"
-              bgColor="#009da5"
-            />
-          </SimpleGrid>
           <div id="projects">
-            <Heading mb="4">my projects</Heading>
-            <Text fontSize="lg">
+            <Heading mb="2">my projects</Heading>
+            <Text mb="6" fontSize="lg">
               Yo i did these things and build this and that
             </Text>
+            <SimpleGrid minChildWidth="300px" spacing="8">
+              <GridItem
+                icon={Knoword}
+                title="Knoword"
+                description="Educational game"
+                bgColor="#ff4e1e"
+              />
+              <GridItem
+                icon={Apollo}
+                title="Apollo Odyssey"
+                description="Learning platform"
+                bgColor="#583bc9"
+              />
+              <GridItem
+                icon={Playback}
+                title="Playback"
+                description="Filmmaking tool"
+                bgColor="#e91e63"
+              />
+              <GridItem
+                icon={Pollenize}
+                title="Pollenize"
+                description="Election education"
+                bgColor="gray.800"
+              />
+              <GridItem
+                icon={Planet}
+                title="Planet Stories"
+                description="Editorial/research tool"
+                bgColor="#009da5"
+              />
+            </SimpleGrid>
           </div>
         </Stack>
         <Stack
