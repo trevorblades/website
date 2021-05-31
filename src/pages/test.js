@@ -2,12 +2,14 @@ import Header from '../components/Header';
 import HomePageContent from '../components/HomePageContent';
 import PropTypes from 'prop-types';
 import React, {useMemo, useState} from 'react';
+import SocialButtons from '../components/SocialButtons';
 import Spiral from 'react-spiral';
 import jsx from 'react-syntax-highlighter/dist/esm/languages/prism/jsx';
 import {
   Box,
   Center,
   Circle,
+  DarkMode,
   Flex,
   FormControl,
   FormLabel,
@@ -155,19 +157,17 @@ export default function Test() {
               sides={sides}
               spacing={100}
               segments={[
-                "I'm a web",
-                'developer',
-                'who enjoys',
-                'solving',
-                'puzzles',
-                'with',
-                'JS and',
-                'CSS.',
-                'Check',
-                'out',
-                'some of',
-                'my work',
-                'below'
+                'scroll down',
+                'scroll down',
+                'scroll down',
+                'scroll',
+                'down',
+                'scroll',
+                'down',
+                'scroll',
+                'down',
+                'scroll',
+                'down'
               ]}
             />
           </Box>
@@ -272,7 +272,21 @@ export default function Test() {
             color="white"
             style={{opacity: textOpacity}}
           >
-            <Heading size="3xl">i ❤️ web dev</Heading>
+            <Text mb="2" fontFamily="mono" color="gray.500">
+              <chakra.span color="green.300">&gt;</chakra.span> nice job
+            </Text>
+            <Heading mb="4" size="3xl">
+              You made it.
+            </Heading>
+            <Text mb="6" fontSize="xl">
+              Yo! 👋 I&apos;m Trevor. I design and build beautiful, functional
+              websites that usually provide some kind of educational value or
+              help people succeed in their work. I stream my work on Twitch and
+              occasionally write about it here.
+            </Text>
+            <DarkMode>
+              <SocialButtons />
+            </DarkMode>
           </Box>
         </Center>
       </Box>
