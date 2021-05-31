@@ -23,19 +23,26 @@ import {outdent} from 'outdent';
 
 SyntaxHighlighter.registerLanguage('jsx', jsx);
 
+const GRID_ITEM_ARROW_POS = {base: 2, md: 3};
+
 function GridItem({icon, title, description, ...props}) {
   return (
     <Box
       as={Link}
       isExternal
-      p="6"
+      p={[4, 5, 6]}
       color="white"
       pos="relative"
       role="group"
       _hover={{textDecor: 'none'}}
       {...props}
     >
-      <Box height="12" as={icon} mb="4" fill="current" />
+      <Box
+        as={icon}
+        mb={{base: 3, md: 4}}
+        height={{base: 10, md: 12}}
+        fill="current"
+      />
       <Heading size="lg" letterSpacing="tight">
         {title}
       </Heading>
@@ -43,8 +50,8 @@ function GridItem({icon, title, description, ...props}) {
       <Box
         fontSize="2xl"
         pos="absolute"
-        top="3"
-        right="3"
+        top={GRID_ITEM_ARROW_POS}
+        right={GRID_ITEM_ARROW_POS}
         as={FiArrowUpRight}
         transitionProperty="transform,opacity"
         transitionDuration="250ms"
@@ -69,56 +76,56 @@ GridItem.propTypes = {
 export default function HomePageContent() {
   return (
     <Box p="10">
+      <Stack spacing="20">
+        <div id="projects">
+          <Heading mb="2">things that i built</Heading>
+          <Text mb="6" fontSize="lg">
+            Yo i did these things and build this and that
+          </Text>
+          <SimpleGrid minChildWidth={{base: '250px', md: '300px'}} spacing="6">
+            <GridItem
+              icon={Knoword}
+              title="Knoword"
+              description="Educational game"
+              bgColor="#ff4e1e"
+              href="https://playknoword.com"
+            />
+            <GridItem
+              icon={Apollo}
+              title="Apollo Odyssey"
+              description="Learning platform"
+              bgColor="#583bc9"
+              href="https://odyssey.apollographql.com"
+            />
+            <GridItem
+              icon={Playback}
+              title="Playback"
+              description="Filmmaking tool"
+              bgColor="#e91e63"
+              href="https://playback.rocks"
+            />
+            <GridItem
+              icon={Pollenize}
+              title="Pollenize"
+              description="Election education"
+              bgColor="gray.800"
+              href="https://pollenize.org"
+            />
+            <GridItem
+              icon={Planet}
+              title="Planet Stories"
+              description="Editorial/research tool"
+              bgColor="#009da5"
+              href="https://planet.com/stories"
+            />
+          </SimpleGrid>
+        </div>
+        <div>
+          <Heading mb="2">open source</Heading>
+          list fav open source projects here
+        </div>
+      </Stack>
       <Grid templateColumns="2fr 1fr" alignItems="flex-start" gap="16">
-        <Stack spacing="20">
-          <div id="projects">
-            <Heading mb="2">things that i built</Heading>
-            <Text mb="6" fontSize="lg">
-              Yo i did these things and build this and that
-            </Text>
-            <SimpleGrid minChildWidth="300px" spacing="6">
-              <GridItem
-                icon={Knoword}
-                title="Knoword"
-                description="Educational game"
-                bgColor="#ff4e1e"
-                href="https://playknoword.com"
-              />
-              <GridItem
-                icon={Apollo}
-                title="Apollo Odyssey"
-                description="Learning platform"
-                bgColor="#583bc9"
-                href="https://odyssey.apollographql.com"
-              />
-              <GridItem
-                icon={Playback}
-                title="Playback"
-                description="Filmmaking tool"
-                bgColor="#e91e63"
-                href="https://playback.rocks"
-              />
-              <GridItem
-                icon={Pollenize}
-                title="Pollenize"
-                description="Election education"
-                bgColor="gray.800"
-                href="https://pollenize.org"
-              />
-              <GridItem
-                icon={Planet}
-                title="Planet Stories"
-                description="Editorial/research tool"
-                bgColor="#009da5"
-                href="https://planet.com/stories"
-              />
-            </SimpleGrid>
-          </div>
-          <div>
-            <Heading mb="2">open source</Heading>
-            list fav open source projects here
-          </div>
-        </Stack>
         <Stack
           as="aside"
           pos="sticky"

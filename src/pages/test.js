@@ -156,19 +156,30 @@ export default function Test() {
               boxSize={600}
               sides={sides}
               spacing={100}
-              segments={[
-                'scroll down',
-                'scroll down',
-                'scroll down',
-                'scroll',
-                'down',
-                'scroll',
-                'down',
-                'scroll',
-                'down',
-                'scroll',
-                'down'
-              ]}
+              segments={
+                sides === 3
+                  ? [
+                      'scroll down',
+                      'scroll down',
+                      'scroll down',
+                      'scroll',
+                      'down',
+                      'scroll'
+                    ]
+                  : [
+                      'Upgrade your',
+                      'gray matter',
+                      'cuz one day',
+                      'it may',
+                      'matter.',
+                      'Upgrade',
+                      'your',
+                      'gray',
+                      'matter',
+                      'cuz',
+                      'one'
+                    ]
+              }
             />
           </Box>
           <Circle
@@ -294,11 +305,11 @@ export default function Test() {
       <Flex as="footer" align="center" py="16" px="10">
         <span>&copy; {new Date().getFullYear()}</span>
         <FormControl w="auto" ml="auto" display="flex" alignItems="center">
-          <FormLabel htmlFor="debug-mode" mb="0" ml="auto">
+          <FormLabel htmlFor="debug" mb="0" ml="auto">
             Debug mode
           </FormLabel>
           <Switch
-            id="debug-mode"
+            id="debug"
             isChecked={debug}
             onChange={event => setDebug(event.target.checked)}
           />
