@@ -20,22 +20,27 @@ import {ReactComponent as Pollenize} from '../assets/pollenize.svg';
 import {PrismLight as SyntaxHighlighter} from 'react-syntax-highlighter';
 import {a11yDark} from 'react-syntax-highlighter/dist/esm/styles/prism';
 import {outdent} from 'outdent';
+import {tint} from 'polished';
 
 SyntaxHighlighter.registerLanguage('jsx', jsx);
 
 const GRID_ITEM_ARROW_POS = {base: 2, md: 3};
 
-function GridItem({icon, title, description, ...props}) {
+function GridItem({icon, title, description, color, href}) {
   return (
     <Box
       as={Link}
+      href={href}
       isExternal
       p={[4, 5, 6]}
       color="white"
       pos="relative"
       role="group"
-      _hover={{textDecor: 'none'}}
-      {...props}
+      bgColor={color}
+      _hover={{
+        textDecor: 'none',
+        bgColor: tint(0.1, color)
+      }}
     >
       <Box
         as={icon}
@@ -70,52 +75,53 @@ GridItem.propTypes = {
   icon: PropTypes.elementType,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  iconColor: PropTypes.string
+  color: PropTypes.string.isRequired,
+  href: PropTypes.string.isRequired
 };
 
 export default function HomePageContent() {
   return (
-    <Box p="10">
+    <Box p="10" mx="auto" maxW="container.xl">
       <Stack spacing="20">
         <div id="projects">
-          <Heading mb="2">things that i built</Heading>
+          <Heading mb="2">My favourite things</Heading>
           <Text mb="6" fontSize="lg">
-            Yo i did these things and build this and that
+            These are a few of the projects that I&apos;m particularly proud of.
           </Text>
           <SimpleGrid minChildWidth={{base: '250px', md: '300px'}} spacing="6">
             <GridItem
               icon={Knoword}
               title="Knoword"
               description="Educational game"
-              bgColor="#ff4e1e"
+              color="#ff4e1e"
               href="https://playknoword.com"
             />
             <GridItem
               icon={Apollo}
               title="Apollo Odyssey"
               description="Learning platform"
-              bgColor="#583bc9"
+              color="#583bc9"
               href="https://odyssey.apollographql.com"
             />
             <GridItem
               icon={Playback}
               title="Playback"
               description="Filmmaking tool"
-              bgColor="#e91e63"
+              color="#e91e63"
               href="https://playback.rocks"
             />
             <GridItem
               icon={Pollenize}
               title="Pollenize"
               description="Election education"
-              bgColor="gray.800"
+              color="#212121"
               href="https://pollenize.org"
             />
             <GridItem
               icon={Planet}
               title="Planet Stories"
               description="Editorial/research tool"
-              bgColor="#009da5"
+              color="#009da5"
               href="https://planet.com/stories"
             />
           </SimpleGrid>
