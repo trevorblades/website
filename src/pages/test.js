@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import React, {useMemo, useState} from 'react';
 import SocialButtons from '../components/SocialButtons';
 import Spiral from 'react-spiral';
-import jsx from 'react-syntax-highlighter/dist/esm/languages/prism/jsx';
 import {
   Box,
   Center,
@@ -16,7 +15,6 @@ import {
   Heading,
   Link,
   Square,
-  Stack,
   Switch,
   Text,
   chakra,
@@ -24,12 +22,7 @@ import {
 } from '@chakra-ui/react';
 import {FaNpm} from 'react-icons/fa';
 import {FiDownload} from 'react-icons/fi';
-import {PrismLight as SyntaxHighlighter} from 'react-syntax-highlighter';
-import {a11yDark} from 'react-syntax-highlighter/dist/esm/styles/prism';
-import {outdent} from 'outdent';
 import {useMount, useWindowScroll, useWindowSize} from 'react-use';
-
-SyntaxHighlighter.registerLanguage('jsx', jsx);
 
 function GridItem({icon, title, description, ...props}) {
   return (
@@ -52,6 +45,17 @@ export default function Test() {
   const {colors} = useTheme();
   const [now, setNow] = useState(Date.now());
   const [debug, setDebug] = useState(false);
+
+  const gradient = useMemo(
+    () =>
+      `linear-gradient(${[
+        '45deg',
+        colors.purple[400],
+        colors.blue[400],
+        colors.yellow[300]
+      ]})`,
+    [colors]
+  );
 
   useMount(() => setNow(Date.now()));
 
@@ -88,14 +92,7 @@ export default function Test() {
         bgColor={isHeaderDark && 'gray.800'}
         color={isHeaderDark && 'white'}
       />
-      <Box
-        height="300vh"
-        bgImage={`linear-gradient(${[
-          colors.red[500],
-          colors.yellow[500],
-          colors.blue[500]
-        ]})`}
-      >
+      <Box height="300vh" bgImage={gradient}>
         <Center height="100vh" position="sticky" top="0" overflow="hidden">
           <Flex
             as={Link}
@@ -156,29 +153,10 @@ export default function Test() {
               boxSize={600}
               sides={sides}
               spacing={100}
-              segments={
+              text={
                 sides === 3
-                  ? [
-                      'scroll down',
-                      'scroll down',
-                      'scroll down',
-                      'scroll',
-                      'down',
-                      'scroll'
-                    ]
-                  : [
-                      'Upgrade your',
-                      'gray matter',
-                      'cuz one day',
-                      'it may',
-                      'matter.',
-                      'Upgrade',
-                      'your',
-                      'gray',
-                      'matter',
-                      'cuz',
-                      'one'
-                    ]
+                  ? 'scroll down'
+                  : 'upgrade your gray matter cuz one day it may matter.'
               }
             />
           </Box>
@@ -242,34 +220,6 @@ export default function Test() {
                     b
                   </Box>
                 </Box>
-                <Stack spacing="4" p="12" mt="auto" w="calc(100% / 3)">
-                  <Text>
-                    To fill up the screen at the right time, the circle must
-                    have a diameter relative to the height and width of the
-                    browser viewport.
-                  </Text>
-                  <div>
-                    <SyntaxHighlighter language="jsx" style={a11yDark}>
-                      {outdent`
-                        const {width, height} = useWindowSize();
-                        const diameter = Math.sqrt(width ** 2 + height ** 2);
-                      `}
-                    </SyntaxHighlighter>
-                  </div>
-                  <Text>
-                    Now I only need to scale the circle up from 0 to 1 in
-                    conjunction with the window scroll position.
-                  </Text>
-                  <div>
-                    <SyntaxHighlighter language="jsx" style={a11yDark}>
-                      {outdent`
-                        const {y} = useWindowScroll();
-                        const {height} = useWindowSize();
-                        const scale = Math.min(1, y / height);
-                      `}
-                    </SyntaxHighlighter>
-                  </div>
-                </Stack>
               </Flex>
             )}
           </Circle>
@@ -302,6 +252,11 @@ export default function Test() {
         </Center>
       </Box>
       <HomePageContent />
+      <Box h="px" bgImage={gradient} />
+      <div>
+        <Heading mb="2">open source</Heading>
+        list fav open source projects here
+      </div>
       <Flex as="footer" align="center" py="16" px="10">
         <span>&copy; {new Date().getFullYear()}</span>
         <FormControl w="auto" ml="auto" display="flex" alignItems="center">
