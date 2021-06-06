@@ -1,6 +1,7 @@
+import Extender from '../components/Extender';
 import Header from '../components/Header';
 import HomePageContent from '../components/HomePageContent';
-import PropTypes from 'prop-types';
+import OpenSource from '../components/OpenSource';
 import React, {useMemo, useState} from 'react';
 import SocialButtons from '../components/SocialButtons';
 import Spiral from 'react-spiral';
@@ -24,23 +25,6 @@ import {FaNpm} from 'react-icons/fa';
 import {FiDownload} from 'react-icons/fi';
 import {useMount, useWindowScroll, useWindowSize} from 'react-use';
 
-function GridItem({icon, title, description, ...props}) {
-  return (
-    <Box p="6" color="white" {...props}>
-      <Box height="12" as={icon} mb="4" fill="current" />
-      <Heading size="lg">{title}</Heading>
-      <Text>{description}</Text>
-    </Box>
-  );
-}
-
-GridItem.propTypes = {
-  icon: PropTypes.element,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  iconColor: PropTypes.string
-};
-
 export default function Test() {
   const {colors} = useTheme();
   const [now, setNow] = useState(Date.now());
@@ -50,8 +34,8 @@ export default function Test() {
     () =>
       `linear-gradient(${[
         '45deg',
+        colors.orange[300],
         colors.purple[400],
-        colors.blue[400],
         colors.yellow[300]
       ]})`,
     [colors]
@@ -237,7 +221,8 @@ export default function Test() {
               <chakra.span color="green.300">&gt;</chakra.span> nice job
             </Text>
             <Heading mb="4" size="3xl">
-              You made it.
+              Yo<Extender factor={1 / 2}>u</Extender> m<Extender>a</Extender>de
+              it.
             </Heading>
             <Text mb="6" fontSize="xl">
               Yo! 👋 I&apos;m Trevor. I design and build beautiful, functional
@@ -253,10 +238,7 @@ export default function Test() {
       </Box>
       <HomePageContent />
       <Box h="px" bgImage={gradient} />
-      <div>
-        <Heading mb="2">open source</Heading>
-        list fav open source projects here
-      </div>
+      <OpenSource />
       <Flex as="footer" align="center" py="16" px="10">
         <span>&copy; {new Date().getFullYear()}</span>
         <FormControl w="auto" ml="auto" display="flex" alignItems="center">
