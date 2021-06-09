@@ -1,7 +1,8 @@
 import Extender from './Extender';
 import React from 'react';
 import {Box, Button, Flex, Heading, SimpleGrid, Text} from '@chakra-ui/react';
-import {FiArrowRight, FiStar} from 'react-icons/fi';
+import {FiArrowRight} from 'react-icons/fi';
+import {GoStar} from 'react-icons/go';
 import {graphql, useStaticQuery} from 'gatsby';
 
 export default function OpenSource() {
@@ -34,7 +35,7 @@ export default function OpenSource() {
         <Extender>O</Extender>
         pen so<Extender factor={1 / 2}>u</Extender>rce
       </Heading>
-      <SimpleGrid minChildWidth="300px" spacing="4">
+      <SimpleGrid minChildWidth={{base: '220px', md: '300px'}} spacing="4">
         {github.repositoryOwner.pinnedItems.nodes.map(repo => (
           <Flex
             direction="column"
@@ -43,7 +44,7 @@ export default function OpenSource() {
             rounded={{base: 'lg', md: 'xl'}}
           >
             <Box p={[4, 5, 6]}>
-              <Heading size="lg" mb="2" fontFamily="mono">
+              <Heading size="lg" mb={{base: 2, md: 3}} fontFamily="mono">
                 {repo.name}
               </Heading>
               <Text fontSize={{md: 'lg'}}>{repo.description}</Text>
@@ -54,7 +55,7 @@ export default function OpenSource() {
               p={{base: 1 / 2, md: 1}}
               borderTopWidth="1px"
             >
-              <Box fontSize="lg" as={FiStar} mx="2" />
+              <Box fontSize="lg" as={GoStar} mx="2" />
               {repo.stargazerCount}
               <Button
                 ml="auto"
@@ -62,6 +63,10 @@ export default function OpenSource() {
                 size="sm"
                 colorScheme="purple"
                 rightIcon={<FiArrowRight />}
+                as="a"
+                target="_blank"
+                rel="noopener noreferrer"
+                href={repo.url}
               >
                 View
               </Button>
@@ -69,7 +74,6 @@ export default function OpenSource() {
           </Flex>
         ))}
       </SimpleGrid>
-      <div>View more on GitHub</div>
     </Box>
   );
 }

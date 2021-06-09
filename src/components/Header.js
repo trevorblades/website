@@ -49,7 +49,7 @@ export default function Header(props) {
           <Link href="#about">about me</Link>
           <Link href="#projects">projects</Link>
           <Link as={GatsbyLink} to="/garden">
-            garden
+            labs
           </Link>
           <Button
             as="a"

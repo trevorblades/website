@@ -1,16 +1,20 @@
 import Extender from './Extender';
 import PropTypes from 'prop-types';
 import React from 'react';
+import confetti from 'canvas-confetti';
+import mary from '../assets/mary.png';
 import {ReactComponent as Apollo} from '../assets/apollo.svg';
 import {
+  AspectRatio,
   Box,
   Center,
   Grid,
   Heading,
-  Link,
+  Img,
   SimpleGrid,
   Stack,
-  Text
+  Text,
+  chakra
 } from '@chakra-ui/react';
 import {ReactComponent as Knoword} from '../assets/knoword.svg';
 import {ReactComponent as Planet} from '../assets/planet.svg';
@@ -20,54 +24,61 @@ import {tint} from 'polished';
 
 function GridItem({icon, title, description, color, href}) {
   return (
-    <Center
-      as={Link}
+    <Box
+      as="a"
+      target="_blank"
+      rel="noopener noreferrer"
       href={href}
-      isExternal
       textAlign="center"
-      px={[4, 5, 6]}
-      py={[6, 7, 8]}
       color="white"
       pos="relative"
       role="group"
       bgColor={color}
-      _hover={{
-        textDecor: 'none',
-        bgColor: tint(0.1, color)
+      _hover={{bgColor: tint(0.1, color)}}
+      sx={{
+        '*': {
+          transitionProperty: 'opacity, transform',
+          transitionDuration: '250ms'
+        }
       }}
     >
       <Box
         as={icon}
-        mb={{base: 3, md: 4}}
-        height={{base: 10, md: 12}}
+        height="calc(100% / 3)"
         fill="current"
         pos="absolute"
         top="50%"
         left="50%"
         transform="translate(-50%, -50%)"
-        transitionProperty="opacity, transform"
-        transitionDuration="250ms"
         _groupHover={{
           opacity: 0,
-          transform: 'translate(-50%, -80%)'
+          transform: 'scale(0.95) translate(-50%, -50%)'
         }}
       />
-      <Box
-        opacity="0"
-        transitionProperty="opacity, transform"
-        transitionDuration="250ms"
-        transform="translateY(20%)"
-        _groupHover={{
-          opacity: 1,
-          transform: 'none'
-        }}
-      >
-        <Heading mt="auto" size="lg" letterSpacing="tight">
-          {title}
-        </Heading>
-        <Text fontSize={{md: 'lg'}}>{description}</Text>
-      </Box>
-    </Center>
+      <AspectRatio ratio={1}>
+        <div>
+          <Box
+            px={[4, 5, 6]}
+            py={[6, 7, 8]}
+            opacity="0"
+            transform="translateY(10%)"
+            _groupHover={{
+              opacity: 1,
+              transform: 'none'
+            }}
+          >
+            <Heading letterSpacing="tight">{title}</Heading>
+            <Text
+              transform="translateY(50%)"
+              _groupHover={{transform: 'none'}}
+              fontSize={{base: 'lg', md: 'xl'}}
+            >
+              {description}
+            </Text>
+          </Box>
+        </div>
+      </AspectRatio>
+    </Box>
   );
 }
 
@@ -81,7 +92,7 @@ GridItem.propTypes = {
 
 export default function HomePageContent() {
   return (
-    <Grid templateColumns={{md: 'repeat(2, 1fr)', lg: '3fr 2fr'}}>
+    <Grid templateColumns={{lg: 'repeat(2, 1fr)', xl: '3fr 2fr'}}>
       <Box py="12" px="10">
         <Stack spacing="20">
           <div id="projects">
@@ -89,12 +100,12 @@ export default function HomePageContent() {
               My fav<Extender factor={1 / 2}>o</Extender>urite thin
               <Extender>g</Extender>s
             </Heading>
-            <Text mb="8" fontSize="lg">
+            <Text mb="8" fontSize={{base: 'lg', md: 'xl'}}>
               These are a few of the projects that I&apos;m particularly proud
               of.
             </Text>
             <SimpleGrid
-              minChildWidth={{base: '200px', md: '250px'}}
+              minChildWidth={{base: '180px', md: '220px'}}
               spacing="2"
             >
               <GridItem
@@ -139,12 +150,37 @@ export default function HomePageContent() {
       <Center
         p={{base: 12, md: 16}}
         bgColor="yellow.200"
-        fontSize={{base: '4xl', md: '5xl'}}
-        lineHeight="shorter"
+        fontSize={{base: '3xl', md: '4xl'}}
+        lineHeight="short"
         textAlign="center"
         fontFamily="mono"
       >
-        This stuff is easy when you&apos;re having fun
+        <div>
+          In every job that must be done there is an element of{' '}
+          <chakra.span
+            onClick={event =>
+              confetti({
+                origin: {
+                  x: event.clientX / window.innerWidth,
+                  y: event.clientY / window.innerHeight
+                }
+              })
+            }
+            fontFamily="cursive"
+            color="pink.500"
+            fontWeight="bold"
+            userSelect="none"
+          >
+            fun
+          </chakra.span>
+          .{' '}
+          <Img
+            display="inline"
+            boxSize="1em"
+            src={mary}
+            verticalAlign="-0.1em"
+          />
+        </div>
       </Center>
     </Grid>
   );

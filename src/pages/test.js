@@ -14,8 +14,8 @@ import {
   FormControl,
   FormLabel,
   Heading,
-  Link,
   Square,
+  Stack,
   Switch,
   Text,
   chakra,
@@ -79,8 +79,9 @@ export default function Test() {
       <Box height="300vh" bgImage={gradient}>
         <Center height="100vh" position="sticky" top="0" overflow="hidden">
           <Flex
-            as={Link}
-            isExternal
+            as="a"
+            target="_blank"
+            rel="noopener noreferrer"
             href="https://npm.im/react-spiral"
             fontFamily="mono"
             bgColor="white"
@@ -91,7 +92,6 @@ export default function Test() {
             rounded="md"
             overflow="hidden"
             role="group"
-            _hover={{textDecor: 'none'}}
           >
             <Square
               p="2"
@@ -108,7 +108,7 @@ export default function Test() {
                 as={FaNpm}
                 fontSize="2xl"
                 _groupHover={{
-                  transform: 'rotate(-90deg)',
+                  transform: 'scale(0.8)',
                   opacity: 0
                 }}
               />
@@ -117,7 +117,7 @@ export default function Test() {
                 pos="absolute"
                 fontSize="xl"
                 opacity="0"
-                transform="rotate(90deg)"
+                transform="scale(1.5)"
                 _groupHover={{
                   transform: 'none',
                   opacity: 1
@@ -157,19 +157,19 @@ export default function Test() {
           >
             {debug && (
               <Flex
-                color="white"
                 direction="column"
                 w="100vw"
                 h="100vh"
+                color="blue.400"
+                fontFamily="mono"
                 borderWidth="2px"
-                borderLeftColor="green.500"
-                borderBottomColor="blue.500"
+                borderColor="current"
                 pos="relative"
               >
                 <Box fontSize="2xl" fontWeight="medium">
                   <Box
                     h={1 / 2}
-                    bgColor="red.500"
+                    bgColor="current"
                     transform="rotate(20deg)"
                     transformOrigin="top left"
                     textAlign="center"
@@ -179,9 +179,9 @@ export default function Test() {
                       transform: `translateY(-50%) rotate(${interiorAngle}rad)`
                     }}
                   >
-                    <chakra.span color="red.500">diameter</chakra.span> = √(
-                    <chakra.span color="green.500">a</chakra.span>
-                    <sup>2</sup> + <chakra.span color="blue.500">b</chakra.span>
+                    <chakra.span>diameter</chakra.span> = √(
+                    <chakra.span>a</chakra.span>
+                    <sup>2</sup> + <chakra.span>b</chakra.span>
                     <sup>2</sup>)
                   </Box>
                   <Box
@@ -207,37 +207,50 @@ export default function Test() {
               </Flex>
             )}
           </Circle>
-          <Box
-            maxW="100vmin"
-            textAlign="center"
-            pos="absolute"
-            top="50%"
-            left="50%"
-            transform="translate(-50%, -50%)"
-            color="white"
-            style={{opacity: textOpacity}}
-          >
-            <Text mb="2" fontFamily="mono" color="gray.500">
-              <chakra.span color="green.300">&gt;</chakra.span> nice job
-            </Text>
-            <Heading mb="4" size="3xl">
-              Yo<Extender factor={1 / 2}>u</Extender> m<Extender>a</Extender>de
-              it.
-            </Heading>
-            <Text mb="6" fontSize="xl">
-              Yo! 👋 I&apos;m Trevor. I design and build beautiful, functional
-              websites that usually provide some kind of educational value or
-              help people succeed in their work. I stream my work on Twitch and
-              occasionally write about it here.
-            </Text>
-            <DarkMode>
-              <SocialButtons />
-            </DarkMode>
-          </Box>
+          {!debug ? (
+            <Box
+              px="16"
+              w="full"
+              maxW="100vmin"
+              textAlign="center"
+              pos="absolute"
+              top="50%"
+              left="50%"
+              transform="translate(-50%, -50%)"
+              color="white"
+              style={{opacity: textOpacity}}
+            >
+              <Heading mb="4" size="3xl">
+                Yo<Extender factor={1 / 2}>u</Extender> m<Extender>a</Extender>
+                de it.
+              </Heading>
+              <Text mb="6" fontSize="xl">
+                Yo! 👋 I&apos;m Trevor. I design and build beautiful, functional
+                websites that usually provide some kind of educational value or
+                help people succeed in their work. I stream my work on Twitch
+                and occasionally write about it here.
+              </Text>
+              <DarkMode>
+                <SocialButtons />
+              </DarkMode>
+            </Box>
+          ) : (
+            <Stack
+              pos="absolute"
+              bottom="6"
+              left="6"
+              color="blue.400"
+              fontSize={{md: 'lg'}}
+              fontFamily="mono"
+            >
+              <div>Spiral sides: {sides}</div>
+              <div>Viewports scrolled: {y / height}</div>
+              <div>Circle scale: {circleScale}</div>
+            </Stack>
+          )}
         </Center>
       </Box>
-      <HomePageContent />
-      <Box h="px" bgImage={gradient} />
+      <HomePageContent gradient={gradient} />
       <OpenSource />
       <Flex as="footer" align="center" py="16" px="10">
         <span>&copy; {new Date().getFullYear()}</span>
