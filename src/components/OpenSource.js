@@ -5,6 +5,16 @@ import {FiArrowRight} from 'react-icons/fi';
 import {GoStar} from 'react-icons/go';
 import {graphql, useStaticQuery} from 'gatsby';
 
+export function OpenSourceGrid(props) {
+  return (
+    <SimpleGrid
+      minChildWidth={{base: '220px', md: '300px'}}
+      spacing="4"
+      {...props}
+    />
+  );
+}
+
 export default function OpenSource() {
   const {github} = useStaticQuery(graphql`
     {
@@ -35,7 +45,7 @@ export default function OpenSource() {
         <Extender>O</Extender>
         pen so<Extender factor={1 / 2}>u</Extender>rce
       </Heading>
-      <SimpleGrid minChildWidth={{base: '220px', md: '300px'}} spacing="4">
+      <OpenSourceGrid>
         {github.repositoryOwner.pinnedItems.nodes.map(repo => (
           <Flex
             direction="column"
@@ -73,7 +83,7 @@ export default function OpenSource() {
             </Flex>
           </Flex>
         ))}
-      </SimpleGrid>
+      </OpenSourceGrid>
     </Box>
   );
 }

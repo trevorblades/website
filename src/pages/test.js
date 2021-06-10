@@ -1,7 +1,7 @@
 import Extender from '../components/Extender';
 import Header from '../components/Header';
 import HomePageContent from '../components/HomePageContent';
-import OpenSource from '../components/OpenSource';
+import OpenSource, {OpenSourceGrid} from '../components/OpenSource';
 import React, {useMemo, useState} from 'react';
 import SocialButtons from '../components/SocialButtons';
 import Spiral from 'react-spiral';
@@ -13,6 +13,7 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  HStack,
   Heading,
   Square,
   Stack,
@@ -25,10 +26,14 @@ import {FaNpm} from 'react-icons/fa';
 import {FiDownload} from 'react-icons/fi';
 import {useMount, useWindowScroll, useWindowSize} from 'react-use';
 
+const LAB_COLORS = ['red', 'green', 'blue'];
+
 export default function Test() {
   const {colors} = useTheme();
   const [now, setNow] = useState(Date.now());
   const [debug, setDebug] = useState(false);
+
+  const [labColor, setLabColor] = useState('green');
 
   const gradient = useMemo(
     () =>
@@ -251,9 +256,50 @@ export default function Test() {
         </Center>
       </Box>
       <HomePageContent gradient={gradient} />
+      <Box
+        px="10"
+        py="12"
+        bgColor={`${labColor}.800`}
+        color={`${labColor}.100`}
+        pos="relative"
+      >
+        <Heading size="2xl" mb="8">
+          Lab
+        </Heading>
+        <OpenSourceGrid>
+          {Array.from({length: 4}, (_, index) => (
+            <Box
+              key={index}
+              rounded={{base: 'lg', md: 'xl'}}
+              borderColor={`${labColor}.700`}
+              borderWidth="1px"
+              p={[4, 5, 6]}
+            >
+              <Heading size="lg">Let&apos;s talk about n-gons</Heading>
+            </Box>
+          ))}
+        </OpenSourceGrid>
+        <HStack pos="absolute" top="4" right="4">
+          {LAB_COLORS.map(color => (
+            <Circle
+              key={color}
+              as="button"
+              color={`${color}.300`}
+              size="4"
+              borderWidth="2px"
+              borderColor="current"
+              bgColor={labColor === color && 'current'}
+              onClick={() => setLabColor(color)}
+            />
+          ))}
+        </HStack>
+      </Box>
       <OpenSource />
       <Flex as="footer" align="center" py="16" px="10">
-        <span>&copy; {new Date().getFullYear()}</span>
+        <div>
+          <div>Made with ☕️ in Burnaby, BC</div>
+          <div>&copy; {new Date().getFullYear()}</div>
+        </div>
         <FormControl w="auto" ml="auto" display="flex" alignItems="center">
           <FormLabel htmlFor="debug" mb="0" ml="auto">
             Debug mode
