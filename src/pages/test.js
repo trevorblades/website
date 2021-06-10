@@ -263,7 +263,7 @@ export default function Test() {
         color={`${labColor}.100`}
         pos="relative"
       >
-        <Heading size="2xl" mb="8">
+        <Heading size="2xl" mb={{base: 6, md: 8}}>
           Lab
         </Heading>
         <OpenSourceGrid>
