@@ -17,7 +17,7 @@ export function OpenSourceGrid(props) {
 
 export default function OpenSource() {
   const {github} = useStaticQuery(graphql`
-    {
+    query ListRepositories {
       github {
         repositoryOwner(login: "trevorblades") {
           login

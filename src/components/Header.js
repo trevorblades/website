@@ -48,10 +48,10 @@ export default function Header(props) {
         <HStack spacing="5" ml="auto">
           <Link href="#about">about me</Link>
           <Link href="#projects">projects</Link>
-          <Link href="#oss">oss</Link>
           <Link as={GatsbyLink} to="/garden">
             lab
           </Link>
+          <Link href="#oss">oss</Link>
           <Button
             as="a"
             href="https://twitch.tv/trevorblades"
