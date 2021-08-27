@@ -1,22 +1,33 @@
 import React from 'react';
-import {Button, Circle, Flex, HStack, Heading, Link} from '@chakra-ui/react';
+import {
+  Button,
+  Circle,
+  Flex,
+  HStack,
+  Heading,
+  Link,
+  useTheme
+} from '@chakra-ui/react';
 import {FaTwitch} from 'react-icons/fa';
 import {Link as GatsbyLink} from 'gatsby';
 import {Global} from '@emotion/react';
 
+export const HEADER_HEIGHT = 12;
+
 export default function Header(props) {
+  const theme = useTheme();
   return (
     <>
       <Global
         styles={{
           html: {
-            scrollPaddingTop: 48
+            scrollPaddingTop: theme.sizes[HEADER_HEIGHT]
           }
         }}
       />
       <Flex
         w="full"
-        h="12"
+        h={HEADER_HEIGHT}
         px="4"
         align="center"
         as="header"
@@ -46,8 +57,8 @@ export default function Header(props) {
           Trevor Blades
         </Heading>
         <HStack spacing="5" ml="auto">
-          <Link href="#about">about me</Link>
-          <Link href="#projects">projects</Link>
+          <Link href="/#about">about me</Link>
+          <Link href="/#projects">projects</Link>
           <Link as={GatsbyLink} to="/garden">
             lab
           </Link>

@@ -49,6 +49,7 @@ export default function Lab() {
               p={[4, 5, 6]}
               as={Link}
               to={lab.path}
+              transition="all 250ms"
               _hover={{
                 borderColor: `${labColor}.500`,
                 bgColor: `${labColor}.700`

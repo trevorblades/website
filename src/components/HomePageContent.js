@@ -12,7 +12,6 @@ import {
   Heading,
   Img,
   SimpleGrid,
-  Stack,
   Text,
   chakra
 } from '@chakra-ui/react';
@@ -50,10 +49,7 @@ function GridItem({icon, title, description, color, href}) {
         top="50%"
         left="50%"
         transform="translate(-50%, -50%)"
-        _groupHover={{
-          opacity: 0,
-          transform: 'scale(0.95) translate(-50%, -50%)'
-        }}
+        _groupHover={{opacity: 0.25}}
       />
       <AspectRatio ratio={1}>
         <div>
@@ -61,7 +57,7 @@ function GridItem({icon, title, description, color, href}) {
             px={[4, 5, 6]}
             py={[6, 7, 8]}
             opacity="0"
-            transform="translateY(10%)"
+            transform="translateY(5%)"
             _groupHover={{
               opacity: 1,
               transform: 'none'
@@ -69,7 +65,7 @@ function GridItem({icon, title, description, color, href}) {
           >
             <Heading letterSpacing="tight">{title}</Heading>
             <Text
-              transform="translateY(50%)"
+              transform="translateY(20%)"
               _groupHover={{transform: 'none'}}
               fontSize={{base: 'lg', md: 'xl'}}
             >
@@ -92,60 +88,52 @@ GridItem.propTypes = {
 
 export default function HomePageContent() {
   return (
-    <Grid templateColumns={{lg: 'repeat(2, 1fr)', xl: '3fr 2fr'}}>
+    <Grid id="projects" templateColumns={{lg: 'repeat(2, 1fr)', xl: '3fr 2fr'}}>
       <Box py="12" px="10">
-        <Stack spacing="20">
-          <div id="projects">
-            <Heading size="2xl" mb="2">
-              My fav<Extender factor={1 / 2}>o</Extender>urite thin
-              <Extender>g</Extender>s
-            </Heading>
-            <Text mb="8" fontSize={{base: 'lg', md: 'xl'}}>
-              These are a few of the projects that I&apos;m particularly proud
-              of.
-            </Text>
-            <SimpleGrid
-              minChildWidth={{base: '180px', md: '220px'}}
-              spacing="2"
-            >
-              <GridItem
-                icon={Knoword}
-                title="Knoword"
-                description="Educational game"
-                color="#ff4e1e"
-                href="https://playknoword.com"
-              />
-              <GridItem
-                icon={Playback}
-                title="Playback"
-                description="Filmmaking tool"
-                color="#e91e63"
-                href="https://playback.rocks"
-              />
-              <GridItem
-                icon={Pollenize}
-                title="Pollenize"
-                description="Election education"
-                color="#212121"
-                href="https://pollenize.org"
-              />
-              <GridItem
-                icon={Apollo}
-                title="Apollo Odyssey"
-                description="Learning platform"
-                color="#583bc9"
-                href="https://odyssey.apollographql.com"
-              />
-              <GridItem
-                icon={Planet}
-                title="Planet Stories"
-                description="Editorial/research tool"
-                color="#009da5"
-                href="https://planet.com/stories"
-              />
-            </SimpleGrid>
-          </div>
-        </Stack>
+        <Heading size="2xl" mb="2">
+          My fav<Extender factor={1 / 2}>o</Extender>urite thin
+          <Extender>g</Extender>s
+        </Heading>
+        <Text mb="8" fontSize={{base: 'lg', md: 'xl'}}>
+          These are a few of the projects that I&apos;m particularly proud of.
+        </Text>
+        <SimpleGrid minChildWidth={{base: '180px', md: '220px'}} spacing="2">
+          <GridItem
+            icon={Knoword}
+            title="Knoword"
+            description="Educational game"
+            color="#ff4e1e"
+            href="https://playknoword.com"
+          />
+          <GridItem
+            icon={Playback}
+            title="Playback"
+            description="Filmmaking tool"
+            color="#e91e63"
+            href="https://playback.rocks"
+          />
+          <GridItem
+            icon={Pollenize}
+            title="Pollenize"
+            description="Election education"
+            color="#212121"
+            href="https://pollenize.org"
+          />
+          <GridItem
+            icon={Apollo}
+            title="Apollo Odyssey"
+            description="Learning platform"
+            color="#583bc9"
+            href="https://odyssey.apollographql.com"
+          />
+          <GridItem
+            icon={Planet}
+            title="Planet Stories"
+            description="Editorial/research tool"
+            color="#009da5"
+            href="https://planet.com/stories"
+          />
+        </SimpleGrid>
       </Box>
       <Center
         p={{base: 12, md: 16}}

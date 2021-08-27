@@ -4,9 +4,16 @@ module.exports = {
     title: 'Trevor Blades'
   },
   plugins: [
-    'gatsby-plugin-mdx',
     'gatsby-plugin-svgr',
     'gatsby-plugin-react-helmet',
+    {
+      resolve: 'gatsby-plugin-mdx',
+      options: {
+        defaultLayouts: {
+          default: require.resolve('./src/components/PageLayout.js')
+        }
+      }
+    },
     {
       resolve: 'gatsby-plugin-google-analytics',
       options: {
