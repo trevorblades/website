@@ -33,6 +33,7 @@ export default function Lab() {
       bgColor={`${labColor}.800`}
       color={`${labColor}.100`}
       pos="relative"
+      id="lab"
     >
       <Heading size="2xl" mb={{base: 6, md: 8}}>
         Lab

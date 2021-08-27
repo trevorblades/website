@@ -251,7 +251,7 @@ export default function Test() {
           )}
         </Center>
       </Box>
-      <chakra.a mt={HEADER_HEIGHT} name="about" pos="absolute" top="200vh" />
+      <Box mt={HEADER_HEIGHT} id="about" pos="absolute" top="200vh" />
       <HomePageContent gradient={gradient} />
       <Lab />
       <OpenSource />

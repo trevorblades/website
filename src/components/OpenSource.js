@@ -40,7 +40,7 @@ export default function OpenSource() {
     }
   `);
   return (
-    <Box px="10" py="16">
+    <Box px="10" py="16" id="oss">
       <Heading size="2xl" mb={{base: 6, md: 8}} textAlign="center">
         <Extender>O</Extender>
         pen so<Extender factor={1 / 2}>u</Extender>rce

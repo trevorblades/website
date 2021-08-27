@@ -53,16 +53,23 @@ export default function Header(props) {
           fontSize="2xl"
           letterSpacing="tighter"
           lineHeight="none"
+          whiteSpace="nowrap"
         >
-          Trevor Blades
+          <GatsbyLink to="/">Trevor Blades</GatsbyLink>
         </Heading>
         <HStack spacing="5" ml="auto">
-          <Link href="/#about">about me</Link>
-          <Link href="/#projects">projects</Link>
-          <Link as={GatsbyLink} to="/garden">
+          <Link as={GatsbyLink} to="/#about">
+            about me
+          </Link>
+          <Link as={GatsbyLink} to="/#projects">
+            projects
+          </Link>
+          <Link as={GatsbyLink} to="/#lab">
             lab
           </Link>
-          <Link href="#oss">oss</Link>
+          <Link as={GatsbyLink} to="/#oss">
+            oss
+          </Link>
           <Button
             as="a"
             href="https://twitch.tv/trevorblades"
