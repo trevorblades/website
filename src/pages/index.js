@@ -74,8 +74,9 @@ export default function Test() {
   return (
     <div key={now}>
       <Header
-        bgColor={isHeaderDark && 'gray.800'}
+        bgColor={isHeaderDark ? 'gray.800' : 'transparent'}
         color={isHeaderDark && 'white'}
+        pos="fixed"
       />
       <Box height="300vh" bgImage={gradient}>
         <Center height="100vh" position="sticky" top="0" overflow="hidden">

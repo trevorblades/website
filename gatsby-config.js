@@ -4,6 +4,7 @@ module.exports = {
     title: 'Trevor Blades'
   },
   plugins: [
+    '@chakra-ui/gatsby-plugin',
     'gatsby-plugin-svgr',
     'gatsby-plugin-react-helmet',
     {

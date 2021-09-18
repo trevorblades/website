@@ -1,11 +1,27 @@
 ---
 title: Let's talk about n-gons
-description: Some notes from my adventure into the world of geometry
+description: Spiralling into the world of geometry
 ---
+
+Earlier this year, I thought it would be cool to try building a spiralling triangle of text using HTML and CSS. I suppose it had no practical benefit, but like I said, I thought it would be cool. And it was.
+
+I started by sketching in my notebook to wrap my head around the ways in which I could achieve this effect. I landed on a technique that I'll call the "curly caterpillar" method.
+
+## The Curly Caterpillar™
+
+First, I lay out each of my triangle sides horizontally with each one nested within the side before it. Then I use a CSS `transform` to `rotate()` each of the sides around their left axis. Because the sides are nested, a rotation to one side will also rotate its already rotated children, causing this "curling" effect.
+
+> Try it out below. You apply some rotation to each of the two segments in this triangle and their rotations are multiplied because they are conjoined.
+
+import CaterpillarDemo from '../../components/CaterpillarDemo';
+
+<CaterpillarDemo />
+
+a² + b² = c²
 
 - The idea
 - Creating a triangle by cascading CSS rotations
-- Calculating the degree of each rotation
+- Calculating the degree of each rotations
 
 Once upon a time, I wanted to build a spiral...
 
@@ -19,6 +35,8 @@ Once upon a time, I wanted to build a spiral...
 - problem with that: doesn't work reliably when the # of sides changes or the size of the spiral changes
 - auto-splitting text might leave a bunch of empty space
 - solution: just keep repeating the text if it ends early
+
+another para
 
 - talk about circle expanding to viewport
 - pixel site does this: https://store.google.com/ca/product/pixel_5?hl=en-GB

@@ -5,10 +5,14 @@ import {
   Flex,
   HStack,
   Heading,
+  IconButton,
   Link,
+  useColorMode,
+  useColorModeValue,
   useTheme
 } from '@chakra-ui/react';
 import {FaTwitch} from 'react-icons/fa';
+import {FiMoon, FiSun} from 'react-icons/fi';
 import {Link as GatsbyLink} from 'gatsby';
 import {Global} from '@emotion/react';
 
@@ -16,6 +20,8 @@ export const HEADER_HEIGHT = 12;
 
 export default function Header(props) {
   const theme = useTheme();
+  const {colorMode, toggleColorMode} = useColorMode();
+  const bgColor = useColorModeValue('white', 'gray.800');
   return (
     <>
       <Global
@@ -31,9 +37,10 @@ export default function Header(props) {
         px="4"
         align="center"
         as="header"
-        pos="fixed"
+        pos="sticky"
         top="0"
         zIndex="1"
+        bgColor={bgColor}
         {...props}
       >
         <Circle
@@ -70,16 +77,25 @@ export default function Header(props) {
           <Link as={GatsbyLink} to="/#oss">
             oss
           </Link>
-          <Button
-            as="a"
-            href="https://twitch.tv/trevorblades"
-            size="sm"
-            fontSize="md"
-            colorScheme="purple"
-            rightIcon={<FaTwitch />}
-          >
-            subscribe
-          </Button>
+          <HStack>
+            <IconButton
+              onClick={toggleColorMode}
+              size="sm"
+              icon={colorMode === 'dark' ? <FiSun /> : <FiMoon />}
+              fontSize="xl"
+              variant="ghost"
+            />
+            <Button
+              as="a"
+              href="https://twitch.tv/trevorblades"
+              size="sm"
+              fontSize="md"
+              colorScheme="purple"
+              rightIcon={<FaTwitch />}
+            >
+              subscribe
+            </Button>
+          </HStack>
         </HStack>
       </Flex>
     </>
