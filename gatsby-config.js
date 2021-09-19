@@ -12,7 +12,15 @@ module.exports = {
       options: {
         defaultLayouts: {
           default: require.resolve('./src/components/PageLayout.js')
-        }
+        },
+        gatsbyRemarkPlugins: [
+          {
+            resolve: 'gatsby-remark-prismjs',
+            options: {
+              noInlineHighlight: true
+            }
+          }
+        ]
       }
     },
     {

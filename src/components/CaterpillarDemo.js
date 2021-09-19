@@ -64,7 +64,7 @@ export default function CaterpillarDemo() {
   const [width, setWidth] = useState(100);
   const [rotation, setRotation] = useState(0);
   return (
-    <Box borderWidth="1px" rounded="md">
+    <Box borderWidth="1px" rounded="lg">
       <HStack spacing="4" px="4" py="2" borderBottomWidth="1px">
         <SegmentSlider
           label="Width"
@@ -94,15 +94,15 @@ export default function CaterpillarDemo() {
               Math.sqrt(width ** 2 / 2)
           }}
         >
-          <Segment value="test" color="red.500" width={width} rotation={0}>
+          <Segment value="first" color="red.500" width={width} rotation={0}>
             <Segment
-              value="test"
+              value="second"
               color="blue.500"
               width={width}
               rotation={rotation}
             >
               <Segment
-                value="test"
+                value="third"
                 color="green.500"
                 width={width}
                 rotation={rotation}

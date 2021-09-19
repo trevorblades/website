@@ -5,6 +5,9 @@ const theme = extendTheme({
     global: {
       '::selection': {
         bgColor: 'pink.400'
+      },
+      '.gatsby-highlight': {
+        fontSize: 'smaller'
       }
     }
   },

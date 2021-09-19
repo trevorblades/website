@@ -11,11 +11,57 @@ I started by sketching in my notebook to wrap my head around the ways in which I
 
 First, I lay out each of my triangle sides horizontally with each one nested within the side before it. Then I use a CSS `transform` to `rotate()` each of the sides around their left axis. Because the sides are nested, a rotation to one side will also rotate its already rotated children, causing this "curling" effect.
 
-> Try it out below. You apply some rotation to each of the two segments in this triangle and their rotations are multiplied because they are conjoined.
+> Try it out below. As you apply rotation to the joints between the three segments below, they curl inward to form a triangle.
 
 import CaterpillarDemo from '../../components/CaterpillarDemo';
 
 <CaterpillarDemo />
+
+In React, one of these segment components might look something like the following. Notice the segment width is applied to the inner `span` and the rotation is applied to the outer flex parent. Each subsequent segment is nested within the previous, after the `span`. That's what the `children` prop is for.
+
+```jsx
+function Segment({children, value, width, rotation}) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        transformOrigin: 'left',
+        transform: `rotate(${rotation}deg)`
+      }}
+    >
+      <span
+        style={{
+          flexShrink: 0,
+          width
+        }}
+      >
+        {value}
+      </span>
+      {children}
+    </div>
+  );
+}
+```
+
+To create this line of segments, arrange the above segment components like so:
+
+```jsx
+function Triangle() {
+  const width = 100;
+  const rotation = 120;
+  return (
+    // the outermost segment gets no rotation
+    <Segment value="first" width={width} rotation={0}>
+      <Segment value="second" width={width} rotation={rotation}>
+        {/* the innermost segment gets no further children */}
+        <Segment value="third" width={width} rotation={rotation} />
+      </Segment>
+    </Segment>
+  );
+}
+```
+
+## Creating space
 
 a² + b² = c²
 

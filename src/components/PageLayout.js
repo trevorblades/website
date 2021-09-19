@@ -9,12 +9,29 @@ import {
   OrderedList,
   Stack,
   Text,
-  UnorderedList
+  UnorderedList,
+  chakra,
+  useColorModeValue
 } from '@chakra-ui/react';
 import {Helmet} from 'react-helmet';
 import {MDXProvider} from '@mdx-js/react';
 
 const HEADING_OFFSET = 8;
+
+function Blockquote(props) {
+  const textColor = useColorModeValue('green.800', 'green.200');
+  return (
+    <chakra.blockquote
+      fontStyle="italic"
+      py="1"
+      pl="4"
+      borderLeftWidth="2px"
+      borderColor="current"
+      color={textColor}
+      {...props}
+    />
+  );
+}
 
 const components = {
   p: Text,
@@ -48,7 +65,8 @@ const components = {
         {...props}
       />
     );
-  }
+  },
+  blockquote: Blockquote
 };
 
 export default function PageLayout({children, pageContext}) {
