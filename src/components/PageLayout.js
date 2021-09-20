@@ -1,3 +1,4 @@
+import GatsbyLink from 'gatsby-link';
 import Header from './Header';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -5,6 +6,7 @@ import {
   Box,
   Code,
   Heading,
+  Link,
   ListItem,
   OrderedList,
   Stack,
@@ -19,19 +21,30 @@ import {MDXProvider} from '@mdx-js/react';
 const HEADING_OFFSET = 8;
 
 function Blockquote(props) {
-  const textColor = useColorModeValue('green.800', 'green.200');
+  const borderColor = useColorModeValue('purple.500', 'purple.200');
   return (
     <chakra.blockquote
       fontStyle="italic"
       py="1"
       pl="4"
       borderLeftWidth="2px"
-      borderColor="current"
-      color={textColor}
+      borderColor={borderColor}
       {...props}
     />
   );
 }
+
+function PageLink({href, ...props}) {
+  const textColor = useColorModeValue('blue.600', 'blue.400');
+  const linkProps = href.startsWith('/')
+    ? {as: GatsbyLink, to: href}
+    : {href, isExternal: true};
+  return <Link color={textColor} {...linkProps} {...props} />;
+}
+
+PageLink.propTypes = {
+  href: PropTypes.string.isRequired
+};
 
 const components = {
   p: Text,
@@ -56,6 +69,7 @@ const components = {
   ul: UnorderedList,
   ol: OrderedList,
   li: ListItem,
+  a: PageLink,
   inlineCode(props) {
     return (
       <Code

@@ -1,5 +1,5 @@
 ---
-title: Let's talk about n-gons
+title: Let's Talk Regular Polygons
 description: Spiralling into the world of geometry
 ---
 
@@ -17,7 +17,7 @@ import CaterpillarDemo from '../../components/CaterpillarDemo';
 
 <CaterpillarDemo />
 
-In React, one of these segment components might look something like the following. Notice the segment width is applied to the inner `span` and the rotation is applied to the outer flex parent. Each subsequent segment is nested within the previous, after the `span`. That's what the `children` prop is for.
+In React, one of these segment components might look something like the following. Notice the segment width is applied to the inner `span` and the rotation is applied to the outer flex parent. Each subsequent segment is nested within the previous one, after the `span` using the `children` prop.
 
 ```jsx
 function Segment({children, value, width, rotation}) {
@@ -43,18 +43,23 @@ function Segment({children, value, width, rotation}) {
 }
 ```
 
-To create this line of segments, arrange the above segment components like so:
+To create a triangle, arrange the above `Segment` components like the following example, and rotate all but the first segment **120°**.
+
+The triangle I'm trying to build is [equilateral](https://en.wikipedia.org/wiki/Equilateral_polygon), meaning each of its side lengths and angles are the same. Since the sum of all interior angles in any triangle must equal 180°, each _interior angle_ will be 60°. Knowing that each _exterior angle_ can be calculated as the sum of two interior angles, each exterior angle must be 120°. That's the amount that I need to rotate each segment to turn my flat line into a triangle.
+
+> To learn more about basic laws of triangles, [check out this article](https://en.wikipedia.org/wiki/Triangle#Basic_facts) that explains things much better and with diagrams 🔥
 
 ```jsx
 function Triangle() {
-  const width = 100;
-  const rotation = 120;
+  const width = 100; // in pixels
+  const interiorAngle = 180 / 3; // in degrees
+  const exteriorAngle = interiorAngle * 2; // or 180 - interiorAngle
   return (
     // the outermost segment gets no rotation
     <Segment value="first" width={width} rotation={0}>
-      <Segment value="second" width={width} rotation={rotation}>
+      <Segment value="second" width={width} rotation={exteriorAngle}>
         {/* the innermost segment gets no further children */}
-        <Segment value="third" width={width} rotation={rotation} />
+        <Segment value="third" width={width} rotation={exteriorAngle} />
       </Segment>
     </Segment>
   );
@@ -62,6 +67,10 @@ function Triangle() {
 ```
 
 ## Creating space
+
+The story doesn't end here. I am trying to create a **spiral** triangle, after all. That means after drawing the first three sides, the shape needs to continue rotating inward as long as there's room to create new segments.
+
+The amount of room needed to draw a particular segment is determined by the length of the first side and the amount of space between parallel lines in the spiral.
 
 a² + b² = c²
 

@@ -14,6 +14,7 @@ module.exports = {
           default: require.resolve('./src/components/PageLayout.js')
         },
         gatsbyRemarkPlugins: [
+          '@fec/remark-a11y-emoji/gatsby',
           {
             resolve: 'gatsby-remark-prismjs',
             options: {
