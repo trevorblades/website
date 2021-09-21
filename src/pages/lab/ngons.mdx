@@ -70,7 +70,11 @@ function Triangle() {
 
 The story doesn't end here. I am trying to create a **spiral** triangle, after all. That means after drawing the first three sides, the shape needs to continue rotating inward as long as there's room to create new segments.
 
-The amount of room needed to draw a particular segment is determined by the length of the first side and the amount of space between parallel lines in the spiral.
+The amount of room needed to draw a segment is related to the desired amount of space between parallel lines in the spiral. Let's use the following spiral with simplified measurements as an example. Its first two segments are 100 units long, and it has 20 units of spacing between its parallel lines.
+
+import Spiral1 from '../../components/Spiral1';
+
+<Spiral1 style={{height: 300}} />
 
 a² + b² = c²
 
