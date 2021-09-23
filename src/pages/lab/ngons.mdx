@@ -72,9 +72,44 @@ The story doesn't end here. I am trying to create a **spiral** triangle, after a
 
 The amount of room needed to draw a segment is related to the desired amount of space between parallel lines in the spiral. Let's use the following spiral with simplified measurements as an example. Its first two segments are 100 units long, and it has 20 units of spacing between its parallel lines.
 
-import Spiral1 from '../../components/Spiral1';
+import {Spiral1, Spiral2, Spiral3} from '../../components/Spirals';
 
 <Spiral1 style={{height: 300}} />
+
+In order to continue drawing this spiral, I needed to figure out the length of its third side. At first glance, the answer might seem obvious: just subtract 20 from the original side length of 100, and we get a side length of 80.
+
+Unfortunately, it's not that simple. This calculation results in a side that's slightly too long to ensure the following lines are correctly spaced.
+
+<Spiral2 style={{height: 300}} />
+
+To find the appropriate length for side 3 and greater, we need to first calculate the length of the piece that needs to be removed. In the diagram below, I've labelled that part as $A$.
+
+If you look closely at side $A$, it's the hypoteneuse of an imaginary right triangle that has an opposite side length equal to the gap between parallel lines in the spiral (20). We also know that one of the angles is 60° because that's the same as each interior angle in the triangle.
+
+<Spiral3 style={{height: 300}} />
+
+With this knowledge, we can apply basic trigonometry to solve for $A$. Remember [**SohCahToa**](https://en.wikipedia.org/wiki/Trigonometry#Mnemonics)? Since we have the length of the opposite side ($O$) and want to solve for the hypoteneuse ($H$), we must use the sine function in this calculation.
+
+$$
+\begin{aligned}
+  sin(θ) = \frac{O}{H} \\
+  sin(60°) = \frac{20}{A} \\
+  A = \frac{20}{sin(60°)} \\
+  A \approx 23.09
+\end{aligned}
+$$
+
+Now solving for $B$ is as easy as subtracting $A$ from the original side length of 100.
+
+$$
+\begin{aligned}
+B = 100 - A \\
+B \approx 100 - 23.09 \\
+B \approx 76.91
+\end{aligned}
+$$
+
+This process must
 
 a² + b² = c²
 
@@ -100,3 +135,4 @@ another para
 - talk about circle expanding to viewport
 - pixel site does this: https://store.google.com/ca/product/pixel_5?hl=en-GB
 - trig principles at play here
+- sidenote about how to get katex working with gatsby + mdx

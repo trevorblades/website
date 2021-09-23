@@ -13,6 +13,7 @@ module.exports = {
         defaultLayouts: {
           default: require.resolve('./src/components/PageLayout.js')
         },
+        remarkPlugins: [require('remark-math'), require('remark-html-katex')],
         gatsbyRemarkPlugins: [
           '@fec/remark-a11y-emoji/gatsby',
           {

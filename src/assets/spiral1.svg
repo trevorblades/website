@@ -1,7 +1,7 @@
 <svg viewBox="0 0 101 101" fill="currentcolor" xmlns="http://www.w3.org/2000/svg">
   <g stroke="currentcolor">
     <path d="M0 14H100" />
-    <path d="M11.5 34H55.75"  stroke-dasharray="2 2"/>
+    <path d="M11.5 34H55.75" stroke-dasharray="2 2" />
     <path d="M50 100.603L100 14" />
     <path d="M50 100.603L11.5 33.9186" />
   </g>

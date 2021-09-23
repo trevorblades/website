@@ -1,3 +1,5 @@
+import 'dracula-prism/dist/css/dracula-prism.min.css';
+import 'katex/dist/katex.css';
 import GatsbyLink from 'gatsby-link';
 import Header from './Header';
 import PropTypes from 'prop-types';
@@ -55,7 +57,7 @@ const components = {
     return <Heading mt={HEADING_OFFSET} size="2xl" {...props} />;
   },
   h3(props) {
-    return <Heading as="h3" mt={HEADING_OFFSET} size="xl" {...props} />;
+    return <Heading as="h3" mt={HEADING_OFFSET} {...props} />;
   },
   h4(props) {
     return <Heading as="h4" mt={HEADING_OFFSET} size="lg" {...props} />;

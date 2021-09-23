@@ -26,7 +26,7 @@ import {FaNpm} from 'react-icons/fa';
 import {FiDownload} from 'react-icons/fi';
 import {useMount, useWindowScroll, useWindowSize} from 'react-use';
 
-export default function Test() {
+export default function HomePage() {
   const {colors} = useTheme();
   const [now, setNow] = useState(Date.now());
   const [debug, setDebug] = useState(false);
