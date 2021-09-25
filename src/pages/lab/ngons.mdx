@@ -1,13 +1,17 @@
 ---
 title: Let's Talk Regular Polygons
 description: Spiralling into the world of geometry
+styles:
+  .spiral:
+    width: 100%
+    maxHeight: 300px
 ---
 
 Earlier this year, I thought it would be cool to try building a spiralling triangle of text using HTML and CSS. I suppose it had no practical benefit, but like I said, I thought it would be cool. And it was.
 
 I started by sketching in my notebook to wrap my head around the ways in which I could achieve this effect. I landed on a technique that I'll call the "curly caterpillar" method.
 
-## The Curly Caterpillar™
+## The curly caterpillar
 
 First, I lay out each of my triangle sides horizontally with each one nested within the side before it. Then I use a CSS `transform` to `rotate()` each of the sides around their left axis. Because the sides are nested, a rotation to one side will also rotate its already rotated children, causing this "curling" effect.
 
@@ -66,50 +70,96 @@ function Triangle() {
 }
 ```
 
-## Creating space
+## Math time
 
-The story doesn't end here. I am trying to create a **spiral** triangle, after all. That means after drawing the first three sides, the shape needs to continue rotating inward as long as there's room to create new segments.
+The story doesn't end here. I am trying to create a **spiral** triangle, after all. That means after drawing the first three sides, the shape needs to continue spiralling inward as long as there's room to create new segments.
 
 The amount of room needed to draw a segment is related to the desired amount of space between parallel lines in the spiral. Let's use the following spiral with simplified measurements as an example. Its first two segments are 100 units long, and it has 20 units of spacing between its parallel lines.
 
-import {Spiral1, Spiral2, Spiral3} from '../../components/Spirals';
+import {Spiral1, Spiral2, Spiral3, Spiral4} from '../../components/Spirals';
 
-<Spiral1 style={{height: 300}} />
+<Spiral1 className="spiral" />
 
 In order to continue drawing this spiral, I needed to figure out the length of its third side. At first glance, the answer might seem obvious: just subtract 20 from the original side length of 100, and we get a side length of 80.
 
 Unfortunately, it's not that simple. This calculation results in a side that's slightly too long to ensure the following lines are correctly spaced.
 
-<Spiral2 style={{height: 300}} />
+<Spiral2 className="spiral" />
 
-To find the appropriate length for side 3 and greater, we need to first calculate the length of the piece that needs to be removed. In the diagram below, I've labelled that part as $A$.
+To find the appropriate length for side 3 and greater, we need to first calculate the length of the piece that needs to be removed. In the diagram below, I've labelled that part as $a$.
 
-If you look closely at side $A$, it's the hypoteneuse of an imaginary right triangle that has an opposite side length equal to the gap between parallel lines in the spiral (20). We also know that one of the angles is 60° because that's the same as each interior angle in the triangle.
+If you look closely at side $a$, it's the hypoteneuse of an imaginary right triangle that has an opposite side length equal to the gap between parallel lines in the spiral (20). We also know that one of the angles is 60° because that's the same as each interior angle in the triangle.
 
-<Spiral3 style={{height: 300}} />
+<Spiral3 className="spiral" />
 
-With this knowledge, we can apply basic trigonometry to solve for $A$. Remember [**SohCahToa**](https://en.wikipedia.org/wiki/Trigonometry#Mnemonics)? Since we have the length of the opposite side ($O$) and want to solve for the hypoteneuse ($H$), we must use the sine function in this calculation.
-
-$$
-\begin{aligned}
-  sin(θ) = \frac{O}{H} \\
-  sin(60°) = \frac{20}{A} \\
-  A = \frac{20}{sin(60°)} \\
-  A \approx 23.09
-\end{aligned}
-$$
-
-Now solving for $B$ is as easy as subtracting $A$ from the original side length of 100.
+With this knowledge, we can apply basic trigonometry to solve for $a$. Remember [**SohCahToa**](https://en.wikipedia.org/wiki/Trigonometry#Mnemonics)? Since we have the length of the opposite side ($O$) and want to solve for the hypoteneuse ($H$), we must use the sine function in this calculation.
 
 $$
 \begin{aligned}
-B = 100 - A \\
-B \approx 100 - 23.09 \\
-B \approx 76.91
+\sinθ = \frac{O}{H} \\
+\sin60° = \frac{20}{a} \\
+a = \frac{20}{\sin60°} \\
+a \approx 23.09
 \end{aligned}
 $$
 
-This process must
+In my code, I refer to this side $a$ measurement as the _inset_. Now solving for $b$ is as easy as subtracting the inset $a$ from the original side length of 100.
+
+$$
+\begin{aligned}
+b = 100 - a \\
+b \approx 100 - 23.09 \\
+b \approx 76.91
+\end{aligned}
+$$
+
+This process of subtracting the inset from the original side length continues for each subsequent side until there's no more room to draw additional sides. In the diagram below, you can see that each inset, marked as $\vert$, is the same length.
+
+Calculating the length of side $3$ is as simple as subtracting _one_ inset from the original side length, but side $4$ requires us to subtract one inset along with two additional lengths that I call _outsets_, marked as $\Vert$ in the diagram. Side $5$ is equal to the original side length minus two insets and two outsets, and so on.
+
+<Spiral4 className="spiral" />
+
+Knowing how to compute side lengths is great, but I need to apply this technique recursively until all sides are drawn. To do this, I needed to find a pattern or formula to follow for each side.
+
+I drew a big spiral in my notebook and counted the insets and outsets for each side. I went about 10 sides deep to see if any pattern would reveal itself. Here's what that data looks like:
+
+| Side | Insets | Outsets |
+| ---- | ------ | ------- |
+| 1    | 0      | 0       |
+| 2    | 0      | 0       |
+| 3    | 1      | 0       |
+| 4    | 1      | 2       |
+| 5    | 2      | 2       |
+| 6    | 3      | 2       |
+| 7    | 3      | 4       |
+| 8    | 4      | 4       |
+| 9    | 5      | 4       |
+| 10   | 5      | 6       |
+
+The outsets column presents a clear pattern. Every three sides, the number of outsets increments by two. In mathematical notation, we could express this formula where $O$ is the number of outsets, $n$ is the current side, and $S$ is the total number of sides on the shape—3 in the case of a triangle.
+
+$$
+O = 2\lfloor\frac{n - 1}{S}\rfloor
+$$
+
+> The $\lfloor{x}\rfloor$ syntax above means "floor" or "round this number down"
+
+The pattern for the insets was a lot more unclear, but after some trial and error, I came up with the following handy formula, where $I$ is the number of insets, and the variables $n$ and $S$ are the same as above.
+
+$$
+I = \lfloor\frac{n}{S}\rfloor + \lfloor\frac{n - 2}{S}\rfloor
+$$
+
+In JavaScript, we could apply this knowledge to write a function that returns the side length for any side in the spiral, given the current `side`, the total `numSides`, and the `originalLength` of the first segment.
+
+```js
+function getSideLength(side, numSides, originalLength) {
+  const outsets = 2 * Math.floor((side - 1) / numSides);
+  const insets =
+    Math.floor(side / numSides) + Math.floor((side - 2) / numSides);
+  return originalLength - insets - outsets;
+}
+```
 
 a² + b² = c²
 

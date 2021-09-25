@@ -12,11 +12,18 @@ import {
   ListItem,
   OrderedList,
   Stack,
+  Table,
+  Tbody,
+  Td,
   Text,
+  Th,
+  Thead,
+  Tr,
   UnorderedList,
   chakra,
   useColorModeValue
 } from '@chakra-ui/react';
+import {Global} from '@emotion/react';
 import {Helmet} from 'react-helmet';
 import {MDXProvider} from '@mdx-js/react';
 
@@ -82,15 +89,22 @@ const components = {
       />
     );
   },
-  blockquote: Blockquote
+  blockquote: Blockquote,
+  table: Table,
+  thead: Thead,
+  tbody: Tbody,
+  tr: Tr,
+  th: Th,
+  td: Td
 };
 
 export default function PageLayout({children, pageContext}) {
-  const {title, description} = pageContext.frontmatter;
+  const {title, description, styles} = pageContext.frontmatter;
   return (
     <>
       <Header />
       <Helmet title={title} />
+      <Global styles={styles} />
       <Box px="10" pt="12" pb="20">
         <Box mb="10">
           <Heading mb="2" size="3xl">

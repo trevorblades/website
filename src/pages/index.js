@@ -134,17 +134,11 @@ export default function HomePage() {
             textTransform="uppercase"
             style={{transform: `scale(${1 + y / height / 4})`}}
           >
-            <Spiral
-              fontSize={30}
-              boxSize={600}
-              sides={sides}
-              spacing={100}
-              text={
-                sides === 3
-                  ? 'scroll down'
-                  : 'upgrade your gray matter cuz one day it may matter.'
-              }
-            />
+            <Spiral fontSize={30} boxSize={600} sides={sides} spacing={100}>
+              {sides === 3
+                ? 'scroll down'
+                : 'upgrade your gray matter cuz one day it may matter.'}
+            </Spiral>
           </Box>
           <Circle
             bgColor="current"
@@ -220,7 +214,10 @@ export default function HomePage() {
               left="50%"
               transform="translate(-50%, -50%)"
               color="white"
-              style={{opacity: textOpacity}}
+              style={{
+                opacity: textOpacity,
+                visibility: textOpacity ? 'visible' : 'hidden'
+              }}
             >
               <Heading mb="4" size="3xl">
                 Yo<Extender factor={1 / 2}>u</Extender> m<Extender>a</Extender>
