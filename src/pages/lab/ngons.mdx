@@ -179,7 +179,7 @@ Pretty similar, right? We can make this code more concise by creating these valu
 
 ```js
 const [a, b, c] = Array.from({length: 3}, (_, index) =>
-  Math.max(Math.floor((side - index) / numSides), 0)
+  Math.floor(Math.max(side - index, 0) / numSides)
 );
 const numInsets = a + c;
 const numOutsets = 2 * b;
@@ -188,6 +188,10 @@ const numOutsets = 2 * b;
 Talk about how to loop until all sides are created (no sides less than the spacing)
 
 <SpiralDemo />
+
+## Adding text
+
+Talk about how to add text, font size, padding, etc.
 
 - The idea
 - Creating a triangle by cascading CSS rotations

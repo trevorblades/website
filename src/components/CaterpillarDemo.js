@@ -68,7 +68,9 @@ function Demo({sliders, children}) {
           <LabelledSlider key={index} {...slider} />
         ))}
       </HStack>
-      <Box p="4">{children}</Box>
+      <Box p="4" overflow="hidden">
+        {children}
+      </Box>
     </Box>
   );
 }
@@ -153,8 +155,9 @@ export function SpiralDemo() {
   while (spaceRemaining > 0) {
     const side = segments.length + 1;
 
+    // TODO: export helpers from react-spiral and use them here
     const [a, b, c] = Array.from({length: 3}, (_, index) =>
-      Math.max(Math.floor((side - index) / numSides), 0)
+      Math.floor(Math.max(side - index, 0) / numSides)
     );
 
     const numInsets = a + c;
