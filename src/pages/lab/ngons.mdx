@@ -17,7 +17,7 @@ First, I lay out each of my triangle sides horizontally with each one nested wit
 
 > Try it out below. As you apply rotation to the joints between the three segments below, they curl inward to form a triangle.
 
-import CaterpillarDemo from '../../components/CaterpillarDemo';
+import {CaterpillarDemo, SpiralDemo} from '../../components/CaterpillarDemo';
 
 <CaterpillarDemo />
 
@@ -82,7 +82,7 @@ import {Spiral1, Spiral2, Spiral3, Spiral4} from '../../components/Spirals';
 
 In order to continue drawing this spiral, I needed to figure out the length of its third side. At first glance, the answer might seem obvious: just subtract 20 from the original side length of 100, and we get a side length of 80.
 
-Unfortunately, it's not that simple. This calculation results in a side that's slightly too long to ensure the following lines are correctly spaced.
+Unfortunately, it's not that simple. This calculation results in a side that's slightly too long to ensure the subsequent sides are correctly spaced.
 
 <Spiral2 className="spiral" />
 
@@ -119,9 +119,20 @@ Calculating the length of side $3$ is as simple as subtracting _one_ inset from 
 
 <Spiral4 className="spiral" />
 
+The length of an outset can be calculated using another staple of trigonometry, Pythagorean theorum. This equation, commonly expressed as $a^2 + b^2 = c^2$, lets us solve for one side of a right triangle, given that we know the length of the other two sides. In this case, the spacing between parallel lines is one side, and the inset is the triangle's hypoteneuse.
+
+$$
+\begin{aligned}
+a^2 + b^2 = c^2 \\
+a = \sqrt{c^2 - b^2} \\
+a = \sqrt{23.09^2 - 20^2} \\
+a \approx 11.54
+\end{aligned}
+$$
+
 Knowing how to compute side lengths is great, but I need to apply this technique recursively until all sides are drawn. To do this, I needed to find a pattern or formula to follow for each side.
 
-I drew a big spiral in my notebook and counted the insets and outsets for each side. I went about 10 sides deep to see if any pattern would reveal itself. Here's what that data looks like:
+I drew a big spiral in my notebook and counted the insets and outsets for each side. I went about 10 sides deep to see if any pattern would emerge. Here's what my results looked like:
 
 | Side | Insets | Outsets |
 | ---- | ------ | ------- |
@@ -147,21 +158,36 @@ $$
 The pattern for the insets was a lot more unclear, but after some trial and error, I came up with the following handy formula, where $I$ is the number of insets, and the variables $n$ and $S$ are the same as above.
 
 $$
-I = \lfloor\frac{n}{S}\rfloor + \lfloor\frac{n - 2}{S}\rfloor
+I = \lfloor\frac{n}{S}\rfloor + \lfloor\frac{\max(n - 2, 0)}{S}\rfloor
 $$
 
-In JavaScript, we could apply this knowledge to write a function that returns the side length for any side in the spiral, given the current `side`, the total `numSides`, and the `originalLength` of the first segment.
+In JavaScript, these relationships would look something like this:
 
 ```js
-function getSideLength(side, numSides, originalLength) {
-  const outsets = 2 * Math.floor((side - 1) / numSides);
-  const insets =
-    Math.floor(side / numSides) + Math.floor((side - 2) / numSides);
-  return originalLength - insets - outsets;
-}
+const numInsets =
+  Math.floor(side / numSides) + Math.floor(Math.max(side - 2, 0) / numSides);
+const numOutsets = 2 * Math.floor((side - 1) / numSides);
 ```
 
-a² + b² = c²
+There are three key values at play in both of these calculations:
+
+- `Math.floor(side / numSides)`
+- `Math.floor((side - 1) / numSides)`
+- `Math.floor(Math.max(side - 2, 0) / numSides)`
+
+Pretty similar, right? We can make this code more concise by creating these values iteratively and combining them appropriately.
+
+```js
+const [a, b, c] = Array.from({length: 3}, (_, index) =>
+  Math.max(Math.floor((side - index) / numSides), 0)
+);
+const numInsets = a + c;
+const numOutsets = 2 * b;
+```
+
+Talk about how to loop until all sides are created (no sides less than the spacing)
+
+<SpiralDemo />
 
 - The idea
 - Creating a triangle by cascading CSS rotations

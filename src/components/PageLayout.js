@@ -38,6 +38,7 @@ function Blockquote(props) {
       pl="4"
       borderLeftWidth="2px"
       borderColor={borderColor}
+      color="gray.500"
       {...props}
     />
   );
