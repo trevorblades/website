@@ -6,8 +6,9 @@ const theme = extendTheme({
       '::selection': {
         bgColor: 'pink.400'
       },
-      '.gatsby-highlight': {
-        fontSize: 'smaller'
+      [['.gatsby-highlight', ':not(pre)>code']]: {
+        fontSize: 'smaller',
+        verticalAlign: 'text-bottom'
       }
     }
   },

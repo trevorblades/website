@@ -1,6 +1,6 @@
 ---
-title: Let's Talk Regular Polygons
-description: Spiralling into the world of geometry
+title: Spiral Into Madness
+description: My journey into the world of geometry
 styles:
   .spiral:
     width: 100%
@@ -113,6 +113,8 @@ b \approx 76.91
 \end{aligned}
 $$
 
+## Insets and outsets
+
 This process of subtracting the inset from the original side length continues for each subsequent side until there's no more room to draw additional sides. In the diagram below, you can see that each inset, marked as $\vert$, is the same length.
 
 Calculating the length of side $3$ is as simple as subtracting _one_ inset from the original side length, but side $4$ requires us to subtract one inset along with two additional lengths that I call _outsets_, marked as $\Vert$ in the diagram. Side $5$ is equal to the original side length minus two insets and two outsets, and so on.
@@ -132,7 +134,7 @@ $$
 
 Knowing how to compute side lengths is great, but I need to apply this technique recursively until all sides are drawn. To do this, I needed to find a pattern or formula to follow for each side.
 
-I drew a big spiral in my notebook and counted the insets and outsets for each side. I went about 10 sides deep to see if any pattern would emerge. Here's what my results looked like:
+I drew a big spiral in my notebook and counted the insets and outsets for each side. I went 10 sides deep to see if any pattern would emerge. Here's what my results looked like:
 
 | Side | Insets | Outsets |
 | ---- | ------ | ------- |
@@ -171,11 +173,11 @@ const numOutsets = 2 * Math.floor((side - 1) / numSides);
 
 There are three key values at play in both of these calculations:
 
-- `Math.floor(side / numSides)`
-- `Math.floor((side - 1) / numSides)`
-- `Math.floor(Math.max(side - 2, 0) / numSides)`
+1. `js›Math.floor(side / numSides)`
+2. `js›Math.floor((side - 1) / numSides)`
+3. `js›Math.floor(Math.max(side - 2, 0) / numSides)`
 
-Pretty similar, right? We can make this code more concise by creating these values iteratively and combining them appropriately.
+Notice this progression of `side`, `side - 1`, and `side - 2`? We can make this code more concise by creating these values iteratively and combining them appropriately.
 
 ```js
 const [a, b, c] = Array.from({length: 3}, (_, index) =>
@@ -185,11 +187,89 @@ const numInsets = a + c;
 const numOutsets = 2 * b;
 ```
 
-Talk about how to loop until all sides are created (no sides less than the spacing)
+## Drawing the spiral
+
+So far in this post, I've explained how I was able to:
+
+- Render a triangle with CSS
+- Understand the relationships between side length, spacing, insets, and outsets
+- Calculate the value of insets and outsets
+- Determine the number of insets and outsets needed per side
+
+Now it's time to put all of these tools together to draw a spiral.
+
+I never managed to discover a formula for calculating the total number of segments needed in a spiral, so I opted for a different strategy here. Using a while loop, I would calculate the width of one segment at a time, pushing them into an array as long as they were "long enough".
+
+How long is long enough? For this project, I decided that I didn't want any segment to be any shorter than the length of the inset. This would ensure consistent spacing within the spiral, down to the very last segment.
+
+```js
+const segments = [];
+
+while (width > inset) {
+  // get the current side based on the number of segments already created
+  const side = segments.length + 1;
+
+  // determine the number of insets and outsets for that side
+  const [a, b, c] = Array.from({length: 3}, (_, index) =>
+    Math.floor(Math.max(side - index, 0) / numSides)
+  );
+  const numInsets = a + c;
+  const numOutsets = 2 * b;
+
+  // calculate the side length by subtracting the appropriate number of insets
+  // and outsets from the original side length
+  const sideLength = width - inset * numInsets - outset * numOutsets;
+
+  // if the calculated side length is less than the length of the inset, break
+  // the loop
+  if (sideLength < inset) {
+    break;
+  }
+
+  // otherwise, push that side length into the array of segments
+  segments.push(sideLength);
+}
+```
+
+Remember that in order to use the curly caterpillar method, I need to nest my segments within one another. In React, it's common to `map` over an array and render components based on its items, but that would result in a flat list rather than the nested structure I'm after.
+
+Instead, I opted to use `Array.reduce` to recursively wrap HTML elements around each previous wrapped element. Using this strategy, I start from the innermost segment and continue wrapping out to the first segment in the spiral. That means I need to `reverse` the order of my array before I begin reducing.
+
+```jsx
+<>
+  {segments.reverse().reduce(
+    (child, width, index, array) => (
+      <div
+        style={{
+          display: 'flex',
+          transformOrigin: 'left',
+          transform:
+            // don't rotate the first segment (last item in the array)
+            index === array.length - 1 ? 'none' : `rotate(${exteriorAngle}rad)`
+        }}
+      >
+        <span
+          style={{
+            flexShrink: 0,
+            width,
+            height: 2,
+            backgroundColor: 'currentcolor'
+          }}
+        />
+        {/* render the previous child within this segment */}
+        {child}
+      </div>
+    ),
+    null // previous child is null by default
+  )}
+</>
+```
+
+Et voilà! I now have a component that renders a beautiful triangular spiral given a width and amount of spacing. Play around with the demo below to see this method in action. Notice how new segments get added or subtracted as the spiral size and spacing changes.
 
 <SpiralDemo />
 
-## Adding text
+## Adding the text
 
 Talk about how to add text, font size, padding, etc.
 

@@ -11,6 +11,7 @@ import {
   SliderTrack,
   chakra
 } from '@chakra-ui/react';
+import {calcInOutsets} from 'react-spiral';
 
 function Segment({children, width, rotation, color, value}) {
   return (
@@ -134,43 +135,34 @@ export function CaterpillarDemo() {
   );
 }
 
-const numSides = 3;
-const interiorAngle = 60 * (Math.PI / 180);
-const exteriorAngle = Math.PI - interiorAngle;
+const NUM_SIDES = 3;
+const INTERIOR_ANGLE = 60 * (Math.PI / 180);
+const EXTERIOR_ANGLE = Math.PI - INTERIOR_ANGLE;
 
 export function SpiralDemo() {
   const [width, setWidth] = useState(100);
   const [spacing, setSpacing] = useState(20);
 
-  const height = useMemo(() => width * Math.sin(interiorAngle), [width]);
+  const height = useMemo(() => width * Math.sin(INTERIOR_ANGLE), [width]);
   const [inset, outset] = useMemo(() => {
-    const inset = spacing / Math.sin(interiorAngle);
+    const inset = spacing / Math.sin(INTERIOR_ANGLE);
     const outset = Math.sqrt(inset ** 2 - spacing ** 2);
     return [inset, outset];
   }, [spacing]);
 
   const segments = [];
 
-  let spaceRemaining = width - spacing;
-  while (spaceRemaining > 0) {
+  while (width > inset) {
     const side = segments.length + 1;
 
-    // TODO: export helpers from react-spiral and use them here
-    const [a, b, c] = Array.from({length: 3}, (_, index) =>
-      Math.floor(Math.max(side - index, 0) / numSides)
-    );
-
-    const numInsets = a + c;
-    const numOutsets = 2 * b;
-
+    const [numInsets, numOutsets] = calcInOutsets(side, NUM_SIDES);
     const sideLength = width - inset * numInsets - outset * numOutsets;
 
-    if (sideLength < spacing) {
+    if (sideLength < inset) {
       break;
     }
 
     segments.push(sideLength);
-    spaceRemaining = sideLength - spacing;
   }
 
   return (
@@ -204,7 +196,7 @@ export function SpiralDemo() {
                 transform:
                   index === array.length - 1
                     ? 'translateY(-50%)'
-                    : `rotate(${exteriorAngle}rad)`
+                    : `rotate(${EXTERIOR_ANGLE}rad)`
               }}
             >
               <span

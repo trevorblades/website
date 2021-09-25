@@ -6,7 +6,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {
   Box,
-  Code,
   Heading,
   Link,
   ListItem,
@@ -80,16 +79,6 @@ const components = {
   ol: OrderedList,
   li: ListItem,
   a: PageLink,
-  inlineCode(props) {
-    return (
-      <Code
-        colorScheme="green"
-        fontSize="smaller"
-        verticalAlign="text-bottom"
-        {...props}
-      />
-    );
-  },
   blockquote: Blockquote,
   table: Table,
   thead: Thead,
