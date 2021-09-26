@@ -271,28 +271,93 @@ Et voilà! I now have a component that renders a beautiful triangular spiral giv
 
 ## Adding the text
 
-Talk about how to add text, font size, padding, etc.
+Drawing a spiral is cool, but my goal was to draw a _spiral of text_. Adding text to the segments is easy enough. I replace the `height` and `backgroundColor` styles with `js›textAlign: 'center'` and add the text as children to the `span`.
 
-- The idea
-- Creating a triangle by cascading CSS rotations
-- Calculating the degree of each rotations
+```jsx
+<span
+  style={{
+    flexShrink: 0,
+    width,
+    // height: 2,
+    // backgroundColor: 'currentcolor'
+    textAlign: 'center'
+  }}
+>
+  text goes here
+</span>
+```
 
-Once upon a time, I wanted to build a spiral...
+Since most sides of the spiral have variable lengths, the next challenge was making sure that the amount of text in each side was proportional with the amount of space available. For example, a string of text that would fit nicely into the first side would exceed the length of sides 3 and greater.
 
-- laying out text as a spiral
-- first idea (caterpillar)
-- text segments nested within eachother
-- each segment's rotation rotates its children too, curling up like a pill bug
-- how much should each segment rotate?
-- how to maintain space between layers of the spiral?
-- how to decide where to clip text? first approach: manually supply text segments
-- problem with that: doesn't work reliably when the # of sides changes or the size of the spiral changes
-- auto-splitting text might leave a bunch of empty space
-- solution: just keep repeating the text if it ends early
+My initial strategy was to split my string of text into an array of strings, each one corresponding to a side. As I create my segments, I save the segment's computed width _and_ text value, and access them as properties on the `segment` object in the reduce function.
 
-another para
+```jsx
+const text = [
+  'this is some text',
+  'that i think will',
+  'fit into',
+  'the sides',
+  'of my',
+  'spiral'
+];
 
-- talk about circle expanding to viewport
-- pixel site does this: https://store.google.com/ca/product/pixel_5?hl=en-GB
-- trig principles at play here
-- sidenote about how to get katex working with gatsby + mdx
+while (width > inset) {
+  // calculate inset/outset count and side length as before
+  segments.push({
+    width: sideLength,
+    text: text[side - 1]
+  });
+}
+
+return (
+  <>
+    {segments.reduce((child, segment) => (
+      <div style={/* segment wrapper styles */}>
+        <span style={/* same as above */}>
+          {/* add text as a child of the span */}
+          {segment.text}
+        </span>
+        {child}
+      </div>
+    ))}
+  </>
+);
+```
+
+This strategy worked, but it required a lot of trial and error to come up with text strings that filled the space nicely. It also meant that when I changed the size or spacing of my spiral, my perfectly curated text strings would need to be updated to fit the new proportions. Super annoying.
+
+I tried to imagine a better alternative. What if I could just pass a single string of text, and the spiral component would automatically distribute the words in the string across each side? If it runs out of words to fill space with, it would start over from the beginning of the string. Rinse and repeat this process until all the space is accounted for.
+
+To do this, I need to understand how many characters will fit into a given space. If my spiral component accepts a `fontSize` prop, I can make an approximation of the average character width based on that. Then I divide the side length by this approximate character width, and I've got my character allowance.
+
+```js
+const charWidth = fontSize / 1.5;
+let numChars = Math.floor(sideLength / charWidth);
+```
+
+Then, I split the provided text (supplied as `children` to the spiral component) into individual words, and use a while loop to add words to a segment until there's no room for more characters. Every time I take one word from the `words` array, I put it back on the end of the array for reuse later on.
+
+```js
+const words = children.split(' ');
+
+let text = '';
+while (numChars > 0) {
+  const word = words.shift(); // get the first element
+  words.push(word); // put it back on the end of the array
+  text += word.text; // add it to the segment's text
+  numChars -= word.text.length; // adjust the number of remaining characters
+}
+
+segment.push({
+  width: sideLength,
+  text
+});
+```
+
+- calculate # of characters per segment
+- logic about sub-words and whether to add a space
+
+## More shapes
+
+- making this work for other regular polygons
+- calculate height using bounding box/circle?
