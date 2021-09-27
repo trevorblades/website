@@ -370,8 +370,7 @@ Then, I split the provided text (supplied as `children` to the spiral component)
 ```js
 const words = children
   .trim() // trim leading/trailing space
-  .replace(/\s+/, ' ') // turn one or more consecutive spaces into one space
-  .split(' '); // split into array of words
+  .split(/\s+/); // split into array of words
 
 let text = '';
 while (numChars > 0) {
