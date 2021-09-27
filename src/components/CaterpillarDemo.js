@@ -1,17 +1,22 @@
 import PropTypes from 'prop-types';
 import React, {useMemo, useState} from 'react';
+import Spiral, {
+  calcInOutset,
+  getNumInOutsets,
+  measureShape
+} from 'react-spiral';
 import identity from 'lodash/identity';
 import {
   Box,
   Flex,
   HStack,
+  Input,
   Slider,
   SliderFilledTrack,
   SliderThumb,
   SliderTrack,
   chakra
 } from '@chakra-ui/react';
-import {calcInOutsets} from 'react-spiral';
 
 function Segment({children, width, rotation, color, value}) {
   return (
@@ -143,19 +148,21 @@ export function SpiralDemo() {
   const [width, setWidth] = useState(100);
   const [spacing, setSpacing] = useState(20);
 
-  const height = useMemo(() => width * Math.sin(INTERIOR_ANGLE), [width]);
-  const [inset, outset] = useMemo(() => {
-    const inset = spacing / Math.sin(INTERIOR_ANGLE);
-    const outset = Math.sqrt(inset ** 2 - spacing ** 2);
-    return [inset, outset];
-  }, [spacing]);
+  const {height} = useMemo(
+    () => measureShape(width, NUM_SIDES, EXTERIOR_ANGLE),
+    [width]
+  );
+
+  const [inset, outset] = useMemo(() => calcInOutset(spacing, EXTERIOR_ANGLE), [
+    spacing
+  ]);
 
   const segments = [];
 
   while (width > inset) {
     const side = segments.length + 1;
 
-    const [numInsets, numOutsets] = calcInOutsets(side, NUM_SIDES);
+    const [numInsets, numOutsets] = getNumInOutsets(side, NUM_SIDES);
     const sideLength = width - inset * numInsets - outset * numOutsets;
 
     if (sideLength < inset) {
@@ -213,6 +220,54 @@ export function SpiralDemo() {
           null
         )}
       </div>
+    </Demo>
+  );
+}
+
+export function FinishedDemo() {
+  const [width, setWidth] = useState(200);
+  const [spacing, setSpacing] = useState(20);
+  const [fontSize, setFontSize] = useState(20);
+  const [text, setText] = useState('change me');
+  return (
+    <Demo
+      sliders={[
+        {
+          label: 'Width',
+          min: 100,
+          max: 500,
+          value: width,
+          onChange: setWidth,
+          formatValue: value => value + 'px'
+        },
+        {
+          label: 'Spacing',
+          min: 10,
+          max: 50,
+          value: spacing,
+          onChange: setSpacing,
+          formatValue: value => value + 'px'
+        },
+        {
+          label: 'Font size',
+          min: 10,
+          max: 30,
+          value: fontSize,
+          onChange: setFontSize,
+          formatValue: value => value + 'px'
+        }
+      ]}
+    >
+      <Input
+        size="lg"
+        variant="filled"
+        autoComplete="off"
+        value={text}
+        onChange={event => setText(event.target.value)}
+      />
+      <Spiral boxSize={width} fontSize={fontSize} sides={3} spacing={spacing}>
+        {text}
+      </Spiral>
     </Demo>
   );
 }

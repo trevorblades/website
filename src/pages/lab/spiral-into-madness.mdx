@@ -17,7 +17,11 @@ First, I lay out each of my triangle sides horizontally with each one nested wit
 
 > Try it out below. As you apply rotation to the joints between the three segments below, they curl inward to form a triangle.
 
-import {CaterpillarDemo, SpiralDemo} from '../../components/CaterpillarDemo';
+import {
+  CaterpillarDemo,
+  FinishedDemo,
+  SpiralDemo
+} from '../../components/CaterpillarDemo';
 
 <CaterpillarDemo />
 
@@ -232,18 +236,18 @@ while (width > inset) {
     break;
   }
 
-  // otherwise, push that side length into the array of segments
-  segments.push(sideLength);
+  // otherwise, add side length to the front of the array of segments
+  segments.unshift(sideLength);
 }
 ```
 
 Remember that in order to use the curly caterpillar method, I need to nest my segments within one another. In React, it's common to `map` over an array and render components based on its items, but that would result in a flat list rather than the nested structure I'm after.
 
-Instead, I opted to use `Array.reduce` to recursively wrap HTML elements around each previous wrapped element. Using this strategy, I start from the innermost segment and continue wrapping out to the first segment in the spiral. That means I need to `reverse` the order of my array before I begin reducing.
+Instead, I opted to use `js›Array.reduce` to recursively wrap HTML elements around each previous wrapped element. Using this strategy, I start from the innermost segment and continue wrapping out to the first segment in the spiral. This is why I used `js›Array.unshift` instead of `js›Array.push` in the example above. I needed to make sure my final array would be ordered from innermost at the start to outermost at the end.
 
 ```jsx
 <>
-  {segments.reverse().reduce(
+  {segments.reduce(
     (child, width, index, array) => (
       <div
         style={{
@@ -275,7 +279,7 @@ Et voilà! I now have a component that renders a beautiful triangular spiral giv
 
 <SpiralDemo />
 
-As you change the width of the spiral in the example above, you'll notice the height of its container changing as well. The height of a triangle like this one can be calculated by dividing the triangle in two and measuring the long vertical side indicated by a dashed line in the following diagram.
+As you change the width of the spiral in the example above, you'll notice the height of its container changing as well. The height of a triangle like this one can be calculated by dividing the triangle in two and measuring the long vertical side indicated by the dashed line in the following diagram.
 
 <Spiral5 className="spiral" />
 
@@ -297,7 +301,7 @@ Pick your poison—either method will yeild the same result.
 
 ## Adding the text
 
-Drawing a spiral is cool, but my goal was to draw a _spiral of text_. Adding text to the segments is easy enough. I replace the `height` and `backgroundColor` styles with `js›textAlign: 'center'` and add the text as children to the `span`.
+Drawing a spiral is cool, but my goal was to draw a _spiral of text_. Adding text to the segments is easy enough. I replace the `height` and `background-color` styles with `css›text-align: center` and add the text as children to the `span`.
 
 ```jsx
 <span
@@ -329,7 +333,7 @@ const text = [
 
 while (width > inset) {
   // calculate inset/outset count and side length as before
-  segments.push({
+  segments.unshift({
     width: sideLength,
     text: text[side - 1]
   });
@@ -434,7 +438,57 @@ if (word.text.length > numChars) {
 }
 ```
 
-## More shapes
+## Cosmetic upgrades 💅
+
+I changed the way that I render the segment text so that its characters are spaced evenly within each segment, sort of like what `css›text-align: justify` does for words in a line. First I split the segment text into an array of characters, and render them each as separate `span` elements. Then I give their parent `css›display: flex` and `css›justify-content: space-evenly`, as well as `css›white-space: pre` to preserve solitary space characters.
+
+```jsx
+<span
+  style={{
+    flexShrink: 0,
+    display: 'flex',
+    whiteSpace: 'pre',
+    justifyContent: 'space-evenly',
+    width
+  }}
+>
+  {text.split('').map((char: string, index: number) => (
+    <span key={index}>{char}</span>
+  ))}
+</span>
+```
+
+I also added some padding on the start and end of each segment to prevent text from overlapping at the points of my shape. I found that two thirds of a character width was an amount that worked well for this.
+
+```js
+const padding = charWidth / 1.5;
+```
+
+I refactored the code in my segment-creating code to account for this padding's effect on the amount of space available for text, and thus the number of characters available to each segment.
+
+```js
+const innerWidth = sideLength - padding * 2; // subtract padding from each end
+const numChars = Math.floor(innerWidth / charWidth);
+```
+
+Finally, I add the padding to my segment elements.
+
+```jsx
+<span
+  style={{
+    // other segment text styles
+    padding
+  }}
+>
+  {/* render text */}
+</>
+```
+
+At last, a triangle spiral of text! If you've made it this far in the post, I applaud you. 👏👏 Enjoy one last demo where you can experiment with _all_ of the variables at play in this component.
+
+<FinishedDemo />
+
+## Appendix
 
 - making this work for other regular polygons
 - calculate height using bounding box/circle?
