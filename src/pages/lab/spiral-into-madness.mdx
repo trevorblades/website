@@ -1,6 +1,6 @@
 ---
 title: Spiral Into Madness
-description: My journey into the world of geometry
+description: Field notes from journey to the land of geometry
 styles:
   .spiral:
     width: 100%
@@ -106,10 +106,10 @@ With this knowledge, we can apply basic trigonometry to solve for $a$. Remember 
 
 $$
 \begin{aligned}
-\sin\theta = \frac{O}{H} \\
-\sin60° = \frac{20}{a} \\
-a = \frac{20}{\sin60°} \\
-a \approx 23.09
+  \sin\theta = \frac{O}{H} \\
+  \sin60° = \frac{20}{a} \\
+  a = \frac{20}{\sin60°} \\
+  a \approx 23.09
 \end{aligned}
 $$
 
@@ -117,9 +117,9 @@ In my code, I refer to this side $a$ measurement as the _inset_. Now solving for
 
 $$
 \begin{aligned}
-b = 100 - a \\
-b \approx 100 - 23.09 \\
-b \approx 76.91
+  b = 100 - a \\
+  b \approx 100 - 23.09 \\
+  b \approx 76.91
 \end{aligned}
 $$
 
@@ -135,10 +135,10 @@ The length of an outset can be calculated using another staple of trigonometry, 
 
 $$
 \begin{aligned}
-a^2 + b^2 = c^2 \\
-a = \sqrt{c^2 - b^2} \\
-a = \sqrt{23.09^2 - 20^2} \\
-a \approx 11.54
+  a^2 + b^2 = c^2 \\
+  a = \sqrt{c^2 - b^2} \\
+  a = \sqrt{23.09^2 - 20^2} \\
+  a \approx 11.54
 \end{aligned}
 $$
 
@@ -290,10 +290,10 @@ Each half is a right triangle, and we already know two side lengths and all inte
 
 $$
 \begin{aligned}
-a^2 + b^2 = c^2 \\
-a = \sqrt{c^2 - b^2} \\
-a = \sqrt{100^2 - 50^2} \\
-a \approx 86.60
+  a^2 + b^2 = c^2 \\
+  a = \sqrt{c^2 - b^2} \\
+  a = \sqrt{100^2 - 50^2} \\
+  a \approx 86.60
 \end{aligned}
 $$
 
@@ -484,11 +484,39 @@ Finally, I add the padding to my segment elements.
 </>
 ```
 
-At last, a triangle spiral of text! If you've made it this far in the post, I applaud you. 👏👏 Enjoy one last demo where you can experiment with _all_ of the variables at play in this component.
+At last, a triangle spiral of text. 😌 If you've made it this far in the post, I applaud you. 👏 Enjoy one last demo where you can experiment with _all_ of the variables at play in this component.
 
 <FinishedDemo />
 
 ## Appendix
 
-- making this work for other regular polygons
-- calculate height using bounding box/circle?
+If I could make this work for a triangle, how hard could it be to make it work for other **regular polygons**?
+
+> A [regular polygon](https://en.wikipedia.org/wiki/Regular_polygon) is any polygon where all of its sides and angles are equal, like the equilateral triangle in this post, or a square, hexagon, etc.
+
+It turns out that a lot of the fundamental parts of this implementation can be applied to shapes with more sides. There were only a handful of adjustments I had to make for my spiral component to be shape-agnostic.
+
+### Exterior angles
+
+The angle that I used to rotate the segments in my triangle was fixed at 120°, but as the number of sides on my shape changes, so too must this angle. The formula to find a regular polygon's exterior angle is $\theta = \frac{2\pi}{n}$ where $n$ is the number of sides.
+
+```js
+const exteriorAngle = (Math.PI * 2) / numSides;
+```
+
+### Shape height
+
+Finding the height of a triangle was relatively easy; divide the triangle in two and measure the long vertical side. The process of measuring the height of a regular polygon is more difficult.
+
+$$
+h=\left\{
+  \begin{array}{ll}
+    2Ri & N\text{ is even} \\
+    Rc + Ri & N\text{ is odd}
+  \end{array}
+\right.
+$$
+
+- height of the shape - bounding box
+- centering the shape (padding-top)
+- inverting the outset (adding instead of subtracting)
