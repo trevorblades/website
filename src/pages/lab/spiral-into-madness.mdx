@@ -7,6 +7,21 @@ styles:
     maxHeight: 300px
 ---
 
+import {
+  CaterpillarDemo,
+  FinishedDemo,
+  SpiralDemo
+} from '../../components/CaterpillarDemo';
+import {
+  Hexagon,
+  Pentagon,
+  Spiral1,
+  Spiral2,
+  Spiral3,
+  Spiral4,
+  Spiral5
+} from '../../components/Spirals';
+
 Earlier this year, I thought it would be cool to try building a spiralling triangle of text using HTML and CSS. I suppose it had no practical benefit, but like I said, I thought it would be cool. And it was.
 
 I started by sketching in my notebook to wrap my head around the ways in which I could achieve this effect. I landed on a technique that I'll call the "curly caterpillar" method.
@@ -16,12 +31,6 @@ I started by sketching in my notebook to wrap my head around the ways in which I
 First, I lay out each of my triangle sides horizontally with each one nested within the side before it. Then I use a CSS `transform` to `rotate()` each of the sides around their left axis. Because the sides are nested, a rotation to one side will also rotate its already rotated children, causing this "curling" effect.
 
 > Try it out below. As you apply rotation to the joints between the three segments below, they curl inward to form a triangle.
-
-import {
-  CaterpillarDemo,
-  FinishedDemo,
-  SpiralDemo
-} from '../../components/CaterpillarDemo';
 
 <CaterpillarDemo />
 
@@ -80,14 +89,6 @@ The story doesn't end here. I am trying to create a **spiral** triangle, after a
 
 The amount of room needed to draw a segment is related to the desired amount of space between parallel lines in the spiral. Let's use the following spiral with simplified measurements as an example. Its first two segments are 100 units long, and it has 20 units of spacing between its parallel lines.
 
-import {
-  Spiral1,
-  Spiral2,
-  Spiral3,
-  Spiral4,
-  Spiral5
-} from '../../components/Spirals';
-
 <Spiral1 className="spiral" />
 
 In order to continue drawing this spiral, I needed to figure out the length of its third side. At first glance, the answer might seem obvious: just subtract 20 from the original side length of 100, and we get a side length of 80.
@@ -107,8 +108,8 @@ With this knowledge, we can apply basic trigonometry to solve for $a$. Remember 
 $$
 \begin{aligned}
   \sin\theta = \frac{O}{H} \\
-  \sin60° = \frac{20}{a} \\
-  a = \frac{20}{\sin60°} \\
+  \sin60\degree = \frac{20}{a} \\
+  a = \frac{20}{\sin60\degree} \\
   a \approx 23.09
 \end{aligned}
 $$
@@ -505,17 +506,43 @@ const exteriorAngle = (Math.PI * 2) / numSides;
 
 ### Shape height
 
-Finding the height of a triangle was relatively easy; divide the triangle in two and measure the long vertical side. The process of measuring the height of a regular polygon is more difficult.
+Finding the height of a triangle was relatively easy; divide the triangle in two and measure the long vertical side. The process of measuring the height of a regular polygon is more difficult. The formula used differs depending on whether the polygon has an even number of sides, like a hexagon (6), or an odd number like a pentagon (5).
+
+Imagine drawing a circle that touches every point on the polygon. This is called the **circumcircle** and it defines the center of the polygon. The radius of the circumcircle is called the **circumradius**, marked as $R_{c}$. The distance between the center of the circle and the midpoint of any side is called the **inradius**, marked as $R_{i}$.
+
+<Hexagon className="spiral" />
+
+Calculating the height of an evenly-sided polygon is as simple as multiplying the inradius by two. The height of an oddly-sided polygon is the sum of the circumradius and inradius, as visualized in the diagram below.
+
+<Pentagon className="spiral" />
 
 $$
-h=\left\{
+h = \left\{
   \begin{array}{ll}
-    2Ri & N\text{ is even} \\
-    Rc + Ri & N\text{ is odd}
+    2R_{i} & n\text{ is even} \\
+    R_{c} + R_{i} & n\text{ is odd}
   \end{array}
 \right.
 $$
 
-- height of the shape - bounding box
+Calculating these radii is also a complex task. If the number of sides is odd, the circumradius is:
+
+$$
+R_{c} = w \div \sin\pi\frac{n - 1}{2n} \div 2
+$$
+
+$$
+R_{i} = R_{c}\cos\frac{\pi}{n}
+$$
+
+$$
+R_{i} = \left\{
+  \begin{array}{ll}
+    w / 2 & n / 2\text{ is even} \\
+    w / 2 \times \cos\frac{\theta}{2} & n / 2\text{ is odd}
+  \end{array}
+\right.
+$$
+
 - centering the shape (padding-top)
 - inverting the outset (adding instead of subtracting)
