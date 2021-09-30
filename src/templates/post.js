@@ -1,7 +1,7 @@
 import 'dracula-prism/dist/css/dracula-prism.min.css';
 import 'katex/dist/katex.css';
 import GatsbyLink from 'gatsby-link';
-import Header from './Header';
+import Header from '../components/Header';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
@@ -25,8 +25,8 @@ import {
 import {Global} from '@emotion/react';
 import {Helmet} from 'react-helmet';
 import {MDXProvider} from '@mdx-js/react';
-
-const HEADING_OFFSET = 8;
+import {MDXRenderer} from 'gatsby-plugin-mdx';
+import {graphql} from 'gatsby';
 
 function Blockquote(props) {
   const borderColor = useColorModeValue('purple.500', 'purple.200');
@@ -55,7 +55,10 @@ PageLink.propTypes = {
   href: PropTypes.string.isRequired
 };
 
+const HEADING_OFFSET = 8;
+
 const components = {
+  wrapper: Stack,
   p: Text,
   h1(props) {
     return <Heading as="h1" mt={HEADING_OFFSET} size="3xl" {...props} />;
@@ -88,8 +91,9 @@ const components = {
   td: Td
 };
 
-export default function PageLayout({children, pageContext}) {
-  const {title, description, styles} = pageContext.frontmatter;
+export default function PostTemplate({data}) {
+  const {title, description, styles} = data.mdx.frontmatter;
+  console.log(data.mdx.tableOfContents);
   return (
     <>
       <Header />
@@ -103,21 +107,34 @@ export default function PageLayout({children, pageContext}) {
           <Heading fontWeight="normal">{description}</Heading>
         </Box>
         <MDXProvider components={components}>
-          <Stack
+          <MDXRenderer
             shouldWrapChildren
             fontSize="xl"
             spacing="6"
-            maxW="container.lg"
+            maxW={{lg: 'container.sm', xl: 'container.md'}}
           >
-            {children}
-          </Stack>
+            {data.mdx.body}
+          </MDXRenderer>
         </MDXProvider>
       </Box>
     </>
   );
 }
 
-PageLayout.propTypes = {
-  children: PropTypes.node.isRequired,
-  pageContext: PropTypes.object.isRequired
+PostTemplate.propTypes = {
+  data: PropTypes.object.isRequired
 };
+
+export const pageQuery = graphql`
+  query PostQuery($id: String!) {
+    mdx(id: {eq: $id}) {
+      frontmatter {
+        title
+        description
+        styles
+      }
+      tableOfContents
+      body
+    }
+  }
+`;

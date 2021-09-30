@@ -9,13 +9,14 @@ export default function Lab() {
   const [labColor, setLabColor] = useState('green');
 
   const data = useStaticQuery(graphql`
-    query ListLabs {
-      allLab: allSitePage(
-        filter: {pluginCreator: {name: {eq: "gatsby-plugin-mdx"}}}
+    query ListPosts {
+      allPost: allFile(
+        filter: {sourceInstanceName: {eq: "posts"}, extension: {eq: "mdx"}}
       ) {
         nodes {
-          path
-          context {
+          childMdx {
+            id
+            slug
             frontmatter {
               title
               description
@@ -39,17 +40,17 @@ export default function Lab() {
         Lab
       </Heading>
       <OpenSourceGrid>
-        {data.allLab.nodes.map((lab, index) => {
-          const {title, description} = lab.context.frontmatter;
+        {data.allPost.nodes.map(({childMdx}) => {
+          const {title, description} = childMdx.frontmatter;
           return (
             <Box
-              key={index}
+              key={childMdx.id}
               rounded={{base: 'lg', md: 'xl'}}
               borderColor={`${labColor}.700`}
               borderWidth="1px"
               p={[4, 5, 6]}
               as={Link}
-              to={lab.path}
+              to={'/lab/' + childMdx.slug}
               transition="all 250ms"
               _hover={{
                 borderColor: `${labColor}.500`,

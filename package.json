@@ -22,6 +22,7 @@
     "gatsby-plugin-webfonts": "^2.1.1",
     "gatsby-remark-katex": "^5.11.0",
     "gatsby-remark-prismjs": "^5.11.0",
+    "gatsby-source-filesystem": "^3.14.0",
     "gatsby-source-graphql": "^3.1.0",
     "katex": "^0.13.18",
     "lodash": "^4.17.21",
@@ -35,7 +36,8 @@
     "react-spiral": "^1.0.11",
     "react-use": "^17.2.1",
     "remark-html-katex": "^3.0.0",
-    "remark-math": "^3.0.1"
+    "remark-math": "^3.0.1",
+    "remark-slug": "^6.1.0"
   },
   "devDependencies": {
     "@trevorblades/eslint-config": "^7.2.2",

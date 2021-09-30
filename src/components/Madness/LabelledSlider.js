@@ -17,7 +17,7 @@ export default function LabelledSlider({
   ...props
 }) {
   return (
-    <Box w={200}>
+    <Box w={200} zIndex="0">
       <chakra.label fontFamily="mono" fontSize="sm">
         {label}: {formatValue(value)}
         <div>

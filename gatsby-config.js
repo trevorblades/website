@@ -8,12 +8,20 @@ module.exports = {
     'gatsby-plugin-svgr',
     'gatsby-plugin-react-helmet',
     {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'posts',
+        path: 'src/posts'
+      }
+    },
+    {
       resolve: 'gatsby-plugin-mdx',
       options: {
-        defaultLayouts: {
-          default: require.resolve('./src/components/PageLayout.js')
-        },
-        remarkPlugins: [require('remark-math'), require('remark-html-katex')],
+        remarkPlugins: [
+          require('remark-slug'),
+          require('remark-math'),
+          require('remark-html-katex')
+        ],
         gatsbyRemarkPlugins: [
           '@fec/remark-a11y-emoji/gatsby',
           {
