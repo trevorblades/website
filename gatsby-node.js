@@ -30,7 +30,7 @@ exports.createPages = async ({actions, graphql}) => {
 
   data.allPost.nodes.forEach(({childMdx}) => {
     actions.createPage({
-      path: '/lab' + childMdx.slug,
+      path: '/lab/' + childMdx.slug,
       component: require.resolve('./src/templates/post'),
       context: {
         id: childMdx.id
