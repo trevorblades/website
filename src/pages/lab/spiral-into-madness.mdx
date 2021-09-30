@@ -1,6 +1,6 @@
 ---
 title: Spiral Into Madness
-description: Field notes from journey to the land of geometry
+description: Field notes from my journey to the land of geometry
 styles:
   .spiral:
     width: 100%
@@ -160,18 +160,18 @@ I drew a big spiral in my notebook and counted the insets and outsets for each s
 | 9    | 5      | 4       |
 | 10   | 5      | 6       |
 
-The outsets column presents a clear pattern. Every three sides, the number of outsets increments by two. In mathematical notation, we could express this formula where $O$ is the number of outsets, $n$ is the current side, and $S$ is the total number of sides on the shape—3 in the case of a triangle.
+The outsets column presents a clear pattern. Every three sides, the number of outsets increments by two. In mathematical notation, we could express this formula where $O$ is the number of outsets, $S$ is the current side, and $N$ is the total number of sides on the shape—3 in the case of a triangle.
 
 $$
-O = 2\lfloor\frac{n - 1}{S}\rfloor
+O = 2\lfloor\frac{S - 1}{N}\rfloor
 $$
 
 > The $\lfloor{x}\rfloor$ syntax above means "floor" or "round this number down"
 
-The pattern for the insets was a lot more unclear, but after some trial and error, I came up with the following handy formula, where $I$ is the number of insets, and the variables $n$ and $S$ are the same as above.
+The pattern for the insets was a lot more unclear, but after some trial and error, I came up with the following handy formula, where $I$ is the number of insets, and the variables $S$ and $N$ are the same as above.
 
 $$
-I = \lfloor\frac{n}{S}\rfloor + \lfloor\frac{\max(n - 2, 0)}{S}\rfloor
+I = \lfloor\frac{S}{N}\rfloor + \lfloor\frac{\max(S - 2, 0)}{N}\rfloor
 $$
 
 In JavaScript, these relationships would look something like this:
@@ -498,7 +498,7 @@ It turns out that a lot of the fundamental parts of this implementation can be a
 
 ### Exterior angles
 
-The angle that I used to rotate the segments in my triangle was fixed at 120°, but as the number of sides on my shape changes, so too must this angle. The formula to find a regular polygon's exterior angle is $\theta = \frac{2\pi}{n}$ where $n$ is the number of sides.
+The angle that I used to rotate the segments in my triangle was fixed at 120°, but as the number of sides on my shape changes, so too must this angle. The formula to find a regular polygon's exterior angle is $\theta = \frac{2\pi}{N}$ where $N$ is the number of sides.
 
 ```js
 const exteriorAngle = (Math.PI * 2) / numSides;
@@ -508,41 +508,106 @@ const exteriorAngle = (Math.PI * 2) / numSides;
 
 Finding the height of a triangle was relatively easy; divide the triangle in two and measure the long vertical side. The process of measuring the height of a regular polygon is more difficult. The formula used differs depending on whether the polygon has an even number of sides, like a hexagon (6), or an odd number like a pentagon (5).
 
-Imagine drawing a circle that touches every point on the polygon. This is called the **circumcircle** and it defines the center of the polygon. The radius of the circumcircle is called the **circumradius**, marked as $R_{c}$. The distance between the center of the circle and the midpoint of any side is called the **inradius**, marked as $R_{i}$.
+Imagine drawing a circle that touches every point on the polygon. This is called the **circumcircle** and it defines the center of the polygon. The radius of the circumcircle is called the **circumradius**, marked as $R_c$. The distance between the center of the circle and the midpoint of any side is called the **inradius**, marked as $R_i$.
 
 <Hexagon className="spiral" />
 
-Calculating the height of an evenly-sided polygon is as simple as multiplying the inradius by two. The height of an oddly-sided polygon is the sum of the circumradius and inradius, as visualized in the diagram below.
+Calculating the height of an evenly-sided polygon is as simple as multiplying the inradius by two. The height of an oddly-sided polygon is the sum of the circumradius and inradius, as visualized in the diagram below and the formula below that, where $N$ is the number of sides.
 
 <Pentagon className="spiral" />
 
 $$
 h = \left\{
   \begin{array}{ll}
-    2R_{i} & n\text{ is even} \\
-    R_{c} + R_{i} & n\text{ is odd}
+    2R_i & N\text{ is even} \\
+    R_c + R_i & N\text{ is odd}
   \end{array}
 \right.
 $$
 
-Calculating these radii is also a complex task. If the number of sides is odd, the circumradius is:
+Calculating these radii is a complex task. **If the number of sides is odd**, the formula for the circumradius is as follows, where the variables are the same as above.
 
 $$
-R_{c} = w \div \sin\pi\frac{n - 1}{2n} \div 2
+R_c = w / \sin\pi\frac{N - 1}{2N} / 2
 $$
 
-$$
-R_{i} = R_{c}\cos\frac{\pi}{n}
-$$
+We can then calculate the inradius by multiplying the circumradius by $\cos\frac{\pi}{N}$.
 
 $$
-R_{i} = \left\{
+R_i = R_c\cos\frac{\pi}{N}
+$$
+
+**If the number of sides is even**, the inradius can be calculated using the formula below. The equation used depends on whether half the number of sides ($N / 2$) is even or odd. For example, a six-sided polygon would have an $N / 2$ of 3 (odd), and an eight-sided polygon would have an $N / 2$ of 4 (even).
+
+$$
+R_i = \left\{
   \begin{array}{ll}
-    w / 2 & n / 2\text{ is even} \\
-    w / 2 \times \cos\frac{\theta}{2} & n / 2\text{ is odd}
+    w / 2 & S / 2\text{ is even} \\
+    w / 2 \times \cos\frac{\theta}{2} & N / 2\text{ is odd}
   \end{array}
 \right.
 $$
 
-- centering the shape (padding-top)
-- inverting the outset (adding instead of subtracting)
+## Side length
+
+For squares and triangles, the original side length is equal to the width of the shape—easy! For shapes with more than four sides, I need to calculate that too. For shapes with an **odd number of sides**, this can be calculated using the circumradius $R_c$ and the exterior angle $\theta$.
+
+$$
+\begin{aligned}
+a = 2R_c^2 \\
+L = \sqrt{a - a \times \cos\theta}
+\end{aligned}
+$$
+
+For shapes with an **even number of sides**, the side length calculation differs slightly depending on if $N / 2$ is even or odd. In either case I use the inradius $R_i$ and the exterior angle $\theta$, only changing the trigonometric ratio used.
+
+$$
+L = \left\{
+  \begin{array}{ll}
+    R_i \times 2\tan\theta & N / 2\text{ is even} \\
+    R_i \times 2\sin\theta & N / 2\text{ is odd}
+  \end{array}
+\right.
+$$
+
+### Centering the shape
+
+Now that I have the height of the shape, I like to center it within a square bounding box. I create a `div` with equal width and height, as provided by the component's `width` prop. Then I find the difference between the box size and the shape height as calculated above. Divide that number by two, and that's the amount I need to offset my shape to vertically center it.
+
+To horizontally center the shape, I need to move the first side into the middle of the box. I can do that by calculating the difference between the box size and side length, and then dividing by two as with the vertical padding.
+
+```jsx
+<div
+  style={{
+    width,
+    height: width,
+    paddingTop: (width - height) / 2,
+    paddingLeft: (width - sideLength) / 2
+  }}
+>
+  {/* spiral elements go here */}
+</div>
+```
+
+### Inverting the outset
+
+The last change I need to make for this spiral to be "multi-polygonal" has to do with the calculation of inner side lengths, and the outsets in particular. When I was rendering a triangle, I subtracted outsets from the original side length to end up with each inner side length. For shapes with more than four sides, I must instead _add_ outsets to perform the calculation correctly.
+
+Simple enough—I can perform a check after calculating my outset and invert the number if we're dealing with a shape with more than four sides.
+
+```js
+let outset = Math.sqrt(inset ** 2 - spacing ** 2);
+if (numSides > 4) {
+  outset *= -1;
+}
+```
+
+---
+
+Ok, that's _actually_ it. I learned a lot about math and geometry creating this component and writing this post, and I'm going to drop a few links below to some of the outstanding resources that I couldn't have done this without. I encourage you to check them out if you want to learn more about this sort of thing!
+
+- https://www.mathsisfun.com/geometry/interior-angles-polygons.html
+- https://educationisaround.com/sohcahtoa/
+- http://www.math.com/school/subject3/lessons/S3U3L4DP.html#:~:text=A%20right%20triangle%20can%20also,that%20is%20an%20isosceles%20triangle
+- http://calcresource.com/geom-ngon.html
+- https://courses.lumenlearning.com/suny-osalgebratrig/chapter/non-right-triangles-law-of-cosines/
