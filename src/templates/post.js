@@ -1,13 +1,15 @@
 import 'dracula-prism/dist/css/dracula-prism.min.css';
 import 'katex/dist/katex.css';
 import GatsbyLink from 'gatsby-link';
-import Header from '../components/Header';
+import Header, {HEADER_HEIGHT} from '../components/Header';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {
   Box,
+  Grid,
   Heading,
   Link,
+  List,
   ListItem,
   OrderedList,
   Stack,
@@ -92,30 +94,49 @@ const components = {
 };
 
 export default function PostTemplate({data}) {
-  const {title, description, styles} = data.mdx.frontmatter;
-  console.log(data.mdx.tableOfContents);
+  const {tableOfContents, frontmatter} = data.mdx;
+  const {title, description, styles} = frontmatter;
   return (
     <>
       <Header />
       <Helmet title={title} />
       <Global styles={styles} />
-      <Box px="10" pt="12" pb="20">
+      <Box maxW="container.xl" mx="auto" px="10" pt="12" pb="20">
         <Box mb="10">
           <Heading mb="2" size="3xl">
             {title}
           </Heading>
           <Heading fontWeight="normal">{description}</Heading>
         </Box>
-        <MDXProvider components={components}>
-          <MDXRenderer
-            shouldWrapChildren
-            fontSize="xl"
-            spacing="6"
-            maxW={{lg: 'container.sm', xl: 'container.md'}}
+        <Grid gap="10" templateColumns={{lg: '1fr 300px'}}>
+          <Box
+            as="nav"
+            order={{lg: 2}}
+            pos={{lg: 'sticky'}}
+            top={HEADER_HEIGHT + 8}
           >
-            {data.mdx.body}
-          </MDXRenderer>
-        </MDXProvider>
+            <Heading mb="3" size="md">
+              In this article
+            </Heading>
+            <List spacing="1" fontSize="lg">
+              {tableOfContents.items.map((item, index) => (
+                <ListItem key={index}>
+                  <Link href={item.url}>{item.title}</Link>
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+          <MDXProvider components={components}>
+            <MDXRenderer
+              shouldWrapChildren
+              fontSize={{base: 'lg', md: 'xl'}}
+              spacing={{base: 5, md: 6}}
+              minW="0"
+            >
+              {data.mdx.body}
+            </MDXRenderer>
+          </MDXProvider>
+        </Grid>
       </Box>
     </>
   );
