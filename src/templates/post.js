@@ -108,24 +108,30 @@ export default function PostTemplate({data}) {
           </Heading>
           <Heading fontWeight="normal">{description}</Heading>
         </Box>
-        <Grid gap="10" templateColumns={{lg: '1fr 300px'}}>
-          <Box
-            as="nav"
-            order={{lg: 2}}
-            pos={{lg: 'sticky'}}
-            top={HEADER_HEIGHT + 8}
-          >
-            <Heading mb="3" size="md">
-              In this article
-            </Heading>
-            <List spacing="1" fontSize="lg">
-              {tableOfContents.items.map((item, index) => (
-                <ListItem key={index}>
-                  <Link href={item.url}>{item.title}</Link>
-                </ListItem>
-              ))}
-            </List>
-          </Box>
+        <Grid
+          gap="10"
+          templateColumns={{lg: '1fr 300px'}}
+          alignItems="flex-start"
+        >
+          {tableOfContents.items && (
+            <Box
+              as="nav"
+              order={{lg: 2}}
+              pos={{lg: 'sticky'}}
+              top={HEADER_HEIGHT + 8}
+            >
+              <Heading mb="3" size="md">
+                In this article
+              </Heading>
+              <List spacing="1" fontSize="lg">
+                {tableOfContents.items.map((item, index) => (
+                  <ListItem key={index}>
+                    <Link href={item.url}>{item.title}</Link>
+                  </ListItem>
+                ))}
+              </List>
+            </Box>
+          )}
           <MDXProvider components={components}>
             <MDXRenderer
               shouldWrapChildren
