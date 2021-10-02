@@ -1,17 +1,28 @@
 ---
 title: Circle Wipe Transition
 description: How to expand a circle to your viewport
+styles:
+  .wipe:
+    img:
+      width: 100%
+      height: 250
+      objectFit: contain
 ---
 
 import {Circle} from './components';
+import {CodeSandbox} from 'mdx-embed';
 
 At the time of writing, my homepage features a neat little transition where a circle grows from the center of the page as you scroll down until it fills the screen. The next section starts immediately after the circle fills the entirety of the viewport.
 
 It's like the inverse of this moment from _The Phantom Menace_:
 
+<div className="wipe">
+
 ![circular wipe from Star Wars](./assets/wipe.webp)
 
-This post is going to explain how I achieved this effect, and the mathematic principles that make it possible.
+</div>
+
+This post is going to explain how I achieved this effect and the mathematical principles that make it possible.
 
 ## Pull out your ruler
 
@@ -93,10 +104,21 @@ function MyComponent() {
 }
 ```
 
-- talk about circle expanding to viewport
-- pixel site does this: https://store.google.com/ca/product/pixel_5?hl=en-GB
+In this example, the scale amount will start at 0 (invisible) when the scrollbar is at the top of the page, and reach 1 (full size) after one height of the viewport has been scrolled.
+
+To complete the effect, the circle must follow the user as they scroll down the page and then lock into place before scrolling out of view when the next section comes into frame. This is where sticky positioning really shines.
+
+I wrap my circle in a sticky-positioned container with a height of one viewport or `100vh`, and then wrap that in another container that is `200vh` high. The outer container acts as a "track" for the first section's content and circle. It ensures that after one viewport height is scrolled, there is enough room left over for the fully scaled circle to occupy its own one viewport of height.
+
+Check out the CodeSandbox below for a complete example and live demo of this effect in action.
+
+<CodeSandbox codeSandboxId="polished-sun-cuguy" />
 
 ## Resources
+
+As I was writing this post, I realized that Google used a similar technique on their [Pixel 5 website](https://store.google.com/ca/product/pixel_5). This was pretty cool to see, and I hope it gives you some ideas about how this effect can be utilized.
+
+I leaned on a few helpful resources to understand and execute this feature. If you want to learn more about the mathematical techniques highlighted in this post, I suggest checking them out:
 
 - http://mathcentral.uregina.ca/QQ/database/QQ.09.06/s/benneth1.html
 - https://courses.lumenlearning.com/boundless-algebra/chapter/trigonometry-and-right-triangles/
