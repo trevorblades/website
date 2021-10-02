@@ -101,7 +101,7 @@ export default function PostTemplate({data}) {
       <Header />
       <Helmet title={title} />
       <Global styles={styles} />
-      <Box maxW="container.xl" mx="auto" px="10" pt="12" pb="20">
+      <Box maxW="container.xl" mx="auto" px={[6, 8, 10]} pt="12" pb="20">
         <Box mb="10">
           <Heading mb="2" size="3xl">
             {title}

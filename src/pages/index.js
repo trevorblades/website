@@ -48,8 +48,6 @@ export default function HomePage() {
   const {width, height} = useWindowSize();
 
   const {diameter, interiorAngle} = useMemo(() => {
-    // http://mathcentral.uregina.ca/QQ/database/QQ.09.06/s/benneth1.html
-    // https://courses.lumenlearning.com/boundless-algebra/chapter/trigonometry-and-right-triangles/
     const diameter = Math.sqrt(width ** 2 + height ** 2);
     return {
       diameter,
@@ -166,7 +164,6 @@ export default function HomePage() {
                   <Box
                     h={1 / 2}
                     bgColor="current"
-                    transform="rotate(20deg)"
                     transformOrigin="top left"
                     textAlign="center"
                     lineHeight="taller"

@@ -20,6 +20,7 @@
     "gatsby-plugin-react-helmet": "^4.1.0",
     "gatsby-plugin-svgr": "^3.0.0-beta.0",
     "gatsby-plugin-webfonts": "^2.1.1",
+    "gatsby-remark-copy-linked-files": "^4.11.0",
     "gatsby-remark-katex": "^5.11.0",
     "gatsby-remark-prismjs": "^5.11.0",
     "gatsby-source-filesystem": "^3.14.0",
@@ -37,7 +38,8 @@
     "react-use": "^17.2.1",
     "remark-html-katex": "^3.0.0",
     "remark-math": "^3.0.1",
-    "remark-slug": "^6.1.0"
+    "remark-slug": "^6.1.0",
+    "remark-unwrap-images": "^2.1.0"
   },
   "devDependencies": {
     "@trevorblades/eslint-config": "^7.2.2",

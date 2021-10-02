@@ -66,16 +66,16 @@ export default function Header(props) {
         </Heading>
         <HStack spacing="5" ml="auto">
           <Link as={GatsbyLink} to="/#about">
-            about me
+            About
           </Link>
           <Link as={GatsbyLink} to="/#projects">
-            projects
+            Projects
           </Link>
           <Link as={GatsbyLink} to="/#lab">
-            lab
+            Lab
           </Link>
           <Link as={GatsbyLink} to="/#oss">
-            oss
+            OSS
           </Link>
           <HStack>
             <IconButton
@@ -91,9 +91,9 @@ export default function Header(props) {
               size="sm"
               fontSize="md"
               colorScheme="purple"
-              rightIcon={<FaTwitch />}
+              leftIcon={<FaTwitch />}
             >
-              subscribe
+              Subscribe
             </Button>
           </HStack>
         </HStack>

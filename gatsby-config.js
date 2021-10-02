@@ -20,9 +20,11 @@ module.exports = {
         remarkPlugins: [
           require('remark-slug'),
           require('remark-math'),
-          require('remark-html-katex')
+          require('remark-html-katex'),
+          require('remark-unwrap-images')
         ],
         gatsbyRemarkPlugins: [
+          'gatsby-remark-copy-linked-files',
           '@fec/remark-a11y-emoji/gatsby',
           {
             resolve: 'gatsby-remark-prismjs',
