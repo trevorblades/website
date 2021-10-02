@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
-import {Box, Circle, HStack, Heading, Text} from '@chakra-ui/react';
-import {Link, graphql, useStaticQuery} from 'gatsby';
+import pluralize from 'pluralize';
+import {Box, Circle, Flex, HStack, Heading, Text} from '@chakra-ui/react';
+import {FiClock} from 'react-icons/fi';
+import {Link as GatsbyLink, graphql, useStaticQuery} from 'gatsby';
 import {OpenSourceGrid} from './OpenSource';
 
 const LAB_COLORS = ['red', 'green', 'blue'];
@@ -17,6 +19,7 @@ export default function Lab() {
           childMdx {
             id
             slug
+            timeToRead
             frontmatter {
               title
               description
@@ -41,16 +44,18 @@ export default function Lab() {
       </Heading>
       <OpenSourceGrid>
         {data.allPost.nodes.map(({childMdx}) => {
-          const {title, description} = childMdx.frontmatter;
+          const {id, slug, timeToRead, frontmatter} = childMdx;
+          const {title, description} = frontmatter;
           return (
-            <Box
-              key={childMdx.id}
+            <Flex
+              key={id}
+              direction="column"
               rounded={{base: 'lg', md: 'xl'}}
               borderColor={`${labColor}.700`}
               borderWidth="1px"
               p={[4, 5, 6]}
-              as={Link}
-              to={'/lab/' + childMdx.slug}
+              as={GatsbyLink}
+              to={'/lab/' + slug}
               transition="all 250ms"
               _hover={{
                 borderColor: `${labColor}.500`,
@@ -58,8 +63,14 @@ export default function Lab() {
               }}
             >
               <Heading size="lg">{title}</Heading>
-              <Text>{description}</Text>
-            </Box>
+              <Text mb="4" fontSize="lg">
+                {description}
+              </Text>
+              <HStack mt="auto" color={`${labColor}.200`}>
+                <FiClock />
+                <span>{pluralize('minute', timeToRead, true)}</span>
+              </HStack>
+            </Flex>
           );
         })}
       </OpenSourceGrid>
