@@ -1,9 +1,16 @@
 import React, {useState} from 'react';
 import pluralize from 'pluralize';
-import {Box, Circle, Flex, HStack, Heading, Text} from '@chakra-ui/react';
+import {
+  Box,
+  Circle,
+  Flex,
+  HStack,
+  Heading,
+  SimpleGrid,
+  Text
+} from '@chakra-ui/react';
 import {FiClock} from 'react-icons/fi';
 import {Link as GatsbyLink, graphql, useStaticQuery} from 'gatsby';
-import {OpenSourceGrid} from './OpenSource';
 
 const LAB_COLORS = ['red', 'green', 'blue'];
 
@@ -32,8 +39,8 @@ export default function Lab() {
 
   return (
     <Box
-      px="10"
-      py="12"
+      px={{base: 8, md: 10}}
+      py={{base: 10, md: 12}}
       bgColor={`${labColor}.800`}
       color={`${labColor}.100`}
       pos="relative"
@@ -42,7 +49,7 @@ export default function Lab() {
       <Heading size="2xl" mb={{base: 6, md: 8}}>
         Lab
       </Heading>
-      <OpenSourceGrid>
+      <SimpleGrid spacing={{base: 4, md: 6}} columns={{base: 1, md: 2, lg: 3}}>
         {data.allPost.nodes.map(({childMdx}) => {
           const {id, slug, timeToRead, frontmatter} = childMdx;
           const {title, description} = frontmatter;
@@ -53,7 +60,7 @@ export default function Lab() {
               rounded={{base: 'lg', md: 'xl'}}
               borderColor={`${labColor}.700`}
               borderWidth="1px"
-              p={[4, 5, 6]}
+              p={[3, 4, 5, 6]}
               as={GatsbyLink}
               to={'/lab/' + slug}
               transition="all 250ms"
@@ -63,7 +70,7 @@ export default function Lab() {
               }}
             >
               <Heading size="lg">{title}</Heading>
-              <Text mb="4" fontSize="lg">
+              <Text mb={[3, 4, 5, 6]} fontSize="lg">
                 {description}
               </Text>
               <HStack mt="auto" color={`${labColor}.200`}>
@@ -73,7 +80,7 @@ export default function Lab() {
             </Flex>
           );
         })}
-      </OpenSourceGrid>
+      </SimpleGrid>
       <HStack pos="absolute" top="4" right="4">
         {LAB_COLORS.map(color => (
           <Circle
