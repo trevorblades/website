@@ -5,7 +5,7 @@ description: How to use mathematical notation in your blog posts
 
 In my [spiral](/lab/spiral-into-madness) and [circle](/lab/circle-transition) posts, I relied heavily on mathematical notation to explain formulas and equations that I used to build those features. Before then, I had never had to use mathematical notation in any web or computer context.
 
-After some searching on the web, I learned that [KaTeX](https://katex.org/) was the right tool for the job. It takes a string of text written in [TeX](https://en.wikipedia.org/wiki/TeX) syntax and outputs nicely formatted mathematical notation. In Markdown, it's common to see TeX written inside math blocks `$$`.
+After some searching on the web, I learned that [KaTeX](https://katex.org/) was the right tool for the job. It takes a string of text written in [TeX](https://en.wikipedia.org/wiki/TeX) syntax and outputs nicely formatted mathematical notation. In Markdown, it's common to see $\TeX$ written inside math blocks beginning and ending with `$$`.
 
 ```md
 $$
@@ -13,13 +13,13 @@ c = \sqrt{a^2 + b^2}
 $$
 ```
 
-The above Markdown becomes the following using KaTeX:
+The above Markdown becomes the following when processed by $\KaTeX$:
 
 $$
 c = \sqrt{a^2 + b^2}
 $$
 
-Processing the Markdown math blocks with KaTeX is _not_ part of the basic offering of most Markdown renderers, and I needed to configure that part myself.
+Processing the Markdown math blocks with $\KaTeX$ is _not_ part of the basic offering of most Markdown renderers, and I needed to configure that part myself.
 
 My website is built with Gatsby and MDX using `gatsby-plugin-mdx`, which accepts remark and rehype plugins as configuration options. Luckily there's a handful of plugins built for this purpose, such as `remark-math`, `rehype-katex`, and `gatsby-remark-katex`. Sadly, none of these libraries play nicely with the current stable version of MDX (1.6.x at the time of writing), only plain ol' Markdown.
 
@@ -45,7 +45,7 @@ module.exports = {
 };
 ```
 
-Add the remark plugins to the configuration and include the CSS styles from the `katex` package with your site code.
+Lastly, add the remark plugins to your `gatsby-plugin-mdx` configuration and import the stylesheet from the `katex` package into your client-side bundle.
 
 ```js
 // gatsby-browser.js
@@ -54,4 +54,4 @@ import 'katex/dist/katex.css';
 
 ---
 
-That's it! Hope this short guide was helpful to anybody trying to set up KaTeX with a similar tech stack.
+That's it! I hope you found this short guide to be helpful in setting up $\KaTeX$ in your Gatsby site. If not, it better have at least been interesting. 😋

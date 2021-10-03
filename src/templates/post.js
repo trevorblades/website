@@ -3,7 +3,7 @@ import 'katex/dist/katex.css';
 import GatsbyLink from 'gatsby-link';
 import Header, {HEADER_HEIGHT} from '../components/Header';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {Fragment} from 'react';
 import {
   Box,
   Grid,
@@ -90,7 +90,8 @@ const components = {
   tbody: Tbody,
   tr: Tr,
   th: Th,
-  td: Td
+  td: Td,
+  undefined: Fragment
 };
 
 export default function PostTemplate({data}) {
