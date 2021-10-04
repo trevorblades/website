@@ -100,7 +100,7 @@ export default function PostTemplate({data}) {
   return (
     <>
       <Header />
-      <Helmet title={title} />
+      <Helmet title={title}>{/* TODO: og tags */}</Helmet>
       <Global styles={styles} />
       <Box maxW="container.xl" mx="auto" px={[6, 8, 10]} pt="12" pb="20">
         <Box mb="10">

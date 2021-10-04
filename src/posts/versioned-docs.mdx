@@ -1,7 +1,56 @@
 ---
 title: Versioned Documentation
-description: Support multiple versions in your docs site with Gatsby
+description: Support multiple versions in your Gatsby docs site
 ---
 
-- markdown docs `gatsby-transformer-remark`
+These days, it's common for open source libraries to publish documentation for multiple versions of their software. That's what we do at [Apollo](https://www.apollographql.com/docs/react), and many other popular tools do something similar:
+
+- [date-fns](https://date-fns.org/docs/Getting-Started)
+- [Chakra UI](https://chakra-ui.com/)
+- [webpack](https://webpack.js.org/concepts/)
+
+It's helpful to provide your users a way to access docs for older versions in case they haven't upgraded to your newest version yet, or if they're stuck on an older version because migrating would be too impractical.
+
+In this post, I'll explain the docs versioning strategy that we use at Apollo. It's important to note that we use **Gatsby** to build our docs from a set of Markdown files that are located in the same repo as the code that they're documenting.
+
+## Basic setup
+
+Below is an example of our directory structure. The library source code lives in the root-level `src` directory, and `docs` is a Gatsby website powered by Markdown files in a `content` directory.
+
+```
+src/
+├─ index.ts
+docs/
+├─ content/
+│  ├─ index.md
+│  ├─ getting-started.md
+│  ├─ api-reference.md
+├─ gatsby-config.js
+├─ package.json
+package.json
+```
+
+Content is sourced using `gatsby-source-filesystem` and transformed using `gatsby-transformer-remark`. I like to use the version from the `package.json` at the root of the repo as the `name` of my content source. This will come in handy later when we're rendering the version dropdown.
+
+```js
+// gatsby-config.js
+const {version} = require('../package.json');
+module.exports = {
+  plugins: [
+    'gatsby-transformer-remark',
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: version,
+        path: 'content'
+      }
+    }
+  ]
+};
+```
+
+## Other versions
+
+At Apollo, we maintain different versions on named git branches. The docs for the current version will be sourced from your local `content` directory.
+
 - using `gatsby-source-git`
