@@ -11,33 +11,33 @@ These days, it's common for open source libraries to publish documentation for m
 
 It's helpful to provide your users a way to access docs for older versions in case they haven't upgraded to your newest version yet, or if they're stuck on an older version because migrating would be too impractical.
 
-In this post, I'll explain the docs versioning strategy that we use at Apollo. It's important to note that we use **Gatsby** to build our docs from a set of Markdown files that are located in the same repo as the code that they're documenting.
+In this post, I'll explain the docs versioning strategy that we use at Apollo. It's important to note that we use **Gatsby** to build our docs from a set of MDX files that are located in the same repo as the code that they're documenting.
 
 ## Basic setup
 
-Below is an example of our directory structure. The library source code lives in the root-level `src` directory, and `docs` is a Gatsby website powered by Markdown files in a `content` directory.
+Below is an example of our directory structure. The library source code lives in the root-level `src` directory, and `docs` is a Gatsby website powered by MDX files in a `content` directory.
 
 ```
 src/
 ├─ index.ts
 docs/
 ├─ content/
-│  ├─ index.md
-│  ├─ getting-started.md
-│  ├─ api-reference.md
+│  ├─ index.mdx
+│  ├─ getting-started.mdx
+│  ├─ api-reference.mdx
 ├─ gatsby-config.js
 ├─ package.json
 package.json
 ```
 
-Content is sourced using `gatsby-source-filesystem` and transformed using `gatsby-transformer-remark`. I like to use the version from the `package.json` at the root of the repo as the `name` of my content source. This will come in handy later when we're rendering the version dropdown.
+Content for the current version is sourced from local files using `gatsby-source-filesystem` and transformed into MDX nodes using `gatsby-plugin-mdx`. I like to use the version from the `package.json` at the root of the repo as the `name` of my content source. This will come in handy later when we're rendering the version dropdown.
 
 ```js
 // gatsby-config.js
 const {version} = require('../package.json');
 module.exports = {
   plugins: [
-    'gatsby-transformer-remark',
+    'gatsby-plugin-mdx',
     {
       resolve: 'gatsby-source-filesystem',
       options: {
@@ -49,8 +49,181 @@ module.exports = {
 };
 ```
 
+Using Gatsby's `createPages` API, we query for these MDX nodes and generate a static page for each one using a template file written in React. Gatsby has [a great tutorial](https://www.gatsbyjs.com/docs/mdx/programmatically-creating-pages/#make-a-template-for-your-posts) that goes into more detail about templates and how to create pages in this manner.
+
+```js
+exports.createPages = ({actions, graphql}) => {
+  const {data} = graphql(`
+    query ListPages {
+      allMdx {
+        nodes {
+          id
+          slug
+        }
+      }
+    }
+  `);
+
+  data.allMdx.nodes.forEach(node => {
+    actions.createPage({
+      component: require.resolve('./src/templates/page'),
+      path: '/' + node.slug,
+      context: {
+        id: node.id
+      }
+    });
+  });
+};
+```
+
 ## Other versions
 
-At Apollo, we maintain different versions on named git branches. The docs for the current version will be sourced from your local `content` directory.
+At Apollo, we maintain different versions on named git branches. The docs for those versions are also located in the same repo, usually in the same directory structure as the current version. We bring those docs into our main Gatsby site using `gatsby-source-git`. This source plugin allows us to specify a git URL and branch name to source files from and incorporate them into our local Gatsby graph to query later using GraphQL.
 
-- using `gatsby-source-git`
+```bash
+npm install gatsby-source-git
+```
+
+```js
+module.exports = {
+  plugins: [
+    // ...other plugins configured above
+    {
+      resolve: 'gatsby-source-git',
+      options: {
+        name: '1.x.x', // the name that will be used in the version dropdown
+        remote: 'https://github.com/your-username/your-repo',
+        branch: 'v1', // the branch where your older version is maintained
+        // only source from the directory where your docs content lives
+        patterns: 'docs/content/**'
+      }
+    }
+  ]
+};
+```
+
+Talk about `gitRemote` field added to `File` nodes in Gatsby.
+
+```graphql
+query ListPages {
+  allMdx {
+    nodes {
+      id
+      slug
+      parent {
+        ... on File {
+          gitRemote {
+            ref
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+```js
+const path = require('path');
+
+exports.createPages = ({actions, graphql}) => {
+  // query for MDX files
+
+  data.allMdx.nodes.forEach(node => {
+    const {gitRemote} = node.parent;
+    actions.createPage({
+      component: require.resolve('./src/templates/page'),
+      // prefix older version docs pages with their branch name
+      path: path.join('/', gitRemote?.ref || '', node.slug),
+      context: {
+        id: node.id
+      }
+    });
+  });
+};
+```
+
+## The version dropdown
+
+```jsx
+// src/components/VersionDropdown.js
+import {graphql, navigate, useStaticQuery} from 'gatsby';
+
+export default function VersionDropdown({currentRef = ''}) {
+  const {sitePlugin, allGitRemote} = useStaticQuery(
+    graphql`
+      query ListVersions {
+        # get current version name from filesystem source plugin
+        sitePlugin(name: {eq: "gatsby-source-filesystem"}) {
+          pluginOptions {
+            name
+          }
+        }
+
+        # list all remotes configured by gatsby-source-git
+        allGitRemote {
+          nodes {
+            id
+            ref
+            sourceInstanceName
+          }
+        }
+      }
+    `
+  );
+
+  return (
+    <select
+      value={currentRef}
+      // client side route change when an option is selected
+      onChange={event => navigate('/' + event.target.value)}
+    >
+      <option value="">
+        {/* the current version */}
+        {sitePlugin.pluginOptions.name}
+      </option>
+      {data.allGitRemote.nodes.map(node => (
+        // other versions sourced via git
+        <option key={node.id} value={node.ref}>
+          {node.sourceInstanceName}
+        </option>
+      ))}
+    </select>
+  );
+}
+```
+
+```jsx
+// src/templates/page.js
+import VersionDropdown from '../components/VersionDropdown';
+import {MdxRenderer} from 'gatsby-plugin-mdx';
+import {graphql} from 'gatsby';
+
+function PageTemplate({data}) {
+  const {body, parent} = data.mdx;
+  return (
+    <>
+      <VersionDropdown
+        // pass ref of current page to the version dropdown
+        currentRef={parent.gitRemote?.ref}
+      />
+      {/* render MDX content */}
+      <MdxRenderer>{body}</MdxRenderer>
+    </>
+  );
+}
+
+export const pageQuery = graphql`
+  query GetPage($id: String!) {
+    mdx(id: {eq: $id}) {
+      body
+      parent {
+        ... on File {
+          gitRemote {
+            ref
+          }
+        }
+      }
+    }
+  }
+`;
+```
