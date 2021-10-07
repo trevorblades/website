@@ -30,7 +30,7 @@ docs/
 package.json
 ```
 
-Content for the current version is sourced from local files using `gatsby-source-filesystem` and transformed into MDX nodes using `gatsby-plugin-mdx`. I like to use the version from the `package.json` at the root of the repo as the `name` of my content source. This will come in handy later when we're rendering the version dropdown.
+Content for the current version is sourced from local files using `gatsby-source-filesystem` and transformed into MDX nodes using `gatsby-plugin-mdx`. I'll refer to this version as the **local version** in this post. I like to use the version from the `package.json` at the root of the repo as the `name` of my content source. This will come in handy later when we're rendering the version dropdown.
 
 ```js
 // gatsby-config.js
@@ -76,13 +76,17 @@ exports.createPages = async ({actions, graphql}) => {
 };
 ```
 
-## Other versions
+## Remote versions
 
-At Apollo, we maintain different versions on named git branches. The docs for those versions are also located in the same repo, usually in the same directory structure as the current version. We bring those docs into our main Gatsby site using `gatsby-source-git`. This source plugin allows us to specify a git URL and branch name to source files from and incorporate them into our local Gatsby graph to query later using GraphQL.
+At Apollo, we maintain different versions on named git branches. The docs for those versions are also located in the same repo, usually in the same directory structure as the local version. We bring those docs into our main Gatsby site using `gatsby-source-git`. I'll refer to these as **remote versions** in this post. This source plugin allows us to specify a git URL and branch name to source files from and incorporate them into our local Gatsby graph to query later using GraphQL.
 
 ```bash
 npm install gatsby-source-git
 ```
+
+You can configure multiple instances of `gatsby-source-git` for each remote version you want to document. The `name` option should be the label you wish to display in the version dropdown that I'll talk about later in this post.
+
+> [Check out the docs](https://www.gatsbyjs.com/plugins/gatsby-source-git/) for `gatsby-source-git` to learn about all of the available configuration options.
 
 ```js
 module.exports = {
@@ -126,7 +130,7 @@ query ListPages {
 }
 ```
 
-With this information, we set the `path` of each page to include the branch name in the URL. Current version docs will begin with `/` while pages for other versions will begin with `/branch-name/`, or `/v1/` in this example.
+With this information, we set the `path` of each page to include the branch name in the URL. Local version docs will begin with `/` while pages for remote versions will begin with `/branch-name/`, or `/v1/` in this example.
 
 I use `path.join` to help with this. If one of the path segments passed to `join` is an empty string, it will be omitted from the computed path. This way, if `gitRemote` is null there will be no path prefix added.
 
@@ -217,6 +221,14 @@ data.allMdx.nodes.forEach(node => {
 
 ## The version dropdown
 
+Now that our pages are created, we need a way to navigate between versions. A common way that docs do this is by using a dropdown menu with the different versions (including the local one) as options.
+
+I use a [Gatsby static query](https://www.gatsbyjs.com/docs/how-to/querying-data/static-query/) to fetch the name of the local version, as configured by the `name` option that was supplied to `gatsby-source-filesystem`, as well as the source name and branch name of each remote version.
+
+Then, I render an HTML `html›<select>` element with the local version as the first option, followed by the remote versions. Each option's `value` prop should be the branch name so that when an option is selected, the `onChange` function can navigate the user to the right page using `event.target.value`. Remember that we prefixed remote version pages with the `gitRemote.ref` property. ☝️
+
+Finally, the `ref` property related to the current page () is passed to the version dropdown as the `currentRef` prop. If the current page is sourced from a local file, the `gitRemote` will be null and we'll fall back to an empty string—the value of the `<option>` element for the local version. This prop is passed along as the `value` of the select element so that the correct version is shown as selected.
+
 ```jsx
 // src/components/VersionDropdown.js
 import {graphql, navigate, useStaticQuery} from 'gatsby';
@@ -225,14 +237,14 @@ export default function VersionDropdown({currentRef = ''}) {
   const {sitePlugin, allGitRemote} = useStaticQuery(
     graphql`
       query ListVersions {
-        # get current version name from filesystem source plugin
+        # get local version name from filesystem source plugin
         sitePlugin(name: {eq: "gatsby-source-filesystem"}) {
           pluginOptions {
             name
           }
         }
 
-        # list all remotes configured by gatsby-source-git
+        # list all remote versions configured by gatsby-source-git
         allGitRemote {
           nodes {
             id
@@ -251,11 +263,11 @@ export default function VersionDropdown({currentRef = ''}) {
       onChange={event => navigate('/' + event.target.value)}
     >
       <option value="">
-        {/* the current version */}
+        {/* the local version */}
         {sitePlugin.pluginOptions.name}
       </option>
       {data.allGitRemote.nodes.map(node => (
-        // other versions sourced via git
+        // remote versions sourced via git
         <option key={node.id} value={node.ref}>
           {node.sourceInstanceName}
         </option>
@@ -264,6 +276,8 @@ export default function VersionDropdown({currentRef = ''}) {
   );
 }
 ```
+
+## The page template
 
 ```jsx
 // src/templates/page.js
@@ -300,3 +314,9 @@ export const pageQuery = graphql`
   }
 `;
 ```
+
+## Completed example
+
+https://github.com/trevorblades/versioned-docs
+
+https://versioned-docs.netlify.app
