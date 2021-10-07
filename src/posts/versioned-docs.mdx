@@ -150,14 +150,69 @@ exports.createPages = async ({actions, graphql}) => {
 };
 ```
 
-This method works, however the `node.slug` property for pages sourced from git include the full directory structure in them, e.g., `docs/content/getting-started`. For this to work properly, this content directory part must be stripped out.
+### Cleaning up remote paths
+
+This method works, however the `node.slug` property for pages sourced from git include the full directory structure in them, e.g., `docs/content/getting-started`. For this strategy to work properly, the content directory must be stripped out.
 
 Conveniently, this directory was supplied to `gatsby-source-git` earlier in the form of a glob pattern. Using `micromatch`, you can turn a glob pattern into a regular expression using their `makeRe` function. The function takes a `capture` option that turns the wildcard parts of a glob into regex capture groups.
 
-Using this regular expression, we can do `js›node.slug.replace(regex, '$1')` to strip out the content directory from the slug.
+```js
+const {makeRe} = require('micromatch');
+
+makeRe(glob, {capture: true}); // regex with capture group for wildcard (**)
+```
+
+Using this regular expression, we can call `js›node.slug.replace(regex, '$1')` to strip out the content directory from the slug. To find the pattern that pertains to a given node, we must first create a mapping of branch names to their configured pattern. First, I modify the `ListPages` query to include plugin options for every instance of `gatsby-source-git` in my Gatsby config.
+
+```graphql
+query ListPages {
+  allMdx {
+    # selection of mdx fields as above
+  }
+  allSitePlugin(filter: {name: {eq: "gatsby-source-git"}}) {
+    nodes {
+      pluginOptions {
+        patterns
+        branch
+      }
+    }
+  }
+}
+```
+
+Then I use `js›Array.reduce` to map branches to their respective regular expressions with `makeRe`:
 
 ```js
-makeRe(glob, {capture: true}); // regex with capture group for wildcard parts
+const versionPatterns = data.allSitePlugin.nodes.reduce((acc, node) => {
+  const {patterns, branch} = node.pluginOptions;
+  return {
+    ...acc,
+    [branch]: makeRe(patterns, {capture: true})
+  };
+}, {});
+```
+
+Finally, I modify my path logic to prefix paths for nodes with a `gitRemote` by stripping out the content directory from the `node.slug`:
+
+```js
+data.allMdx.nodes.forEach(node => {
+  const {gitRemote} = node.parent;
+  actions.createPage({
+    component: require.resolve('./src/templates/page'),
+    path: gitRemote
+      ? path.join(
+          '/',
+          // add the branch name as a path segment
+          gitRemote.ref,
+          // replace the slug with the value from the first capture group
+          node.slug.replace(versionPatterns[gitRemote.ref], '$1')
+        )
+      : '/' + node.slug, // create local paths normally
+    context: {
+      id: node.id
+    }
+  });
+});
 ```
 
 ## The version dropdown
