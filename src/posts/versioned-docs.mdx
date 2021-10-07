@@ -52,8 +52,8 @@ module.exports = {
 Using Gatsby's `createPages` API, we query for these MDX nodes and generate a static page for each one using a template file written in React. Gatsby has [a great tutorial](https://www.gatsbyjs.com/docs/mdx/programmatically-creating-pages/#make-a-template-for-your-posts) that goes into more detail about templates and how to create pages in this manner.
 
 ```js
-exports.createPages = ({actions, graphql}) => {
-  const {data} = graphql(`
+exports.createPages = async ({actions, graphql}) => {
+  const {data} = await graphql(`
     query ListPages {
       allMdx {
         nodes {
@@ -91,7 +91,7 @@ module.exports = {
     {
       resolve: 'gatsby-source-git',
       options: {
-        name: '1.x.x', // the name that will be used in the version dropdown
+        name: '1.10.x', // the name that will be used in the version dropdown
         remote: 'https://github.com/your-username/your-repo',
         branch: 'v1', // the branch where your older version is maintained
         // only source from the directory where your docs content lives
@@ -102,7 +102,11 @@ module.exports = {
 };
 ```
 
-Talk about `gitRemote` field added to `File` nodes in Gatsby.
+This plugin will look for files that match the glob pattern specified in the `patterns` option and create `File` nodes in your Gatsby graph. It will also add a `gitRemote` field to those `File` nodes to help you differenitate between local files and remote ones.
+
+The `ListPages` query can be updated to include this field by accessing the `parent` **union** field on `Mdx` nodes and asking for the `gitRemote` field within it. The `ref` field is the name of the git branch that the file was sourced from.
+
+> A union is a type in GraphQL that can contain the fields of one or more types. The `... on Type` syntax must be used to access fields on a union.
 
 ```graphql
 query ListPages {
@@ -122,10 +126,14 @@ query ListPages {
 }
 ```
 
+With this information, we set the `path` of each page to include the branch name in the URL. Current version docs will begin with `/` while pages for other versions will begin with `/branch-name/`, or `/v1/` in this example.
+
+I use `path.join` to help with this. If one of the path segments passed to `join` is an empty string, it will be omitted from the computed path. This way, if `gitRemote` is null there will be no path prefix added.
+
 ```js
 const path = require('path');
 
-exports.createPages = ({actions, graphql}) => {
+exports.createPages = async ({actions, graphql}) => {
   // query for MDX files
 
   data.allMdx.nodes.forEach(node => {
@@ -140,6 +148,16 @@ exports.createPages = ({actions, graphql}) => {
     });
   });
 };
+```
+
+This method works, however the `node.slug` property for pages sourced from git include the full directory structure in them, e.g., `docs/content/getting-started`. For this to work properly, this content directory part must be stripped out.
+
+Conveniently, this directory was supplied to `gatsby-source-git` earlier in the form of a glob pattern. Using `micromatch`, you can turn a glob pattern into a regular expression using their `makeRe` function. The function takes a `capture` option that turns the wildcard parts of a glob into regex capture groups.
+
+Using this regular expression, we can do `js›node.slug.replace(regex, '$1')` to strip out the content directory from the slug.
+
+```js
+makeRe(glob, {capture: true}); // regex with capture group for wildcard parts
 ```
 
 ## The version dropdown
@@ -198,7 +216,7 @@ import VersionDropdown from '../components/VersionDropdown';
 import {MdxRenderer} from 'gatsby-plugin-mdx';
 import {graphql} from 'gatsby';
 
-function PageTemplate({data}) {
+export default function PageTemplate({data}) {
   const {body, parent} = data.mdx;
   return (
     <>

@@ -11,29 +11,25 @@ exports.createSchemaCustomization = ({actions}) => {
 exports.createPages = async ({actions, graphql}) => {
   const {data} = await graphql(`
     {
-      allPost: allFile(
-        filter: {sourceInstanceName: {eq: "posts"}, extension: {eq: "mdx"}}
-      ) {
+      allMdx {
         nodes {
-          childMdx {
-            id
-            slug
-            frontmatter {
-              title
-              description
-            }
+          id
+          slug
+          frontmatter {
+            title
+            description
           }
         }
       }
     }
   `);
 
-  data.allPost.nodes.forEach(({childMdx}) => {
+  data.allMdx.nodes.forEach(node => {
     actions.createPage({
-      path: '/lab/' + childMdx.slug,
+      path: '/lab/' + node.slug,
       component: require.resolve('./src/templates/post'),
       context: {
-        id: childMdx.id
+        id: node.id
       }
     });
   });
