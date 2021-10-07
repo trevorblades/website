@@ -196,7 +196,7 @@ const versionPatterns = data.allSitePlugin.nodes.reduce((acc, node) => {
 }, {});
 ```
 
-Finally, I modify my path logic to prefix paths for nodes with a `gitRemote` by stripping out the content directory from the `node.slug`:
+Lastly, I modify my path logic to prefix paths for nodes with a `gitRemote` by stripping out the content directory from the `node.slug`:
 
 ```js
 data.allMdx.nodes.forEach(node => {
@@ -278,6 +278,10 @@ export default function VersionDropdown({currentRef = ''}) {
 ```
 
 ## The page template
+
+You'll remember that we specified a template file as the `component` option of the `createPage` function in the page creation loop. The role of the page template is to receive some identifying information about the page to be rendered and fetch the necessary information to render it.
+
+This information is passed to the template via the `context` option of `createPage`, and made available as a `pageContext` prop on the template component, and as variables in [GraphQL page queries](https://www.gatsbyjs.com/docs/how-to/querying-data/page-query/). In this example we only need to pass the `id` property for each MDX node.
 
 ```jsx
 // src/templates/page.js
