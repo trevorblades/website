@@ -227,7 +227,7 @@ I use a [Gatsby static query](https://www.gatsbyjs.com/docs/how-to/querying-data
 
 Then, I render an HTML `html›<select>` element with the local version as the first option, followed by the remote versions. Each option's `value` prop should be the branch name so that when an option is selected, the `onChange` function can navigate the user to the right page using `event.target.value`. Remember that we prefixed remote version pages with the `gitRemote.ref` property. ☝️
 
-Finally, we rely on the parent of the version dropdown to pass a `currentRef` prop to the component. If `currentRef` is undefined, it falls back to an empty string—the value of the `html›<option>` element for the local version. This prop is then passed along as the `value` of the `html›<select>` element so that the currently active version appears as selected.
+Finally, we rely on the parent of the version dropdown to pass a `currentRef` prop to the component. If `currentRef` is undefined, it falls back to an empty string—the value of the `html›<option>` element for the local version. This prop is then passed along as the `value` of the select so that the currently active version appears as the selected option.
 
 ```jsx
 // src/components/VersionDropdown.js
@@ -325,6 +325,6 @@ export const pageQuery = graphql`
 
 ## Complete example
 
-And that's versioned documentation with Gatsby in a nutshell! 🥥 How you build and write your docs from here is up to you.
+And that's versioned documentation with Gatsby in a nutshell! 🥥 I hope you found this guide informative, and maybe even inspired to support multiple versions in your own docs.
 
 I put together [an example repo](https://github.com/trevorblades/versioned-docs) to demonstrate how the techniques discussed in this post work when used together. You can also check out [this hosted example](https://versioned-docs.netlify.app) to see these techniques in action.
