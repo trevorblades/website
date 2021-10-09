@@ -1,6 +1,7 @@
 import HomePageContent from '../components/HomePageContent';
 import Intro from '../components/Intro';
 import Lab from '../components/Lab';
+import Layout from '../components/Layout';
 import OpenSource from '../components/OpenSource';
 import React, {useState} from 'react';
 import {Box, Flex, FormControl, FormLabel, Switch} from '@chakra-ui/react';
@@ -14,13 +15,13 @@ export default function HomePage() {
   useMount(() => setNow(Date.now()));
 
   return (
-    <>
+    <Layout>
       <Intro debug={debug} key={now} />
       <Box mt={HEADER_HEIGHT} id="about" pos="absolute" top="200vh" />
       <HomePageContent />
       <Lab />
       <OpenSource />
-      <Flex as="footer" align="center" py="16" px="10">
+      <Flex borderTopWidth="1px" as="footer" align="center" py="16" px="10">
         <div>
           <div>Made with ☕️ in Burnaby, BC</div>
           <div>&copy; {new Date().getFullYear()}</div>
@@ -36,6 +37,6 @@ export default function HomePage() {
           />
         </FormControl>
       </Flex>
-    </>
+    </Layout>
   );
 }

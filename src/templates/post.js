@@ -2,6 +2,7 @@ import 'dracula-prism/dist/css/dracula-prism.min.css';
 import 'katex/dist/katex.css';
 import GatsbyLink from 'gatsby-link';
 import Header, {HEADER_HEIGHT} from '../components/Header';
+import Layout from '../components/Layout';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import {
@@ -98,7 +99,7 @@ export default function PostTemplate({data}) {
   const {tableOfContents, frontmatter} = data.mdx;
   const {title, description, styles} = frontmatter;
   return (
-    <>
+    <Layout>
       <Header />
       <Helmet title={title}>{/* TODO: og tags */}</Helmet>
       <Global styles={styles} />
@@ -145,7 +146,7 @@ export default function PostTemplate({data}) {
           </MDXProvider>
         </Grid>
       </Box>
-    </>
+    </Layout>
   );
 }
 
