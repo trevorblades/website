@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import {
   Button,
@@ -18,7 +19,7 @@ import {Global} from '@emotion/react';
 
 export const HEADER_HEIGHT = 12;
 
-export default function Header(props) {
+export default function Header({isTransparent, ...props}) {
   const theme = useTheme();
   const {colorMode, toggleColorMode} = useColorMode();
   const bgColor = useColorModeValue('white', 'gray.800');
@@ -40,7 +41,7 @@ export default function Header(props) {
         pos="sticky"
         top="0"
         zIndex="1"
-        bgColor={bgColor}
+        bgColor={isTransparent ? 'transparent' : bgColor}
         {...props}
       >
         <Circle
@@ -101,3 +102,7 @@ export default function Header(props) {
     </>
   );
 }
+
+Header.propTypes = {
+  isTransparent: PropTypes.bool
+};

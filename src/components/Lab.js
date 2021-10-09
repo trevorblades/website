@@ -1,21 +1,22 @@
-import React, {useState} from 'react';
+import React from 'react';
 import pluralize from 'pluralize';
 import {
   Box,
-  Circle,
   Flex,
   HStack,
   Heading,
   SimpleGrid,
-  Text
+  Text,
+  useColorModeValue
 } from '@chakra-ui/react';
 import {FiClock} from 'react-icons/fi';
 import {Link as GatsbyLink, graphql, useStaticQuery} from 'gatsby';
 
-const LAB_COLORS = ['red', 'green', 'blue'];
-
 export default function Lab() {
-  const [labColor, setLabColor] = useState('green');
+  const bgColor = useColorModeValue('green.200', 'green.800');
+  const textColor = useColorModeValue('green.800', 'green.200');
+  const borderColor = useColorModeValue('green.600', 'green.300');
+  const hoverBg = useColorModeValue('green.300', 'green.700');
 
   const data = useStaticQuery(graphql`
     query ListPosts {
@@ -41,8 +42,8 @@ export default function Lab() {
     <Box
       px={{base: 8, md: 10}}
       py={{base: 10, md: 12}}
-      bgColor={`${labColor}.800`}
-      color={`${labColor}.100`}
+      bgColor={bgColor}
+      color={textColor}
       pos="relative"
       id="lab"
     >
@@ -58,22 +59,21 @@ export default function Lab() {
               key={id}
               direction="column"
               rounded={{base: 'lg', md: 'xl'}}
-              borderColor={`${labColor}.700`}
+              borderColor={borderColor}
               borderWidth="1px"
               p={[3, 4, 5, 6]}
               as={GatsbyLink}
               to={'/lab/' + slug}
               transition="all 250ms"
               _hover={{
-                borderColor: `${labColor}.500`,
-                bgColor: `${labColor}.700`
+                bgColor: hoverBg
               }}
             >
               <Heading size="lg">{title}</Heading>
               <Text mb={[3, 4, 5, 6]} fontSize="lg">
                 {description}
               </Text>
-              <HStack mt="auto" color={`${labColor}.200`}>
+              <HStack mt="auto">
                 <FiClock />
                 <span>{pluralize('minute', timeToRead, true)}</span>
               </HStack>
@@ -81,20 +81,6 @@ export default function Lab() {
           );
         })}
       </SimpleGrid>
-      <HStack pos="absolute" top="4" right="4">
-        {LAB_COLORS.map(color => (
-          <Circle
-            key={color}
-            as="button"
-            color={`${color}.300`}
-            size="4"
-            borderWidth="2px"
-            borderColor="current"
-            bgColor={labColor === color && 'current'}
-            onClick={() => setLabColor(color)}
-          />
-        ))}
-      </HStack>
     </Box>
   );
 }
