@@ -106,7 +106,7 @@ module.exports = {
 };
 ```
 
-This plugin will look for files that match the glob pattern specified in the `patterns` option and create `File` nodes in your Gatsby graph. It will also add a `gitRemote` field to those `File` nodes to help you differenitate between local files and remote ones.
+This plugin will look for files that match the glob pattern specified in the `patterns` option and create `File` nodes in your Gatsby graph. It will also add a `gitRemote` field to those `File` nodes to help you differentiate between local files and remote ones.
 
 The `ListPages` query can be updated to include this field by accessing the `parent` **union** field on `Mdx` nodes and asking for the `gitRemote` field within it. The `ref` field is the name of the git branch that the file was sourced from.
 
@@ -156,7 +156,7 @@ exports.createPages = async ({actions, graphql}) => {
 
 ### Cleaning up remote paths
 
-This method works, however the `node.slug` property for pages sourced from git include the full directory structure in them, e.g., `docs/content/getting-started`. For this strategy to work properly, the content directory must be stripped out.
+This method works, however, the `node.slug` property for pages sourced from git include the full directory structure in them, e.g., `docs/content/getting-started`. For this strategy to work properly, the content directory must be stripped out.
 
 Conveniently, this directory was supplied to `gatsby-source-git` earlier in the form of a glob pattern. Using `micromatch`, you can turn a glob pattern into a regular expression using their `makeRe` function. The function takes a `capture` option that turns the wildcard parts of a glob into regex capture groups.
 
@@ -227,7 +227,7 @@ I use a [Gatsby static query](https://www.gatsbyjs.com/docs/how-to/querying-data
 
 Then, I render an HTML `html›<select>` element with the local version as the first option, followed by the remote versions. Each option's `value` prop should be the branch name so that when an option is selected, the `onChange` function can navigate the user to the right page using `event.target.value`. Remember that we prefixed remote version pages with the `gitRemote.ref` property. ☝️
 
-Finally, the `ref` property related to the current page () is passed to the version dropdown as the `currentRef` prop. If the current page is sourced from a local file, the `gitRemote` will be null and we'll fall back to an empty string—the value of the `<option>` element for the local version. This prop is passed along as the `value` of the select element so that the correct version is shown as selected.
+Finally, we rely on the parent of the version dropdown to pass a `currentRef` prop to the component. If `currentRef` is undefined, it falls back to an empty string—the value of the `html›<option>` element for the local version. This prop is then passed along as the `value` of the `html›<select>` element so that the currently active version appears as selected.
 
 ```jsx
 // src/components/VersionDropdown.js
@@ -279,9 +279,13 @@ export default function VersionDropdown({currentRef = ''}) {
 
 ## The page template
 
-You'll remember that we specified a template file as the `component` option of the `createPage` function in the page creation loop. The role of the page template is to receive some identifying information about the page to be rendered and fetch the necessary information to render it.
+You may remember that we specified a template file as the `component` option of the `createPage` function in the page creation loop. The role of the page template is to receive some identifying information about the page to be rendered and fetch the necessary information to render it.
 
-This information is passed to the template via the `context` option of `createPage`, and made available as a `pageContext` prop on the template component, and as variables in [GraphQL page queries](https://www.gatsbyjs.com/docs/how-to/querying-data/page-query/). In this example we only need to pass the `id` property for each MDX node.
+This information is passed to the template via the `context` option of `createPage`. It's then made available as a `pageContext` prop on the template component, and as variables in [Gatsby page queries](https://www.gatsbyjs.com/docs/how-to/querying-data/page-query/) within the file. In this example, I use the `$id` GraphQL variable to query for the MDX node in a page query.
+
+I set the `currentRef` on the version dropdown to `parent.gitRemote?.ref` using **optional chaining**. If the current page belongs to the local version, the `currentRef` will be `undefined`, causing the default value (an empty string) to be used within the version dropdown.
+
+> Optional chaining (`?.`) allows you to read an object's property without checking to see if the object exists. If the object is `null` or `undefined`, the expression short-circuits with a return value of `undefined`.
 
 ```jsx
 // src/templates/page.js
@@ -319,8 +323,8 @@ export const pageQuery = graphql`
 `;
 ```
 
-## Completed example
+## Complete example
 
-https://github.com/trevorblades/versioned-docs
+And that's versioned documentation with Gatsby in a nutshell! 🥥 How you build and write your docs from here is up to you.
 
-https://versioned-docs.netlify.app
+I put together [an example repo](https://github.com/trevorblades/versioned-docs) to demonstrate how the techniques discussed in this post work when used together. You can also check out [this hosted example](https://versioned-docs.netlify.app) to see these techniques in action.
