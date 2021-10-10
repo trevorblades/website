@@ -362,6 +362,10 @@ There are a few things going on in this component:
 
 The Node.js `path` core module contains `isAbsolute` and `resolve` functions that help express this logic. Webpack <= 4 ships with polyfills for many core modules like `path`, but webpack 5 stopped doing this. Since Gatsby 3 uses webpack 5, I had to import these functions from `path-browserify`, a port of the `path` module that works in the browser.
 
+---
+
+To take advantage of this custom link component in my MDX pages, I first import the `PathContext` from the link component file and pass the template's `path` prop as the `value` of `PathContext.Provider`. Then I wrap the `MDXRenderer` in an `MDXProvider` and a mapping of HTML elements to the React component that I'd like to substitute them with. In this case, I want to subsitute `a` tags with the `RelativeLink` component defined above.
+
 ```jsx
 // src/templates/page.js
 import RelativeLink, {PathContext} from '../components/RelativeLink';
