@@ -325,10 +325,72 @@ export const pageQuery = graphql`
 
 ## Links
 
-- using gatsby link for internal links
-- being able to link between pages with an older version without needing to consider the version path -> relative links
-- mdx provider + custom link component
-- make page `path` prop available to all links using context
+Now I've got a docs site that comfortably supports multiple versions, but there's one thing left to do. I noticed that links between pages within a remote version were going to the wrong places. Normally, I would write my links as absolute paths, i.e., `md›[click here](/getting-started)`. However, if I used that path within a page living at `/v1`, it wouldn't take the user to `/v1/getting-started` as I would have hoped. Instead, they would go to `/getting-started` at the site root. Understandable. 🤷
+
+I decided to try using **relative paths**, i.e., `./getting-started`, but Gatsby treated them the same as the absolute ones. I needed to find a way to support relative links so that docs authors wouldn't need to consider the prefix that is being applied to page slugs automatically during the build process.
+
+To accomplish this, I leaned on another great feature of MDX: component substitution. I created a custom `RelativeLink` component that behaves differently depending on what the `href` prop looks like.
+
+```jsx
+// src/components/RelativeLink.js
+import {createContext} from 'react';
+import {isAbsolute, resolve} from 'path-browserify';
+import {Link} from 'gatsby';
+
+export const PathContext = createContext();
+
+export default function RelativeLink({href, ...props}) {
+  const path = useContext(PathContext);
+  try {
+    const url = new URL(href);
+    return <a href={url.toString()} {...props} />;
+  } catch (error) {
+    return (
+      <Link to={isAbsolute(href) ? href : resolve(path, href)} {...props} />
+    );
+  }
+}
+```
+
+There are a few things going on in this component:
+
+1. Get the path of the current page from context, as provided by the page template (more details below)
+2. Check to see if the `href` is a URL and render a normal anchor if so
+3. Otherwise, use a Gatsby `Link` component for instant client-side page transitions
+4. If the `href` is an absolute path, pass it to the `to` prop of the `Link` component
+5. Otherwise, resolve the relative `href` using the path of the current page as the base
+
+The Node.js `path` core module contains `isAbsolute` and `resolve` functions that help express this logic. Webpack <= 4 ships with polyfills for many core modules like `path`, but webpack 5 stopped doing this. Since Gatsby 3 uses webpack 5, I had to import these functions from `path-browserify`, a port of the `path` module that works in the browser.
+
+```jsx
+// src/templates/page.js
+import RelativeLink, {PathContext} from '../components/RelativeLink';
+import VersionDropdown from '../components/VersionDropdown';
+import {MDXProvider} from '@mdx-js/react';
+import {MDXRenderer} from 'gatsby-plugin-mdx';
+
+export default function PageTemplate({data, path}) {
+  const {body, parent} = data.mdx;
+  return (
+    <>
+      <VersionDropdown currentRef={parent.gitRemote?.ref} />
+      {/* provide the current path to the MDX content */}
+      <PathContext.Provider value={path}>
+        <MDXProvider
+          components={{
+            // substitute anchors with custom link component
+            a: RelativeLink
+          }}
+        >
+          <MDXRenderer>{body}</MDXRenderer>
+        </MDXProvider>
+      </PathContext.Provider>
+    </>
+  );
+}
+
+// page query same as above
+```
 
 ## Complete example
 
