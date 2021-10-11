@@ -34,7 +34,7 @@ import {MDXRenderer} from 'gatsby-plugin-mdx';
 import {graphql} from 'gatsby';
 
 function Blockquote(props) {
-  const borderColor = useColorModeValue('purple.500', 'purple.200');
+  const borderColor = useColorModeValue('green.500', 'green.200');
   return (
     <chakra.blockquote
       fontStyle="italic"
