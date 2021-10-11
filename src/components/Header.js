@@ -88,6 +88,8 @@ export default function Header({isTransparent, ...props}) {
             />
             <Button
               as="a"
+              target="_blank"
+              rel="noopener noreferrer"
               href="https://twitch.tv/trevorblades"
               size="sm"
               fontSize="md"
