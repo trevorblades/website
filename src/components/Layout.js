@@ -5,7 +5,10 @@ import {Helmet} from 'react-helmet';
 export default function Layout({children}) {
   return (
     <>
-      <Helmet titleTemplate="%s - Trevor Blades" defaultTitle="Trevor Blades">
+      <Helmet
+        titleTemplate="%s - Trevor Blades"
+        defaultTitle="Trevor Blades' Website"
+      >
         <link
           rel="icon"
           href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/285/kitchen-knife_1f52a.png"
