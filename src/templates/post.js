@@ -5,6 +5,7 @@ import Header, {HEADER_HEIGHT} from '../components/Header';
 import Layout from '../components/Layout';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
+import generateSocialImage from '@jlengstorf/get-share-image';
 import {
   Box,
   Grid,
@@ -23,7 +24,8 @@ import {
   Tr,
   UnorderedList,
   chakra,
-  useColorModeValue
+  useColorModeValue,
+  useTheme
 } from '@chakra-ui/react';
 import {Global} from '@emotion/react';
 import {Helmet} from 'react-helmet';
@@ -98,10 +100,30 @@ const components = {
 export default function PostTemplate({data}) {
   const {tableOfContents, frontmatter} = data.mdx;
   const {title, description, styles} = frontmatter;
+
+  const {colors} = useTheme();
+
+  const socialImage = generateSocialImage({
+    title,
+    tagline: description,
+    cloudName: 'dybmuhvem',
+    imagePublicID: 'example_ip1kdz',
+    titleFont: 'poppins',
+    titleExtraConfig: '_semibold',
+    taglineFont: 'roboto',
+    textColor: colors.gray[800].slice(1)
+  });
+
   return (
     <Layout>
       <Header />
-      <Helmet title={title}>{/* TODO: og tags */}</Helmet>
+      <Helmet title={title}>
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={socialImage} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:creator" content="@trevorblades" />
+      </Helmet>
       <Global styles={styles} />
       <Box maxW="container.xl" mx="auto" px={[6, 8, 10]} pt="12" pb="20">
         <Box mb="10">
