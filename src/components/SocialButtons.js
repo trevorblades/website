@@ -26,7 +26,6 @@ export default function SocialButtons() {
       <SocialButton
         href="https://instagram.com/trevorblades"
         icon={<FaInstagram />}
-        // TODO: use a gradient fill
         colorScheme="pink"
       />
     </ButtonGroup>
