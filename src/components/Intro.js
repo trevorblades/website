@@ -209,10 +209,10 @@ export default function Intro({debug}) {
                 de it.
               </Heading>
               <Text mb="6" fontSize="xl">
-                Yo! 👋 I&apos;m Trevor. I design and build beautiful, functional
-                websites that usually provide some kind of educational value or
-                help people succeed in their work. I stream my work on Twitch
-                and occasionally write about it here.
+                Hi there! 👋 I&apos;m Trevor. I design and build beautiful,
+                functional websites that usually provide some kind of
+                educational value or help people succeed in their work. I stream
+                my work on Twitch and occasionally write about it here.
               </Text>
               <SocialButtons />
             </Box>

@@ -6,7 +6,11 @@ export default function Layout({children}) {
   return (
     <>
       <Helmet titleTemplate="%s - Trevor Blades" defaultTitle="Trevor Blades">
-        {/* TODO: add favicon, og tags */}
+        <link
+          rel="icon"
+          href="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/285/kitchen-knife_1f52a.png"
+        />
+        {/* TODO: add og tags */}
       </Helmet>
       {children}
     </>
