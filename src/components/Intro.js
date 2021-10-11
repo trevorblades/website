@@ -27,8 +27,8 @@ export default function Intro({debug}) {
   const circleBg = useColorModeValue('blue.200', 'purple.700');
   const npmBadgeBg = useColorModeValue('white', 'gray.800');
   const gradientColors = useColorModeValue(
-    [colors.orange[300], colors.purple[400], colors.yellow[300]],
-    [colors.cyan[800], colors.green[800], colors.pink[800]]
+    [colors.green[300], colors.yellow[300], colors.blue[300]],
+    [colors.yellow[700], colors.pink[800], colors.purple[800]]
   );
 
   const gradient = useMemo(
