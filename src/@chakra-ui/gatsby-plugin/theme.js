@@ -1,14 +1,21 @@
 import {extendTheme} from '@chakra-ui/react';
 
+const INLINE_CODE = ':not(pre)>code';
+
 const theme = extendTheme({
   styles: {
     global: {
       '::selection': {
         bgColor: 'pink.400'
       },
-      [['.gatsby-highlight', ':not(pre)>code']]: {
-        fontSize: 'smaller',
-        verticalAlign: 'text-bottom'
+      [['.gatsby-highlight', INLINE_CODE]]: {
+        fontSize: 'smaller'
+      },
+      [INLINE_CODE]: {
+        verticalAlign: 'text-bottom',
+        '&.language-text': {
+          color: 'green.200'
+        }
       }
     }
   },

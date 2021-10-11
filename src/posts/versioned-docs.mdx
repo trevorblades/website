@@ -277,7 +277,7 @@ export default function VersionDropdown({currentRef = ''}) {
 }
 ```
 
-## The page template
+## Rendering a page
 
 You may remember that we specified a template file as the `component` option of the `createPage` function in the page creation loop. The role of the page template is to receive some identifying information about the page to be rendered and fetch the necessary information to render it.
 
@@ -323,7 +323,7 @@ export const pageQuery = graphql`
 `;
 ```
 
-## Links
+## Fixing links
 
 Now I've got a docs site that comfortably supports multiple versions, but there's one thing left to do. I noticed that links between pages within a remote version were going to the wrong places. Normally, I would write my links as absolute paths, i.e., `md›[click here](/getting-started)`. However, if I used that path within a page living at `/v1`, it wouldn't take the user to `/v1/getting-started` as I would have hoped. Instead, they would go to `/getting-started` at the site root. Understandable. 🤷
 
@@ -364,7 +364,11 @@ The Node.js `path` core module contains `isAbsolute` and `resolve` functions tha
 
 ---
 
-To take advantage of this custom link component in my MDX pages, I first import the `PathContext` from the link component file and pass the template's `path` prop as the `value` of `PathContext.Provider`. Then I wrap the `MDXRenderer` in an `MDXProvider` and a mapping of HTML elements to the React component that I'd like to substitute them with. In this case, I want to subsitute `a` tags with the `RelativeLink` component defined above.
+To take advantage of this custom link component in my MDX pages, I first import the `PathContext` from the link component file and pass the template's `path` prop as the `value` of `PathContext.Provider`.
+
+Next, I need to substitute anchor tags in my page with the `RelativeLink` component we created above. The `MDXProvider` component from `@mdx-js/react` allows us to do just that by using its `components` prop. Simply pass an object that maps HTML elements to the React component you want to use to render them.
+
+> For more information about component substitution in MDX, check out [their docs on the subject](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-mdx#components).
 
 ```jsx
 // src/templates/page.js
@@ -373,6 +377,11 @@ import VersionDropdown from '../components/VersionDropdown';
 import {MDXProvider} from '@mdx-js/react';
 import {MDXRenderer} from 'gatsby-plugin-mdx';
 
+const components = {
+  // substitute anchors with a custom link component
+  a: RelativeLink
+};
+
 export default function PageTemplate({data, path}) {
   const {body, parent} = data.mdx;
   return (
@@ -380,12 +389,7 @@ export default function PageTemplate({data, path}) {
       <VersionDropdown currentRef={parent.gitRemote?.ref} />
       {/* provide the current path to the MDX content */}
       <PathContext.Provider value={path}>
-        <MDXProvider
-          components={{
-            // substitute anchors with custom link component
-            a: RelativeLink
-          }}
-        >
+        <MDXProvider components={components}>
           <MDXRenderer>{body}</MDXRenderer>
         </MDXProvider>
       </PathContext.Provider>
@@ -393,7 +397,7 @@ export default function PageTemplate({data, path}) {
   );
 }
 
-// page query same as above
+// page query same as before
 ```
 
 ## Complete example
