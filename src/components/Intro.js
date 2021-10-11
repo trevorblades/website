@@ -10,6 +10,7 @@ import {
   Circle,
   Flex,
   Heading,
+  Link,
   Square,
   Stack,
   Text,
@@ -142,7 +143,6 @@ export default function Intro({debug}) {
                 direction="column"
                 w="100vw"
                 h="100vh"
-                color="blue.400"
                 fontFamily="mono"
                 borderWidth="2px"
                 borderColor="current"
@@ -198,7 +198,6 @@ export default function Intro({debug}) {
               top="50%"
               left="50%"
               transform="translate(-50%, -50%)"
-              // color={circleText}
               style={{
                 opacity: textOpacity,
                 visibility: textOpacity ? 'visible' : 'hidden'
@@ -211,8 +210,9 @@ export default function Intro({debug}) {
               <Text mb="6" fontSize="xl">
                 Hi there! 👋 I&apos;m Trevor. I design and build beautiful,
                 functional websites that usually provide some kind of
-                educational value or help people succeed in their work. I stream
-                my work on Twitch and occasionally write about it here.
+                educational value or help people succeed in their career. I
+                stream my work on Twitch and occasionally write about it{' '}
+                <Link href="#lab">here</Link>.
               </Text>
               <SocialButtons />
             </Box>
@@ -221,7 +221,6 @@ export default function Intro({debug}) {
               pos="absolute"
               bottom="6"
               left="6"
-              color="blue.400"
               fontSize={{md: 'lg'}}
               fontFamily="mono"
             >

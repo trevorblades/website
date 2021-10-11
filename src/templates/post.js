@@ -1,5 +1,6 @@
 import 'dracula-prism/dist/css/dracula-prism.min.css';
 import 'katex/dist/katex.css';
+import Footer from '../components/Footer';
 import GatsbyLink from 'gatsby-link';
 import Header, {HEADER_HEIGHT} from '../components/Header';
 import Layout from '../components/Layout';
@@ -125,7 +126,13 @@ export default function PostTemplate({data}) {
         <meta name="twitter:creator" content="@trevorblades" />
       </Helmet>
       <Global styles={styles} />
-      <Box maxW="container.xl" mx="auto" px={[6, 8, 10]} pt="12" pb="20">
+      <Box
+        maxW="container.xl"
+        mx="auto"
+        px={[6, 8, 10]}
+        pt={{base: 10, md: 12}}
+        pb={{base: 16, md: 20}}
+      >
         <Box mb="10">
           <Heading mb="2" size="3xl">
             {title}
@@ -168,6 +175,7 @@ export default function PostTemplate({data}) {
           </MDXProvider>
         </Grid>
       </Box>
+      <Footer />
     </Layout>
   );
 }

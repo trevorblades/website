@@ -15,6 +15,7 @@ import {
   chakra,
   useColorModeValue
 } from '@chakra-ui/react';
+import {CONTAINER_PADDING_X, CONTAINER_PADDING_Y} from '../utils';
 import {ReactComponent as Knoword} from '../assets/knoword.svg';
 import {ReactComponent as Planet} from '../assets/planet.svg';
 import {ReactComponent as Playback} from '../assets/playback.svg';
@@ -26,13 +27,13 @@ export default function HomePageContent() {
   const funColor = useColorModeValue('pink.500', 'yellow.200');
   return (
     <Grid id="projects" templateColumns={{lg: 'repeat(2, 1fr)', xl: '3fr 2fr'}}>
-      <Box py="12" px="10">
+      <Box py={CONTAINER_PADDING_Y} px={CONTAINER_PADDING_X}>
         <Heading size="2xl" mb="2">
           My fav<Extender factor={1 / 2}>o</Extender>urite thin
           <Extender>g</Extender>s
         </Heading>
         <Text mb="8" fontSize={{base: 'lg', md: 'xl'}}>
-          These are a few of the projects that I&apos;m particularly proud of.
+          These are a few of my projects that I&apos;m particularly proud of.
         </Text>
         <SimpleGrid minChildWidth={{base: '180px', md: '220px'}} spacing="2">
           <GridItem
@@ -73,7 +74,7 @@ export default function HomePageContent() {
         </SimpleGrid>
       </Box>
       <Center
-        p={{base: 12, md: 16}}
+        p={CONTAINER_PADDING_Y}
         bgColor={maryBg}
         fontSize={{base: '3xl', md: '4xl'}}
         lineHeight="short"

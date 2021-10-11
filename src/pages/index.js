@@ -1,10 +1,11 @@
+import Footer from '../components/Footer';
 import HomePageContent from '../components/HomePageContent';
 import Intro from '../components/Intro';
 import Lab from '../components/Lab';
 import Layout from '../components/Layout';
 import OpenSource from '../components/OpenSource';
 import React, {useState} from 'react';
-import {Box, Flex, FormControl, FormLabel, Switch} from '@chakra-ui/react';
+import {Box, FormControl, FormLabel, Switch} from '@chakra-ui/react';
 import {HEADER_HEIGHT} from '../components/Header';
 import {useMount} from 'react-use';
 
@@ -21,11 +22,7 @@ export default function HomePage() {
       <HomePageContent />
       <Lab />
       <OpenSource />
-      <Flex borderTopWidth="1px" as="footer" align="center" py="16" px="10">
-        <div>
-          <div>Made with ☕️ in Burnaby, BC</div>
-          <div>&copy; {new Date().getFullYear()}</div>
-        </div>
+      <Footer>
         <FormControl w="auto" ml="auto" display="flex" alignItems="center">
           <FormLabel htmlFor="debug" mb="0" ml="auto">
             Debug mode
@@ -36,7 +33,7 @@ export default function HomePage() {
             onChange={event => setDebug(event.target.checked)}
           />
         </FormControl>
-      </Flex>
+      </Footer>
     </Layout>
   );
 }

@@ -9,6 +9,7 @@ import {
   Text,
   useColorModeValue
 } from '@chakra-ui/react';
+import {CONTAINER_PADDING_X, CONTAINER_PADDING_Y} from '../utils';
 import {FiClock} from 'react-icons/fi';
 import {Link as GatsbyLink, graphql, useStaticQuery} from 'gatsby';
 
@@ -39,15 +40,23 @@ export default function Lab() {
 
   return (
     <Box
-      px={{base: 8, md: 10}}
-      py={{base: 10, md: 12}}
+      px={CONTAINER_PADDING_X}
+      py={CONTAINER_PADDING_Y}
       bgColor={bgColor}
       pos="relative"
       id="lab"
     >
-      <Heading size="2xl" mb={{base: 6, md: 8}}>
+      <Heading size="2xl" mb="2">
         Lab
       </Heading>
+      <Text
+        maxW="container.sm"
+        fontSize={{base: 'lg', md: 'xl'}}
+        mb={{base: 6, md: 8}}
+      >
+        This is where I write about the things that I built and share some of
+        the things I learned while building them.
+      </Text>
       <SimpleGrid spacing={{base: 4, md: 6}} columns={{base: 1, md: 2, lg: 3}}>
         {data.allPost.nodes.map(({childMdx}) => {
           const {id, slug, timeToRead, frontmatter} = childMdx;

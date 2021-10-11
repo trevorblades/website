@@ -1,6 +1,7 @@
 import Extender from './Extender';
 import React from 'react';
 import {Box, Button, Flex, Heading, SimpleGrid, Text} from '@chakra-ui/react';
+import {CONTAINER_PADDING_X, CONTAINER_PADDING_Y} from '../utils';
 import {FiArrowRight} from 'react-icons/fi';
 import {GoStar} from 'react-icons/go';
 import {graphql, useStaticQuery} from 'gatsby';
@@ -30,7 +31,7 @@ export default function OpenSource() {
     }
   `);
   return (
-    <Box px="10" py="16" id="oss">
+    <Box px={CONTAINER_PADDING_X} py={CONTAINER_PADDING_Y} id="oss">
       <Heading size="2xl" mb={{base: 6, md: 8}} textAlign="center">
         <Extender>O</Extender>
         pen so<Extender factor={1 / 2}>u</Extender>rce
