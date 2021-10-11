@@ -1,18 +1,39 @@
-const dotenv = require('dotenv');
-const {webFontsConfig} = require('@trevorblades/mui-theme');
-
-dotenv.config();
-
+require('dotenv').config();
 module.exports = {
   siteMetadata: {
     title: 'Trevor Blades'
   },
   plugins: [
-    'gatsby-plugin-react-helmet',
+    '@chakra-ui/gatsby-plugin',
     'gatsby-plugin-svgr',
+    'gatsby-plugin-react-helmet',
     {
-      resolve: 'gatsby-theme-material-ui',
-      options: {webFontsConfig}
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'posts',
+        path: 'src/posts'
+      }
+    },
+    {
+      resolve: 'gatsby-plugin-mdx',
+      options: {
+        remarkPlugins: [
+          require('remark-slug'),
+          require('remark-math'),
+          require('remark-html-katex'),
+          require('remark-unwrap-images')
+        ],
+        gatsbyRemarkPlugins: [
+          'gatsby-remark-copy-linked-files',
+          '@fec/remark-a11y-emoji/gatsby',
+          {
+            resolve: 'gatsby-remark-prismjs',
+            options: {
+              inlineCodeMarker: '›'
+            }
+          }
+        ]
+      }
     },
     {
       resolve: 'gatsby-plugin-google-analytics',
@@ -28,6 +49,27 @@ module.exports = {
         url: 'https://api.github.com/graphql',
         headers: {
           Authorization: `Bearer ${process.env.GITHUB_TOKEN}`
+        }
+      }
+    },
+    {
+      resolve: 'gatsby-plugin-webfonts',
+      options: {
+        fonts: {
+          google: [
+            {
+              family: 'Poppins',
+              variants: ['500', '600']
+            },
+            {
+              family: 'Roboto',
+              variants: ['400', '700']
+            },
+            {
+              family: 'Roboto Mono',
+              variants: ['400']
+            }
+          ]
         }
       }
     }
