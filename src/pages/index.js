@@ -5,7 +5,7 @@ import Lab from '../components/Lab';
 import Layout from '../components/Layout';
 import OpenSource from '../components/OpenSource';
 import React, {useState} from 'react';
-import {Box, FormControl, FormLabel, Heading, Switch} from '@chakra-ui/react';
+import {Box, FormControl, FormLabel, Switch} from '@chakra-ui/react';
 import {HEADER_HEIGHT} from '../components/Header';
 import {useMount} from 'react-use';
 
@@ -22,9 +22,7 @@ export default function HomePage() {
       <HomePageContent />
       <Lab />
       <OpenSource />
-      <div>
-        <Heading>Other stuff</Heading>
-      </div>
+      {/* TODO: add section for superteam, css-transform, awards, etc. */}
       <Footer>
         <FormControl w="auto" ml="auto" display="flex" alignItems="center">
           <FormLabel htmlFor="debug" mb="0" ml="auto">
