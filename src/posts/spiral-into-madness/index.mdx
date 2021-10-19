@@ -163,7 +163,7 @@ I drew a big spiral in my notebook and counted the insets and outsets required f
 The outsets column presents a clear pattern. For every three sides, the number of outsets increments by two. In mathematical notation, we could express this formula where $O$ is the number of outsets, $S$ is the current side, and $N$ is the total number of sides on the shape—3 in the case of a triangle.
 
 $$
-O = 2\lfloor\frac{S - 1}{N}\rfloor
+O = 2\left\lfloor\frac{S - 1}{N}\right\rfloor
 $$
 
 > The $\lfloor{x}\rfloor$ notation above means "floor" or "round this number down"
@@ -171,7 +171,7 @@ $$
 The pattern for the insets was a lot more unclear, but after some trial and error, I came up with the following handy formula, where $I$ is the number of insets, and the variables $S$ and $N$ are the same as above.
 
 $$
-I = \lfloor\frac{S}{N}\rfloor + \lfloor\frac{\max(S - 2, 0)}{N}\rfloor
+I = \left\lfloor\frac{S}{N}\right\rfloor + \left\lfloor\frac{\max(S - 2, 0)}{N}\right\rfloor
 $$
 
 In JavaScript, these relationships would look something like this:
