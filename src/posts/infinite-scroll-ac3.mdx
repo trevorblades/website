@@ -7,8 +7,31 @@ import {CodeSandbox} from 'mdx-embed';
 
 Infinite scroll is a web design technique that loads more content as the user scrolls towards the end of the loaded content. It creates the effect of a never-ending stream of content and can provide a more fluid alternative to conventional pagination. You can find examples everywhere on the web, like when you scroll through posts on Twitter or Instagram, or view search results in sites like [Giphy](https://giphy.com/search/sloth).
 
-In this post, I'm going to demonstrate how to use Apollo Client 3 to create an infinite scoll effect using data from a GraphQL API.
+In this post, I'm going to demonstrate how to use Apollo Client 3 to create an infinite scoll effect using data from a GraphQL API. You can use any GraphQL API to do this, but for this example, I'm going to use SpaceX's public graph because it's free and it uses **offset-based pagination**.
 
----
+> Offset-based pagination is a pagination strategy where a field accepts `offset` and `limit` arguments to control the range of items that it returns. The `limit` is the maximum number of items returned by each query, and the `offset` is the number of items that should be skipped
+
+## Setting up Apollo Client
+
+Before making queries, we need to set up our Apollo Client instance. First, install the `@apollo/client` and `graphql` packages.
+
+```bash
+npm i @apollo/client graphql
+```
+
+Next, create a new instance of `ApolloClient` and pass in the `uri` of the GraphQL API and configure the cache. We'll use the Apollo `InMemoryCache` for this example. For more information about caching in Apollo Client, check out [this article](https://www.apollographql.com/docs/react/caching/overview/) on the subject.
+
+```js
+import {ApolloClient, InMemoryCache} from '@apollo/client';
+
+const cache = new InMemoryCache();
+
+const client = new ApolloClient({
+  uri: 'https://api.spacex.land/graphql/',
+  cache
+});
+```
+
+## Complete example
 
 <CodeSandbox codeSandboxId="infinite-scroll-with-apollo-client-3-pho2j" />
