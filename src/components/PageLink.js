@@ -7,7 +7,7 @@ export default function PageLink({href, ...props}) {
   const textColor = useColorModeValue('blue.600', 'blue.400');
   const linkProps = href.startsWith('/')
     ? {as: GatsbyLink, to: href}
-    : {href, isExternal: true};
+    : {href, isExternal: !href.startsWith('#')};
   return <Link color={textColor} {...linkProps} {...props} />;
 }
 
