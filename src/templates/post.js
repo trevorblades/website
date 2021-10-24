@@ -1,9 +1,10 @@
 import 'dracula-prism/dist/css/dracula-prism.min.css';
 import 'katex/dist/katex.css';
+import Blockquote from '../components/Blockquote';
 import Footer from '../components/Footer';
-import GatsbyLink from 'gatsby-link';
 import Header, {HEADER_HEIGHT} from '../components/Header';
 import Layout from '../components/Layout';
+import PageLink from '../components/PageLink';
 import PropTypes from 'prop-types';
 import React, {Fragment} from 'react';
 import generateSocialImage from '@jlengstorf/get-share-image';
@@ -24,8 +25,6 @@ import {
   Thead,
   Tr,
   UnorderedList,
-  chakra,
-  useColorModeValue,
   useTheme
 } from '@chakra-ui/react';
 import {Global} from '@emotion/react';
@@ -33,33 +32,6 @@ import {Helmet} from 'react-helmet';
 import {MDXProvider} from '@mdx-js/react';
 import {MDXRenderer} from 'gatsby-plugin-mdx';
 import {graphql} from 'gatsby';
-
-function Blockquote(props) {
-  const borderColor = useColorModeValue('green.500', 'green.200');
-  return (
-    <chakra.blockquote
-      fontStyle="italic"
-      py="1"
-      pl="4"
-      borderLeftWidth="2px"
-      borderColor={borderColor}
-      color="gray.500"
-      {...props}
-    />
-  );
-}
-
-function PageLink({href, ...props}) {
-  const textColor = useColorModeValue('blue.600', 'blue.400');
-  const linkProps = href.startsWith('/')
-    ? {as: GatsbyLink, to: href}
-    : {href, isExternal: true};
-  return <Link color={textColor} {...linkProps} {...props} />;
-}
-
-PageLink.propTypes = {
-  href: PropTypes.string.isRequired
-};
 
 const HEADING_OFFSET = 8;
 
