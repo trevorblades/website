@@ -333,7 +333,7 @@ To accomplish this, I leaned on another great feature of MDX: component substitu
 
 ```jsx
 // src/components/RelativeLink.js
-import {createContext} from 'react';
+import {createContext, useContext} from 'react';
 import {isAbsolute, resolve} from 'path-browserify';
 import {Link} from 'gatsby';
 
