@@ -25,10 +25,10 @@ import {useWindowScroll, useWindowSize} from 'react-use';
 export default function Intro({debug}) {
   const {colors} = useTheme();
 
-  const circleBg = useColorModeValue('blue.200', 'purple.700');
+  const circleBg = useColorModeValue('purple.200', 'purple.700');
   const npmBadgeBg = useColorModeValue('white', 'gray.800');
   const gradientColors = useColorModeValue(
-    [colors.green[300], colors.yellow[300], colors.blue[300]],
+    [colors.yellow[300], colors.pink[300], colors.purple[300]],
     [colors.yellow[700], colors.pink[800], colors.purple[800]]
   );
 

@@ -23,8 +23,8 @@ import {ReactComponent as Pollenize} from '../assets/pollenize.svg';
 
 export default function HomePageContent() {
   const pollenizeBg = useColorModeValue('#212121', 'white');
-  const maryBg = useColorModeValue('yellow.200', 'pink.700');
-  const funColor = useColorModeValue('pink.500', 'yellow.200');
+  const maryBg = useColorModeValue('pink.200', 'pink.700');
+  const funColor = useColorModeValue('teal.600', 'teal.200');
   return (
     <Grid id="projects" templateColumns={{lg: 'repeat(2, 1fr)', xl: '3fr 2fr'}}>
       <Box py={CONTAINER_PADDING_Y} px={CONTAINER_PADDING_X}>

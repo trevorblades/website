@@ -14,9 +14,9 @@ import {FiClock} from 'react-icons/fi';
 import {Link as GatsbyLink, graphql, useStaticQuery} from 'gatsby';
 
 export default function Lab() {
-  const bgColor = useColorModeValue('green.200', 'yellow.600');
-  const borderColor = useColorModeValue('green.400', 'yellow.500');
-  const hoverBg = useColorModeValue('green.300', 'yellow.700');
+  const bgColor = useColorModeValue('yellow.200', 'yellow.600');
+  const borderColor = useColorModeValue('yellow.400', 'yellow.500');
+  const hoverBg = useColorModeValue('yellow.300', 'yellow.700');
 
   const data = useStaticQuery(graphql`
     query ListPosts {
