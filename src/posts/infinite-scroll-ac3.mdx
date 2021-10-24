@@ -66,7 +66,7 @@ const LIST_LAUNCHES = gql`
   }
 `;
 
-function MyComponent() {
+function ListLaunches() {
   const {data, loading, error} = useQuery(LIST_LAUNCHES, {client});
 
   if (loading) {
@@ -145,7 +145,7 @@ import ColorHash from 'color-hash';
 
 const colorHash = new ColorHash();
 
-function MyComponent() {
+function ListLaunches() {
   // useQuery hook and loading/error states
   return (
     <div
@@ -224,7 +224,7 @@ It comes with a `useInView` hook and an `InView` component. Pick your poison. ðŸ
 ```jsx
 import {InView} from 'react-intersection-observer';
 
-function MyComponent() {
+function ListLaunches() {
   // useQuery hook and loading/error states
   return (
     <>
@@ -304,7 +304,7 @@ But what if the last page of results contains the same number of results as our 
 ```jsx
 import {useState} from 'react';
 
-function MyComponent() {
+function ListLaunches() {
   const [fullyLoaded, setFullyLoaded] = useState(false);
   // useQuery hook and loading/error states
   return (
@@ -326,7 +326,7 @@ function MyComponent() {
 Putting these three conditions together, our loader can be conditionally rendered like so:
 
 ```jsx
-function MyComponent() {
+function ListLaunches() {
   // fullyLoaded state, useQuery hook, and loading/error states
   return (
     <>
