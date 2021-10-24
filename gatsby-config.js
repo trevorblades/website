@@ -25,13 +25,7 @@ module.exports = {
         ],
         gatsbyRemarkPlugins: [
           'gatsby-remark-copy-linked-files',
-          '@fec/remark-a11y-emoji/gatsby',
-          {
-            resolve: 'gatsby-remark-prismjs',
-            options: {
-              inlineCodeMarker: '›'
-            }
-          }
+          '@fec/remark-a11y-emoji/gatsby'
         ]
       }
     },
@@ -66,7 +60,7 @@ module.exports = {
               variants: ['400', '700']
             },
             {
-              family: 'Roboto Mono',
+              family: 'Fira Code',
               variants: ['400']
             }
           ]

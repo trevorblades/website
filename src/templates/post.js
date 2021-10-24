@@ -1,8 +1,9 @@
-import 'dracula-prism/dist/css/dracula-prism.min.css';
 import 'katex/dist/katex.css';
 import Blockquote from '../components/Blockquote';
+import CodeBlock from '../components/CodeBlock';
 import Footer from '../components/Footer';
 import Header, {HEADER_HEIGHT} from '../components/Header';
+import InlineCode from '../components/InlineCode';
 import Layout from '../components/Layout';
 import PageLink from '../components/PageLink';
 import PropTypes from 'prop-types';
@@ -60,6 +61,9 @@ const components = {
   ol: OrderedList,
   li: ListItem,
   a: PageLink,
+  pre: 'div',
+  code: CodeBlock,
+  inlineCode: InlineCode,
   blockquote: Blockquote,
   table: Table,
   thead: Thead,

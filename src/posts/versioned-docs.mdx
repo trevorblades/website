@@ -166,7 +166,13 @@ const {makeRe} = require('micromatch');
 makeRe(glob, {capture: true}); // regex with capture group for wildcard (**)
 ```
 
-Using this regular expression, we can call `js›node.slug.replace(regex, '$1')` to strip out the content directory from the slug. To find the pattern that pertains to a given node, we must first create a mapping of branch names to their configured pattern. First, I modify the `ListPages` query to include plugin options for every instance of `gatsby-source-git` in my Gatsby config.
+Using this regular expression, we can remove the content directory from the slug by replacing any instance of the regex with only the value of the first capture group.
+
+```js
+node.slug.replace(regex, '$1');
+```
+
+To find the pattern that pertains to a given node, we must first create a mapping of branch names to their configured pattern. First, I modify the `ListPages` query to include plugin options for every instance of `gatsby-source-git` in my Gatsby config.
 
 ```graphql
 query ListPages {
@@ -184,7 +190,7 @@ query ListPages {
 }
 ```
 
-Then I use `js›Array.reduce` to map branches to their respective regular expressions with `makeRe`:
+Then I use `Array.reduce` to map branches to their respective regular expressions with `makeRe`:
 
 ```js
 const versionPatterns = data.allSitePlugin.nodes.reduce((acc, node) => {
@@ -225,9 +231,9 @@ Now that our pages are created, we need a way to navigate between versions. A co
 
 I use a [Gatsby static query](https://www.gatsbyjs.com/docs/how-to/querying-data/static-query/) to fetch the name of the local version, as configured by the `name` option that was supplied to `gatsby-source-filesystem`, as well as the source name and branch name of each remote version.
 
-Then, I render an HTML `html›<select>` element with the local version as the first option, followed by the remote versions. Each option's `value` prop should be the branch name so that when an option is selected, the `onChange` function can navigate the user to the right page using `event.target.value`. Remember that we prefixed remote version pages with the `gitRemote.ref` property. ☝️
+Then, I render an HTML `select` element with the local version as the first option, followed by the remote versions. Each option's `value` prop should be the branch name so that when an option is selected, the `onChange` function can navigate the user to the right page using `event.target.value`. Remember that we prefixed remote version pages with the `gitRemote.ref` property. ☝️
 
-Finally, we rely on the parent of the version dropdown to pass a `currentRef` prop to the component. If `currentRef` is undefined, it falls back to an empty string—the value of the `html›<option>` element for the local version. This prop is then passed along as the `value` of the select so that the currently active version appears as the selected option.
+Finally, we rely on the parent of the version dropdown to pass a `currentRef` prop to the component. If `currentRef` is undefined, it falls back to an empty string—the value of the `option` element for the local version. This prop is then passed along as the `value` of the select so that the currently active version appears as the selected option.
 
 ```jsx
 // src/components/VersionDropdown.js
@@ -325,7 +331,7 @@ export const pageQuery = graphql`
 
 ## Fixing links
 
-Now I've got a docs site that comfortably supports multiple versions, but there's one thing left to do. I noticed that links between pages within a remote version were going to the wrong places. Normally, I would write my links as absolute paths, i.e., `md›[click here](/getting-started)`. However, if I used that path within a page living at `/v1`, it wouldn't take the user to `/v1/getting-started` as I would have hoped. Instead, they would go to `/getting-started` at the site root. Understandable. 🤷
+Now I've got a docs site that comfortably supports multiple versions, but there's one thing left to do. I noticed that links between pages within a remote version were going to the wrong places. Normally, I would write my links as absolute paths, i.e., `[click here](/getting-started)`. However, if I used that path within a page living at `/v1`, it wouldn't take the user to `/v1/getting-started` as I would have hoped. Instead, they would go to `/getting-started` at the site root. Understandable. 🤷
 
 I decided to try using **relative paths**, i.e., `./getting-started`, but Gatsby treated them the same as the absolute ones. I needed to find a way to support relative links so that docs authors wouldn't need to consider the prefix that is being applied to page slugs automatically during the build process.
 

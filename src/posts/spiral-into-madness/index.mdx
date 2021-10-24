@@ -184,9 +184,9 @@ const numOutsets = 2 * Math.floor((side - 1) / numSides);
 
 There are three key values at play in both of these calculations:
 
-1. `js›Math.floor(side / numSides)`
-2. `js›Math.floor((side - 1) / numSides)`
-3. `js›Math.floor(Math.max(side - 2, 0) / numSides)`
+1. `Math.floor(side / numSides)`
+2. `Math.floor((side - 1) / numSides)`
+3. `Math.floor(Math.max(side - 2, 0) / numSides)`
 
 Notice this progression of `side`, `side - 1`, and `side - 2`? We can make this code more concise by creating these values iteratively and combining them appropriately.
 
@@ -244,7 +244,7 @@ while (width > inset) {
 
 Remember that in order to use the curly caterpillar method, I need to nest my segments within one another. In React, it's common to `map` over an array and render components based on its items, but that would result in a flat list rather than the nested structure I'm after.
 
-Instead, I opted to use `js›Array.reduce` to recursively wrap HTML elements around each previous wrapped element. Using this strategy, I start from the innermost segment and continue wrapping outward to the first segment in the spiral. This is why I used `js›Array.unshift` instead of `js›Array.push` in the code sample above. I needed to make sure my final array would be ordered from innermost at the start to outermost at the end.
+Instead, I opted to use `Array.reduce` to recursively wrap HTML elements around each previous wrapped element. Using this strategy, I start from the innermost segment and continue wrapping outward to the first segment in the spiral. This is why I used `Array.unshift` instead of `Array.push` in the code sample above. I needed to make sure my final array would be ordered from innermost at the start to outermost at the end.
 
 ```jsx
 <>
@@ -302,7 +302,7 @@ Pick your poison—either method will yield the same result.
 
 ## Adding the text
 
-Drawing a spiral is cool, but my goal was to draw a spiral _of text_. Adding text to the segments is easy enough. I replace the `height` and `background-color` styles with `css›text-align: center` and add the text as children to the `span`.
+Drawing a spiral is cool, but my goal was to draw a spiral _of text_. Adding text to the segments is easy enough. I replace the `height` and `background-color` styles with `text-align: center` and add the text as children to the `span`.
 
 ```jsx
 <span
@@ -440,7 +440,7 @@ if (word.text.length > numChars) {
 
 ## Cosmetic upgrades 💅
 
-I changed the way that I render the segment text so that its characters are spaced evenly within each segment, sort of like what `css›text-align: justify` does for words in a line. First I split the segment text into an array of characters, and render them each as separate `span` elements. Then I give their parent `css›display: flex` and `css›justify-content: space-evenly`, as well as `css›white-space: pre` to preserve the room that space characters occupy.
+I changed the way that I render the segment text so that its characters are spaced evenly within each segment, sort of like what `text-align: justify` does for words in a line. First I split the segment text into an array of characters, and render them each as separate `span` elements. Then I give their parent `display: flex` and `justify-content: space-evenly`, as well as `white-space: pre` to preserve the room that space characters occupy.
 
 ```jsx
 <span

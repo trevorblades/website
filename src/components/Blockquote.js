@@ -3,9 +3,9 @@ import React from 'react';
 import {Box, Heading, chakra, useColorModeValue} from '@chakra-ui/react';
 
 export default function Blockquote({children}) {
-  const bgColor = useColorModeValue('yellow.100', 'gray.700');
+  const bgColor = useColorModeValue('gray.100', 'gray.700');
   return (
-    <chakra.blockquote p="4" rounded="lg" bgColor={bgColor}>
+    <chakra.blockquote p="4" rounded="md" bgColor={bgColor}>
       <Heading size="sm" mb="2">
         💡 Did you know?
       </Heading>
