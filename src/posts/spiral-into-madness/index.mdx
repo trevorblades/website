@@ -30,7 +30,7 @@ In this post, I'll take you through my process and introduce you to some of the 
 
 First, I lay out each of my triangle sides horizontally with each one nested within the side before it. Then I use a CSS `transform` to `rotate()` each of the sides around their left axis. Because the sides are nested, a rotation to one side will also rotate its children, causing a "curling" effect.
 
-> Try it out below! As you apply rotation to the joints between the three segments below, they curl inward to form a triangle.
+Try it out below! As you apply rotation to the joints between the three segments below, they curl inward to form a triangle.
 
 <CaterpillarDemo />
 
@@ -64,7 +64,7 @@ To create a triangle, nest three `Segment` components within each other, and rot
 
 The triangle I'm trying to build is [equilateral](https://en.wikipedia.org/wiki/Equilateral_polygon), meaning each of its side lengths and angles is the same. Since the sum of all interior angles in any triangle must equal 180°, each **interior angle** has to be 60°. Each **exterior angle** can be calculated by subtracting the interior angle from 180° (or π), meaning the exterior angle must be 120°. That's the amount that I need to rotate each segment to turn my flat line into a triangle.
 
-> To learn more about basic laws of triangles, [check out this article](https://en.wikipedia.org/wiki/Triangle#Basic_facts) that explains things much better and with diagrams 🔥
+To learn more about basic laws of triangles, [check out this article](https://en.wikipedia.org/wiki/Triangle#Basic_facts) that explains things much better and with diagrams. 🔥
 
 ```jsx
 function Triangle() {

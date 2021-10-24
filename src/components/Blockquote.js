@@ -6,7 +6,7 @@ export default function Blockquote({children}) {
   const bgColor = useColorModeValue('gray.100', 'gray.700');
   return (
     <chakra.blockquote p="4" rounded="md" bgColor={bgColor}>
-      <Heading size="sm" mb="2">
+      <Heading size="sm" mb="3">
         💡 Did you know?
       </Heading>
       <Box fontStyle="italic">{children}</Box>
