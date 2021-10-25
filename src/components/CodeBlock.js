@@ -27,34 +27,34 @@ export default function CodeBlock({
     >
       {({className, style, tokens, getLineProps, getTokenProps}) => (
         <Box pos="relative" rounded="md" style={style}>
-          {file && (
-            <HStack
+          <Box fontFamily="mono" fontSize="md">
+            {file && (
+              <HStack
+                px="4"
+                py="2"
+                borderColor="whiteAlpha.300"
+                borderBottomWidth="1px"
+                color="gray.300"
+              >
+                <FiFile />
+                <span>{file}</span>
+              </HStack>
+            )}
+            <chakra.pre
+              className={className}
+              p="4"
+              overflow="auto"
               fontFamily="mono"
-              fontSize="md"
-              px="4"
-              py="2"
-              borderBottomWidth="1px"
-              color="gray.300"
             >
-              <FiFile />
-              <span>{file}</span>
-            </HStack>
-          )}
-          <chakra.pre
-            className={className}
-            p="4"
-            fontSize="smaller"
-            fontFamily="mono"
-            overflow="auto"
-          >
-            {tokens.map((line, i) => (
-              <div key={i} {...getLineProps({line, key: i})}>
-                {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({token, key})} />
-                ))}
-              </div>
-            ))}
-          </chakra.pre>
+              {tokens.map((line, i) => (
+                <div key={i} {...getLineProps({line, key: i})}>
+                  {line.map((token, key) => (
+                    <span key={key} {...getTokenProps({token, key})} />
+                  ))}
+                </div>
+              ))}
+            </chakra.pre>
+          </Box>
           <DarkMode>
             <Button
               pos="absolute"
@@ -62,7 +62,6 @@ export default function CodeBlock({
               right="2"
               size="xs"
               leftIcon={<FiClipboard />}
-              color="white"
               onClick={onCopy}
             >
               {hasCopied ? 'Copied!' : 'Copy'}
