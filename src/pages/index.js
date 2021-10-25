@@ -7,12 +7,17 @@ import OpenSource from '../components/OpenSource';
 import React, {useState} from 'react';
 import {Box, FormControl, FormLabel, Switch} from '@chakra-ui/react';
 import {HEADER_HEIGHT} from '../components/Header';
+import {useMount} from 'react-use';
 
 export default function HomePage() {
+  const [now, setNow] = useState(Date.now());
   const [debug, setDebug] = useState(false);
+
+  useMount(() => setNow(Date.now()));
+
   return (
     <Layout>
-      <Intro debug={debug} />
+      <Intro debug={debug} key={now} />
       <Box mt={HEADER_HEIGHT} id="about" pos="absolute" top="200vh" />
       <HomePageContent />
       <Lab />
