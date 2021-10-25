@@ -2,10 +2,21 @@ import Highlight, {Prism} from 'prism-react-renderer';
 import PropTypes from 'prop-types';
 import React from 'react';
 import dracula from 'prism-react-renderer/themes/dracula';
-import {Box, Button, DarkMode, chakra, useClipboard} from '@chakra-ui/react';
-import {FiClipboard} from 'react-icons/fi';
+import {
+  Box,
+  Button,
+  DarkMode,
+  HStack,
+  chakra,
+  useClipboard
+} from '@chakra-ui/react';
+import {FiClipboard, FiFile} from 'react-icons/fi';
 
-export default function CodeBlock({children, className}) {
+export default function CodeBlock({
+  children,
+  className = 'language-text',
+  file
+}) {
   const {hasCopied, onCopy} = useClipboard(children);
   return (
     <Highlight
@@ -15,13 +26,24 @@ export default function CodeBlock({children, className}) {
       language={className.replace(/language-/, '')}
     >
       {({className, style, tokens, getLineProps, getTokenProps}) => (
-        <Box pos="relative">
+        <Box pos="relative" rounded="md" style={style}>
+          {file && (
+            <HStack
+              fontFamily="mono"
+              fontSize="md"
+              px="4"
+              py="2"
+              borderBottomWidth="1px"
+              color="gray.300"
+            >
+              <FiFile />
+              <span>{file}</span>
+            </HStack>
+          )}
           <chakra.pre
             className={className}
-            style={style}
-            p={4}
+            p="4"
             fontSize="smaller"
-            rounded="md"
             fontFamily="mono"
             overflow="auto"
           >
@@ -53,6 +75,7 @@ export default function CodeBlock({children, className}) {
 }
 
 CodeBlock.propTypes = {
-  className: PropTypes.string.isRequired,
+  className: PropTypes.string,
+  file: PropTypes.string,
   children: PropTypes.string.isRequired
 };

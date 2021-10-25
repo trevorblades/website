@@ -35,8 +35,7 @@ npm i remark-math@3 remark-html-katex@3 katex
 
 It's important to install older versions of the two remark plugins since the newest versions are ESM only and Gatsby doesn't support ES modules in their `gatsby-*.js` files.
 
-```js
-// gatsby-config.js
+```js file=gatsby-config.js
 module.exports = {
   plugins: [
     {
@@ -51,8 +50,7 @@ module.exports = {
 
 Lastly, add the remark plugins to your `gatsby-plugin-mdx` configuration and import the stylesheet from the `katex` package into your client-side bundle.
 
-```js
-// gatsby-browser.js
+```js file=gatsby-browser.js
 import 'katex/dist/katex.css';
 ```
 

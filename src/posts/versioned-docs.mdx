@@ -32,8 +32,7 @@ package.json
 
 Content for the current version is sourced from local files using `gatsby-source-filesystem` and transformed into MDX nodes using `gatsby-plugin-mdx`. I'll refer to this version as the **local version** in this post. I like to use the version from the `package.json` at the root of the repo as the `name` of my content source. This will come in handy later when we're rendering the version dropdown.
 
-```js
-// gatsby-config.js
+```js file=gatsby-config.js
 const {version} = require('../package.json');
 module.exports = {
   plugins: [
@@ -51,7 +50,7 @@ module.exports = {
 
 Using Gatsby's `createPages` API, we query for these MDX nodes and generate a static page for each one using a template file written in React. Gatsby has [a great tutorial](https://www.gatsbyjs.com/docs/mdx/programmatically-creating-pages/#make-a-template-for-your-posts) that goes into more detail about templates and how to create pages in this manner.
 
-```js
+```js file=gatsby-node.js
 exports.createPages = async ({actions, graphql}) => {
   const {data} = await graphql(`
     query ListPages {
@@ -88,7 +87,7 @@ You can configure multiple instances of `gatsby-source-git` for each remote vers
 
 > [Check out the docs](https://www.gatsbyjs.com/plugins/gatsby-source-git/) for `gatsby-source-git` to learn about all of the available configuration options.
 
-```js
+```js file=gatsby-config.js
 module.exports = {
   plugins: [
     // ...other plugins configured above
@@ -134,7 +133,7 @@ With this information, we set the `path` of each page to include the branch name
 
 I use `path.join` to help with this. If one of the path segments passed to `join` is an empty string, it will be omitted from the computed path. This way, if `gitRemote` is null there will be no path prefix added.
 
-```js
+```js file=gatsby-node.js
 const path = require('path');
 
 exports.createPages = async ({actions, graphql}) => {
@@ -235,8 +234,7 @@ Then, I render an HTML `select` element with the local version as the first opti
 
 Finally, we rely on the parent of the version dropdown to pass a `currentRef` prop to the component. If `currentRef` is undefined, it falls back to an empty string—the value of the `option` element for the local version. This prop is then passed along as the `value` of the select so that the currently active version appears as the selected option.
 
-```jsx
-// src/components/VersionDropdown.js
+```jsx file=src/components/VersionDropdown.js
 import {graphql, navigate, useStaticQuery} from 'gatsby';
 
 export default function VersionDropdown({currentRef = ''}) {
@@ -293,8 +291,7 @@ I set the `currentRef` on the version dropdown to `parent.gitRemote?.ref` using 
 
 > Optional chaining (`?.`) allows you to read an object's property without checking to see if the object exists. If the object is `null` or `undefined`, the expression short-circuits with a return value of `undefined`.
 
-```jsx
-// src/templates/page.js
+```jsx file=src/templates/page.js
 import VersionDropdown from '../components/VersionDropdown';
 import {MdxRenderer} from 'gatsby-plugin-mdx';
 import {graphql} from 'gatsby';
@@ -337,8 +334,7 @@ I decided to try using **relative paths**, i.e., `./getting-started`, but Gatsby
 
 To accomplish this, I leaned on another great feature of MDX: component substitution. I created a custom `RelativeLink` component that behaves differently depending on what the `href` prop looks like.
 
-```jsx
-// src/components/RelativeLink.js
+```jsx file=src/components/RelativeLink.js
 import {createContext, useContext} from 'react';
 import {isAbsolute, resolve} from 'path-browserify';
 import {Link} from 'gatsby';
@@ -376,8 +372,7 @@ Next, I need to substitute anchor tags in my page with the `RelativeLink` compon
 
 > For more information about component substitution in MDX, check out [their docs on the subject](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-mdx#components).
 
-```jsx
-// src/templates/page.js
+```jsx file=src/templates/page.js
 import RelativeLink, {PathContext} from '../components/RelativeLink';
 import VersionDropdown from '../components/VersionDropdown';
 import {MDXProvider} from '@mdx-js/react';
