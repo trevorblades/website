@@ -152,7 +152,7 @@ export default function Intro({debug}) {
                   <Box
                     h={1 / 2}
                     bgColor="current"
-                    transformOrigin="top left"
+                    transformOrigin="left"
                     textAlign="center"
                     lineHeight="taller"
                     style={{
