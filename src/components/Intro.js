@@ -150,14 +150,14 @@ export default function Intro({debug}) {
               >
                 <Box fontSize="2xl" fontWeight="medium">
                   <Box
-                    h={1 / 2}
+                    h="2px"
                     bgColor="current"
                     transformOrigin="left"
                     textAlign="center"
                     lineHeight="taller"
                     style={{
-                      width: diameter,
-                      transform: `translateY(-50%) rotate(${interiorAngle}rad)`
+                      width: diameter - 4,
+                      transform: `translateY(-100%) rotate(${interiorAngle}rad)`
                     }}
                   >
                     <chakra.span>diameter</chakra.span> = √(
