@@ -1,14 +1,10 @@
 import PropTypes from 'prop-types';
-import React, {useMemo, useRef, useState} from 'react';
-import {Box, Flex, useOutsideClick, useTheme} from '@chakra-ui/react';
+import React, {useRef, useState} from 'react';
+import {Box, Flex, useOutsideClick} from '@chakra-ui/react';
 
 export default function DesktopIcon({icon, title, description}) {
   const ref = useRef();
-  const {colors} = useTheme();
   const [selected, setSelected] = useState(false);
-  const textShadow = useMemo(() => `0 1px 2px ${colors.blackAlpha[800]}`, [
-    colors.blackAlpha
-  ]);
 
   useOutsideClick({
     ref,
@@ -40,17 +36,19 @@ export default function DesktopIcon({icon, title, description}) {
         fontSize="sm"
         fontWeight="bold"
         color="white"
-        textShadow={!selected && `0 1px 2px ${colors.blackAlpha[800]}`}
+        css={({theme}) => ({
+          textShadow: `0 1px 2px ${theme.colors.blackAlpha[600]}`
+        })}
       >
         <Box
           p="0.5"
           rounded="sm"
           bg={selected && 'blue.500'}
-          textShadow={!selected && `0 1px 2px ${colors.blackAlpha[800]}`}
+          textShadow={selected && 'none'}
         >
           {title}
         </Box>
-        <Box p="0.5" fontSize="xs" textShadow={textShadow}>
+        <Box p="0.5" fontSize="xs">
           {description}
         </Box>
       </Flex>
