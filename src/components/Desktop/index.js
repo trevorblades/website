@@ -3,7 +3,7 @@ import DesktopIcon from './DesktopIcon';
 import React from 'react';
 import orca from '../../assets/orca.jpg';
 import {Box, Circle, Flex, Grid, HStack} from '@chakra-ui/react';
-import {FaSkull} from 'react-icons/fa';
+import {FaLeaf} from 'react-icons/fa';
 import {Rnd} from 'react-rnd';
 
 export default function Desktop() {
@@ -17,7 +17,7 @@ export default function Desktop() {
     >
       <Flex as="header" h="6" bg="blackAlpha.500" px="4" fontSize="sm">
         <HStack spacing="4">
-          <FaSkull />
+          <FaLeaf />
           <strong>Finder</strong>
           <span>File</span>
           <span>Edit</span>
