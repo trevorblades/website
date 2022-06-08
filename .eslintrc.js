@@ -1,3 +1,7 @@
 module.exports = {
-  extends: ["plugin:@trevorblades/react", "plugin:prettier/recommended"],
+  extends: [
+    "plugin:@trevorblades/react",
+    "plugin:mdx/recommended",
+    "plugin:prettier/recommended",
+  ],
 };
