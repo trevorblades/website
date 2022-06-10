@@ -13,3 +13,5 @@ const HomePage: Page = () => {
 };
 
 export default HomePage;
+
+export const load = () => ({ meta: { title: "Home page" } });
