@@ -2,7 +2,7 @@ import React from "react";
 import { Helmet } from "react-helmet-async";
 import { Layout } from "rakkasjs";
 
-const Layout: Layout = ({ children, meta }) => (
+const MainLayout: Layout = ({ children, meta }) => (
   <>
     <Helmet title={meta.title} />
     <header>company name</header>
@@ -11,4 +11,4 @@ const Layout: Layout = ({ children, meta }) => (
   </>
 );
 
-export default Layout;
+export default MainLayout;
