@@ -1,0 +1,3 @@
+[build]
+command = "npx rakkas build -d netlify"
+publish = "netlify/static"
