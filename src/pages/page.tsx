@@ -1,6 +1,7 @@
 import React from "react";
+import { Page } from "rakkasjs";
 
-const HomePage = function HomePage() {
+const HomePage: Page = () => {
   return (
     <main>
       <h1>Hello world!</h1>
