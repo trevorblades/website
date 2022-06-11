@@ -5,8 +5,8 @@ import { Layout } from "rakkasjs";
 const MainLayout: Layout = ({ children, meta }) => (
   <>
     <Helmet title={meta.title} />
-    <header>company name</header>
-    {children}
+    <header>Acme Inc.</header>
+    <main>{children}</main>
     <footer>&copy; {new Date().getFullYear()}</footer>
   </>
 );
