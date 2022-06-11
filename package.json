@@ -9,12 +9,16 @@
     "start": "node dist/server"
   },
   "dependencies": {
+    "@chakra-ui/react": "^2.2.1",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
     "@mdx-js/mdx": "^2.1.1",
     "@mdx-js/react": "^2.1.1",
     "@trevorblades/remark-mdx-rakkas": "^1.1.3",
+    "framer-motion": "^6",
     "rakkasjs": "^0.5.4",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
     "react-helmet-async": "^1.2.2",
     "remark-frontmatter": "^3.0.0"
   },
