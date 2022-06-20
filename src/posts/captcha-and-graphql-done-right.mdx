@@ -1,0 +1,57 @@
+---
+title: CAPTCHA and GraphQL, done right
+description: Secure your API with reCAPTCHA and GraphQL Shield
+---
+
+CAPTCHA systems help reduce spam on your website by making users fill out a puzzle that is supposed to be easy for humans to solve, but difficult for bots. Google's reCAPTCHA is the most popular of these systems out there. It's common practice for web developers to implement visible reCAPTCHA puzzle or an [invisible reCAPTCHA](https://developers.google.com/recaptcha/docs/versions#recaptcha_v2_invisible_recaptcha_badge) badge in public-facing forms.
+
+This post will explain how to validate requests using reCAPTCHA in a GraphQL API, and how to abstract this process so it can be applied to many fields in your schema with ease.
+
+## Configuring your forms
+
+The first thing you'll need to do when setting up your site with reCAPTCHA is to set up your client-side forms with a reCAPTCHA widget. Let's say you have a simple sign up form component built using React and Apollo Client, like this:
+
+```jsx
+import {useMutation, gql} from '@apollo/client';
+
+const SIGN_UP = gql`
+  mutation SignUp($name: String!, $email: String!) {
+    signUp(name: $name, email: $email) {
+      id
+      name
+      email
+    }
+  }
+`;
+
+export function SignUpForm() {
+  const [signUp, {loading, error}] = useMutation(SIGN_UP);
+
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    const {name, email} = event.target;
+    signUp({
+      variables: {
+        name: name.value,
+        email: email.value
+      }
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {error && <p>{error.message}</p>}
+      <input name="name" required />
+      <input name="email" type="email" required />
+      <button disabled={loading} type="submit">
+        Sign up
+      </button>
+    </form>
+  );
+}
+```
+
+When this form gets submitted, we grab the `name` and `email` fields from the `event.target` (the form element) within the form's submit handler, and pass the fields' values to our GraphQL mutation as variables.
+
+When the request is in flight, the submit button is disabled, and if an error occurs during the request, the error message is printed at the top of the form.
