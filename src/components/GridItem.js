@@ -1,10 +1,10 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import {AspectRatio, Box, Heading, Text} from '@chakra-ui/react';
-import {getLuminance, tint} from 'polished';
+import PropTypes from "prop-types";
+import React from "react";
+import { AspectRatio, Box, Heading, Text } from "@chakra-ui/react";
+import { getLuminance, tint } from "polished";
 
-export default function GridItem({icon, title, description, color, href}) {
-  const logoColor = getLuminance(color) > 0.5 ? 'black' : 'white';
+export default function GridItem({ icon, title, description, color, href }) {
+  const logoColor = getLuminance(color) > 0.5 ? "black" : "white";
   return (
     <Box
       as="a"
@@ -16,12 +16,12 @@ export default function GridItem({icon, title, description, color, href}) {
       pos="relative"
       role="group"
       bgColor={color}
-      _hover={{bgColor: tint(0.1, color)}}
+      _hover={{ bgColor: tint(0.1, color) }}
       sx={{
-        '*': {
-          transitionProperty: 'opacity, transform',
-          transitionDuration: '250ms'
-        }
+        "*": {
+          transitionProperty: "opacity, transform",
+          transitionDuration: "250ms",
+        },
       }}
     >
       <Box
@@ -32,7 +32,7 @@ export default function GridItem({icon, title, description, color, href}) {
         top="50%"
         left="50%"
         transform="translate(-50%, -50%)"
-        _groupHover={{opacity: 0.25}}
+        _groupHover={{ opacity: 0.25 }}
       />
       <AspectRatio ratio={1}>
         <div>
@@ -43,14 +43,14 @@ export default function GridItem({icon, title, description, color, href}) {
             transform="translateY(5%)"
             _groupHover={{
               opacity: 1,
-              transform: 'none'
+              transform: "none",
             }}
           >
             <Heading letterSpacing="tight">{title}</Heading>
             <Text
               transform="translateY(20%)"
-              _groupHover={{transform: 'none'}}
-              fontSize={{base: 'lg', md: 'xl'}}
+              _groupHover={{ transform: "none" }}
+              fontSize={{ base: "lg", md: "xl" }}
             >
               {description}
             </Text>
@@ -66,5 +66,5 @@ GridItem.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
-  href: PropTypes.string.isRequired
+  href: PropTypes.string.isRequired,
 };

@@ -1,31 +1,34 @@
-import Highlight, {Prism} from 'prism-react-renderer';
-import PropTypes from 'prop-types';
-import React from 'react';
-import dracula from 'prism-react-renderer/themes/dracula';
+import Highlight, { Prism } from "prism-react-renderer";
+import PropTypes from "prop-types";
+import React from "react";
+import dracula from "prism-react-renderer/themes/dracula";
+import fenceparser from "fenceparser";
 import {
   Box,
   Button,
   DarkMode,
   HStack,
   chakra,
-  useClipboard
-} from '@chakra-ui/react';
-import {FiClipboard, FiFile} from 'react-icons/fi';
+  useClipboard,
+} from "@chakra-ui/react";
+import { FiClipboard, FiFile } from "react-icons/fi";
 
 export default function CodeBlock({
   children,
-  className = 'language-text',
-  file
+  className = "language-text",
+  file,
+  metastring,
 }) {
-  const {hasCopied, onCopy} = useClipboard(children);
+  console.log(metastring && fenceparser(metastring));
+  const { hasCopied, onCopy } = useClipboard(children);
   return (
     <Highlight
       Prism={Prism}
       theme={dracula}
       code={children.trim()}
-      language={className.replace(/language-/, '')}
+      language={className.replace(/language-/, "")}
     >
-      {({className, style, tokens, getLineProps, getTokenProps}) => (
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <Box pos="relative" rounded="md" style={style}>
           <Box fontFamily="mono" fontSize="md">
             {file && (
@@ -47,9 +50,9 @@ export default function CodeBlock({
               fontFamily="mono"
             >
               {tokens.map((line, i) => (
-                <div key={i} {...getLineProps({line, key: i})}>
+                <div key={i} {...getLineProps({ line, key: i })}>
                   {line.map((token, key) => (
-                    <span key={key} {...getTokenProps({token, key})} />
+                    <span key={key} {...getTokenProps({ token, key })} />
                   ))}
                 </div>
               ))}
@@ -64,7 +67,7 @@ export default function CodeBlock({
               leftIcon={<FiClipboard />}
               onClick={onCopy}
             >
-              {hasCopied ? 'Copied!' : 'Copy'}
+              {hasCopied ? "Copied!" : "Copy"}
             </Button>
           </DarkMode>
         </Box>
@@ -76,5 +79,6 @@ export default function CodeBlock({
 CodeBlock.propTypes = {
   className: PropTypes.string,
   file: PropTypes.string,
-  children: PropTypes.string.isRequired
+  metastring: PropTypes.string,
+  children: PropTypes.string.isRequired,
 };

@@ -1,9 +1,9 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import {Box, Heading, chakra, useColorModeValue} from '@chakra-ui/react';
+import PropTypes from "prop-types";
+import React from "react";
+import { Box, Heading, chakra, useColorModeValue } from "@chakra-ui/react";
 
-export default function Blockquote({children}) {
-  const bgColor = useColorModeValue('gray.100', 'gray.700');
+export default function Blockquote({ children }) {
+  const bgColor = useColorModeValue("gray.100", "gray.700");
   return (
     <chakra.blockquote p="4" rounded="md" bgColor={bgColor}>
       <Heading size="sm" mb="3">
@@ -15,5 +15,5 @@ export default function Blockquote({children}) {
 }
 
 Blockquote.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };

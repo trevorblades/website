@@ -12,7 +12,7 @@ This post will explain how to validate requests using reCAPTCHA in a GraphQL API
 The first thing you'll need to do when setting up your site with reCAPTCHA is to set up your client-side forms with a reCAPTCHA widget. Let's say you have a simple sign up form component built using React and Apollo Client, like this:
 
 ```jsx
-import {useMutation, gql} from '@apollo/client';
+import { useMutation, gql } from "@apollo/client";
 
 const SIGN_UP = gql`
   mutation SignUp($name: String!, $email: String!) {
@@ -25,17 +25,17 @@ const SIGN_UP = gql`
 `;
 
 export function SignUpForm() {
-  const [signUp, {loading, error}] = useMutation(SIGN_UP);
+  const [signUp, { loading, error }] = useMutation(SIGN_UP);
 
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    const {name, email} = event.target;
+    const { name, email } = event.target;
     signUp({
       variables: {
         name: name.value,
-        email: email.value
-      }
+        email: email.value,
+      },
     });
   };
 
@@ -55,3 +55,44 @@ export function SignUpForm() {
 When this form gets submitted, we grab the `name` and `email` fields from the `event.target` (the form element) within the form's submit handler, and pass the fields' values to our GraphQL mutation as variables.
 
 When the request is in flight, the submit button is disabled, and if an error occurs during the request, the error message is printed at the top of the form.
+
+### Adding reCAPTCHA
+
+```jsx {1}
+import ReCAPTCHA from "react-google-recaptcha";
+
+<ReCAPTCHA size="invisible" sitekey={/* your recaptcha site key here */} />;
+```
+
+```jsx {1, 5}
+import ReCAPTCHA from 'react-google-recaptcha';
+import {useRef} from 'react';
+
+export function SignUpForm() {
+  const recaptchaRef = useRef();
+
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    recaptchaRef.current.reset();
+    const token = await recaptchaRef.current.executeAsync();
+
+    signUp({
+      variables: {
+        token
+      }
+    })
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* same form inputs and button from before */}
+      <ReCAPTCHA
+        ref={recaptchaRef}
+        size="invisible"
+        sitekey={/* your recaptcha site key here */}
+      />
+    </form>
+  )
+}
+```

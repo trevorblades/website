@@ -1,13 +1,13 @@
-import Footer from '../components/Footer';
-import HomePageContent from '../components/HomePageContent';
-import Intro from '../components/Intro';
-import Lab from '../components/Lab';
-import Layout from '../components/Layout';
-import OpenSource from '../components/OpenSource';
-import React, {useState} from 'react';
-import {Box, FormControl, FormLabel, Switch} from '@chakra-ui/react';
-import {HEADER_HEIGHT} from '../components/Header';
-import {useMount} from 'react-use';
+import Footer from "../components/Footer";
+import HomePageContent from "../components/HomePageContent";
+import Intro from "../components/Intro";
+import Lab from "../components/Lab";
+import Layout from "../components/Layout";
+import OpenSource from "../components/OpenSource";
+import React, { useState } from "react";
+import { Box, FormControl, FormLabel, Switch } from "@chakra-ui/react";
+import { HEADER_HEIGHT } from "../components/Header";
+import { useMount } from "react-use";
 
 export default function HomePage() {
   const [now, setNow] = useState(Date.now());
@@ -31,7 +31,7 @@ export default function HomePage() {
           <Switch
             id="debug"
             isChecked={debug}
-            onChange={event => setDebug(event.target.checked)}
+            onChange={(event) => setDebug(event.target.checked)}
           />
         </FormControl>
       </Footer>
