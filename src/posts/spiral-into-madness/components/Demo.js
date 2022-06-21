@@ -1,9 +1,9 @@
-import LabelledSlider from './LabelledSlider';
-import PropTypes from 'prop-types';
-import React from 'react';
-import {Box, HStack, Heading} from '@chakra-ui/react';
+import LabelledSlider from "./LabelledSlider";
+import PropTypes from "prop-types";
+import React from "react";
+import { Box, HStack, Heading } from "@chakra-ui/react";
 
-export default function Demo({sliders, children}) {
+export default function Demo({ sliders, children }) {
   return (
     <div>
       <Box borderWidth="1px" rounded="md">
@@ -27,5 +27,5 @@ export default function Demo({sliders, children}) {
 
 Demo.propTypes = {
   sliders: PropTypes.array.isRequired,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };

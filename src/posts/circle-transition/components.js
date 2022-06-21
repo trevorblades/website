@@ -1,1 +1,1 @@
-export {ReactComponent as Circle} from './assets/circle.svg';
+export { ReactComponent as Circle } from "./assets/circle.svg";

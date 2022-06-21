@@ -1,14 +1,14 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import identity from 'lodash/identity';
+import PropTypes from "prop-types";
+import React from "react";
+import identity from "lodash/identity";
 import {
   Box,
   Slider,
   SliderFilledTrack,
   SliderThumb,
   SliderTrack,
-  chakra
-} from '@chakra-ui/react';
+  chakra,
+} from "@chakra-ui/react";
 
 export default function LabelledSlider({
   label,
@@ -36,5 +36,5 @@ export default function LabelledSlider({
 LabelledSlider.propTypes = {
   label: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,
-  formatValue: PropTypes.func
+  formatValue: PropTypes.func,
 };

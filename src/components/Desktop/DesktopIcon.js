@@ -1,14 +1,14 @@
-import PropTypes from 'prop-types';
-import React, {useRef, useState} from 'react';
-import {Box, Flex, useOutsideClick} from '@chakra-ui/react';
+import PropTypes from "prop-types";
+import React, { useRef, useState } from "react";
+import { Box, Flex, useOutsideClick } from "@chakra-ui/react";
 
-export default function DesktopIcon({icon, title, description}) {
+export default function DesktopIcon({ icon, title, description }) {
   const ref = useRef();
   const [selected, setSelected] = useState(false);
 
   useOutsideClick({
     ref,
-    handler: () => setSelected(false)
+    handler: () => setSelected(false),
   });
 
   return (
@@ -16,7 +16,7 @@ export default function DesktopIcon({icon, title, description}) {
       align="center"
       dir="ltr"
       ref={ref}
-      onClick={event => setSelected(event.target !== event.currentTarget)}
+      onClick={(event) => setSelected(event.target !== event.currentTarget)}
       cursor="default"
       userSelect="none"
       lineHeight="none"
@@ -24,8 +24,8 @@ export default function DesktopIcon({icon, title, description}) {
       <Box
         fontSize="4xl"
         mr="2"
-        shadow={selected && 'outline'}
-        bg={selected && 'blackAlpha.100'}
+        shadow={selected && "outline"}
+        bg={selected && "blackAlpha.100"}
         rounded="sm"
       >
         <span>{icon}</span>
@@ -36,15 +36,15 @@ export default function DesktopIcon({icon, title, description}) {
         fontSize="sm"
         fontWeight="bold"
         color="white"
-        css={({theme}) => ({
-          textShadow: `0 1px 2px ${theme.colors.blackAlpha[600]}`
+        css={({ theme }) => ({
+          textShadow: `0 1px 2px ${theme.colors.blackAlpha[600]}`,
         })}
       >
         <Box
           p="0.5"
           rounded="sm"
-          bg={selected && 'blue.500'}
-          textShadow={selected && 'none'}
+          bg={selected && "blue.500"}
+          textShadow={selected && "none"}
         >
           {title}
         </Box>
@@ -59,5 +59,5 @@ export default function DesktopIcon({icon, title, description}) {
 DesktopIcon.propTypes = {
   icon: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired
+  description: PropTypes.string.isRequired,
 };
