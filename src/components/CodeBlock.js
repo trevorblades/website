@@ -1,31 +1,44 @@
-import Highlight, {Prism} from 'prism-react-renderer';
-import PropTypes from 'prop-types';
-import React from 'react';
-import dracula from 'prism-react-renderer/themes/dracula';
+import Highlight, { Prism } from "prism-react-renderer";
+import PropTypes from "prop-types";
+import React, { useMemo } from "react";
+import dracula from "prism-react-renderer/themes/dracula";
+import fenceparser from "fenceparser";
+import parse from "parse-numeric-range";
 import {
   Box,
   Button,
   DarkMode,
   HStack,
   chakra,
-  useClipboard
-} from '@chakra-ui/react';
-import {FiClipboard, FiFile} from 'react-icons/fi';
+  useClipboard,
+} from "@chakra-ui/react";
+import { FiClipboard, FiFile } from "react-icons/fi";
 
 export default function CodeBlock({
   children,
-  className = 'language-text',
-  file
+  className = "language-text",
+  file,
+  metastring,
 }) {
-  const {hasCopied, onCopy} = useClipboard(children);
+  const { hasCopied, onCopy } = useClipboard(children);
+
+  const linesToHighlight = useMemo(() => {
+    try {
+      const { highlight } = fenceparser(metastring);
+      return parse(Object.keys(highlight).toString());
+    } catch (error) {
+      return [];
+    }
+  }, [metastring]);
+
   return (
     <Highlight
       Prism={Prism}
       theme={dracula}
       code={children.trim()}
-      language={className.replace(/language-/, '')}
+      language={className.replace(/language-/, "")}
     >
-      {({className, style, tokens, getLineProps, getTokenProps}) => (
+      {({ className, style, tokens, getLineProps, getTokenProps }) => (
         <Box pos="relative" rounded="md" style={style}>
           <Box fontFamily="mono" fontSize="md">
             {file && (
@@ -42,16 +55,23 @@ export default function CodeBlock({
             )}
             <chakra.pre
               className={className}
-              p="4"
+              py="4"
               overflow="auto"
               fontFamily="mono"
             >
               {tokens.map((line, i) => (
-                <div key={i} {...getLineProps({line, key: i})}>
+                <Box
+                  key={i}
+                  px="4"
+                  background={
+                    linesToHighlight.includes(i + 1) && "whiteAlpha.200"
+                  }
+                  {...getLineProps({ line, key: i })}
+                >
                   {line.map((token, key) => (
-                    <span key={key} {...getTokenProps({token, key})} />
+                    <span key={key} {...getTokenProps({ token, key })} />
                   ))}
-                </div>
+                </Box>
               ))}
             </chakra.pre>
           </Box>
@@ -64,7 +84,7 @@ export default function CodeBlock({
               leftIcon={<FiClipboard />}
               onClick={onCopy}
             >
-              {hasCopied ? 'Copied!' : 'Copy'}
+              {hasCopied ? "Copied!" : "Copy"}
             </Button>
           </DarkMode>
         </Box>
@@ -76,5 +96,6 @@ export default function CodeBlock({
 CodeBlock.propTypes = {
   className: PropTypes.string,
   file: PropTypes.string,
-  children: PropTypes.string.isRequired
+  metastring: PropTypes.string,
+  children: PropTypes.string.isRequired,
 };

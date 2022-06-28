@@ -1,25 +1,25 @@
-import {extendTheme} from '@chakra-ui/react';
+import { extendTheme } from "@chakra-ui/react";
 
 const theme = extendTheme({
   styles: {
     global: {
-      '::selection': {
-        bgColor: 'pink.400'
-      }
-    }
+      "::selection": {
+        bgColor: "pink.400",
+      },
+    },
   },
   fonts: {
-    heading: 'Poppins, Helvetica, sans-serif',
-    body: 'Roboto, Helvetica, sans-serif',
-    mono: "'Fira Code', monospace"
+    heading: "Poppins, Helvetica, sans-serif",
+    body: "Roboto, Helvetica, sans-serif",
+    mono: "'Fira Code', monospace",
   },
   components: {
     Heading: {
       baseStyle: {
-        fontWeight: 'semibold'
-      }
-    }
-  }
+        fontWeight: "semibold",
+      },
+    },
+  },
 });
 
 export default theme;

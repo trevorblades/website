@@ -1,6 +1,6 @@
-import Demo from './Demo';
-import React, {useMemo, useState} from 'react';
-import {calcInOutset, getNumInOutsets, measureShape} from 'react-spiral';
+import Demo from "./Demo";
+import React, { useMemo, useState } from "react";
+import { calcInOutset, getNumInOutsets, measureShape } from "react-spiral";
 
 const NUM_SIDES = 3;
 const INTERIOR_ANGLE = 60 * (Math.PI / 180);
@@ -10,14 +10,15 @@ export function SpiralDemo() {
   const [width, setWidth] = useState(100);
   const [spacing, setSpacing] = useState(20);
 
-  const {height} = useMemo(
+  const { height } = useMemo(
     () => measureShape(width, NUM_SIDES, EXTERIOR_ANGLE),
     [width]
   );
 
-  const [inset, outset] = useMemo(() => calcInOutset(spacing, EXTERIOR_ANGLE), [
-    spacing
-  ]);
+  const [inset, outset] = useMemo(
+    () => calcInOutset(spacing, EXTERIOR_ANGLE),
+    [spacing]
+  );
 
   const segments = [];
 
@@ -38,34 +39,34 @@ export function SpiralDemo() {
     <Demo
       sliders={[
         {
-          label: 'Width',
+          label: "Width",
           min: 100,
           max: 500,
           value: width,
           onChange: setWidth,
-          formatValue: value => value + 'px'
+          formatValue: (value) => value + "px",
         },
         {
-          label: 'Spacing',
+          label: "Spacing",
           min: 10,
           max: 50,
           value: spacing,
           onChange: setSpacing,
-          formatValue: value => value + 'px'
-        }
+          formatValue: (value) => value + "px",
+        },
       ]}
     >
-      <div style={{height}}>
+      <div style={{ height }}>
         {segments.reverse().reduce(
           (child, width, index, array) => (
             <div
               style={{
-                display: 'flex',
-                transformOrigin: 'left',
+                display: "flex",
+                transformOrigin: "left",
                 transform:
                   index === array.length - 1
-                    ? 'translateY(-50%)'
-                    : `rotate(${EXTERIOR_ANGLE}rad)`
+                    ? "translateY(-50%)"
+                    : `rotate(${EXTERIOR_ANGLE}rad)`,
               }}
             >
               <span
@@ -73,7 +74,7 @@ export function SpiralDemo() {
                   flexShrink: 0,
                   width,
                   height: 2,
-                  backgroundColor: 'currentcolor'
+                  backgroundColor: "currentcolor",
                 }}
               />
               {child}

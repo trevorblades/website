@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import {Helmet} from 'react-helmet';
+import PropTypes from "prop-types";
+import React from "react";
+import { Helmet } from "react-helmet";
 
-export default function Layout({children}) {
+export default function Layout({ children }) {
   return (
     <>
       <Helmet
@@ -30,5 +30,5 @@ export default function Layout({children}) {
 }
 
 Layout.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };

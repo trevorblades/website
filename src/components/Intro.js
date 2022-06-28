@@ -1,9 +1,9 @@
-import Extender from './Extender';
-import Header from './Header';
-import PropTypes from 'prop-types';
-import React, {useMemo} from 'react';
-import SocialButtons from './SocialButtons';
-import Spiral from 'react-spiral';
+import Extender from "./Extender";
+import Header from "./Header";
+import PropTypes from "prop-types";
+import React, { useMemo } from "react";
+import SocialButtons from "./SocialButtons";
+import Spiral from "react-spiral";
 import {
   Box,
   Center,
@@ -16,35 +16,35 @@ import {
   Text,
   chakra,
   useColorModeValue,
-  useTheme
-} from '@chakra-ui/react';
-import {FaNpm} from 'react-icons/fa';
-import {FiDownload} from 'react-icons/fi';
-import {useWindowScroll, useWindowSize} from 'react-use';
+  useTheme,
+} from "@chakra-ui/react";
+import { FaNpm } from "react-icons/fa";
+import { FiDownload } from "react-icons/fi";
+import { useWindowScroll, useWindowSize } from "react-use";
 
-export default function Intro({debug}) {
-  const {colors} = useTheme();
+export default function Intro({ debug }) {
+  const { colors } = useTheme();
 
-  const circleBg = useColorModeValue('purple.200', 'purple.700');
-  const npmBadgeBg = useColorModeValue('white', 'gray.800');
+  const circleBg = useColorModeValue("purple.200", "purple.700");
+  const npmBadgeBg = useColorModeValue("white", "gray.800");
   const gradientColors = useColorModeValue(
     [colors.yellow[300], colors.pink[300], colors.purple[300]],
     [colors.yellow[700], colors.pink[800], colors.purple[800]]
   );
 
   const gradient = useMemo(
-    () => `linear-gradient(${['45deg', ...gradientColors]})`,
+    () => `linear-gradient(${["45deg", ...gradientColors]})`,
     [gradientColors]
   );
 
-  const {y} = useWindowScroll();
-  const {width, height} = useWindowSize();
+  const { y } = useWindowScroll();
+  const { width, height } = useWindowSize();
 
-  const {diameter, interiorAngle} = useMemo(() => {
+  const { diameter, interiorAngle } = useMemo(() => {
     const diameter = Math.sqrt(width ** 2 + height ** 2);
     return {
       diameter,
-      interiorAngle: Math.acos(width / diameter)
+      interiorAngle: Math.acos(width / diameter),
     };
   }, [width, height]);
 
@@ -88,17 +88,17 @@ export default function Intro({debug}) {
               color="white"
               sx={{
                 svg: {
-                  transitionProperty: 'transform, opacity',
-                  transitionDuration: '250ms'
-                }
+                  transitionProperty: "transform, opacity",
+                  transitionDuration: "250ms",
+                },
               }}
             >
               <Box
                 as={FaNpm}
                 fontSize="2xl"
                 _groupHover={{
-                  transform: 'scale(0.8)',
-                  opacity: 0
+                  transform: "scale(0.8)",
+                  opacity: 0,
                 }}
               />
               <Box
@@ -108,8 +108,8 @@ export default function Intro({debug}) {
                 opacity="0"
                 transform="scale(1.2)"
                 _groupHover={{
-                  transform: 'none',
-                  opacity: 1
+                  transform: "none",
+                  opacity: 1,
                 }}
               />
             </Square>
@@ -119,12 +119,12 @@ export default function Intro({debug}) {
             fontWeight="bold"
             fontFamily="heading"
             textTransform="uppercase"
-            style={{transform: `scale(${1 + y / height / 4})`}}
+            style={{ transform: `scale(${1 + y / height / 4})` }}
           >
             <Spiral fontSize={30} boxSize={600} sides={sides} spacing={100}>
               {sides === 3
-                ? 'scroll down'
-                : 'upgrade your gray matter cuz one day it may matter.'}
+                ? "scroll down"
+                : "upgrade your gray matter cuz one day it may matter."}
             </Spiral>
           </Box>
           <Circle
@@ -135,7 +135,7 @@ export default function Intro({debug}) {
             style={{
               width: diameter,
               height: diameter,
-              transform: `translate(-50%, -50%) scale(${circleScale})`
+              transform: `translate(-50%, -50%) scale(${circleScale})`,
             }}
           >
             {debug && (
@@ -157,7 +157,7 @@ export default function Intro({debug}) {
                     lineHeight="taller"
                     style={{
                       width: diameter - 4,
-                      transform: `translateY(-100%) rotate(${interiorAngle}rad)`
+                      transform: `translateY(-100%) rotate(${interiorAngle}rad)`,
                     }}
                   >
                     <chakra.span>diameter</chakra.span> = √(
@@ -200,7 +200,7 @@ export default function Intro({debug}) {
               transform="translate(-50%, -50%)"
               style={{
                 opacity: textOpacity,
-                visibility: textOpacity ? 'visible' : 'hidden'
+                visibility: textOpacity ? "visible" : "hidden",
               }}
             >
               <Heading mb="4" size="3xl">
@@ -211,7 +211,7 @@ export default function Intro({debug}) {
                 Hi there! 👋 I&apos;m Trevor. I design and build beautiful,
                 functional websites that usually provide some kind of
                 educational value or help people succeed in their career. I
-                stream my work on Twitch and occasionally write about it{' '}
+                stream my work on Twitch and occasionally write about it{" "}
                 <Link href="#lab">here</Link>.
               </Text>
               <SocialButtons />
@@ -221,7 +221,7 @@ export default function Intro({debug}) {
               pos="absolute"
               bottom="6"
               left="6"
-              fontSize={{md: 'lg'}}
+              fontSize={{ md: "lg" }}
               fontFamily="mono"
             >
               <div>Spiral sides: {sides}</div>
@@ -236,5 +236,5 @@ export default function Intro({debug}) {
 }
 
 Intro.propTypes = {
-  debug: PropTypes.bool.isRequired
+  debug: PropTypes.bool.isRequired,
 };

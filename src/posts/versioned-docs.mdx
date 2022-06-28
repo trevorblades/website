@@ -33,26 +33,26 @@ package.json
 Content for the current version is sourced from local files using `gatsby-source-filesystem` and transformed into MDX nodes using `gatsby-plugin-mdx`. I'll refer to this version as the **local version** in this post. I like to use the version from the `package.json` at the root of the repo as the `name` of my content source. This will come in handy later when we're rendering the version dropdown.
 
 ```js file=gatsby-config.js
-const {version} = require('../package.json');
+const { version } = require("../package.json");
 module.exports = {
   plugins: [
-    'gatsby-plugin-mdx',
+    "gatsby-plugin-mdx",
     {
-      resolve: 'gatsby-source-filesystem',
+      resolve: "gatsby-source-filesystem",
       options: {
         name: version,
-        path: 'content'
-      }
-    }
-  ]
+        path: "content",
+      },
+    },
+  ],
 };
 ```
 
 Using Gatsby's `createPages` API, we query for these MDX nodes and generate a static page for each one using a template file written in React. Gatsby has [a great tutorial](https://www.gatsbyjs.com/docs/mdx/programmatically-creating-pages/#make-a-template-for-your-posts) that goes into more detail about templates and how to create pages in this manner.
 
 ```js file=gatsby-node.js
-exports.createPages = async ({actions, graphql}) => {
-  const {data} = await graphql(`
+exports.createPages = async ({ actions, graphql }) => {
+  const { data } = await graphql(`
     query ListPages {
       allMdx {
         nodes {
@@ -63,13 +63,13 @@ exports.createPages = async ({actions, graphql}) => {
     }
   `);
 
-  data.allMdx.nodes.forEach(node => {
+  data.allMdx.nodes.forEach((node) => {
     actions.createPage({
-      component: require.resolve('./src/templates/page'),
-      path: '/' + node.slug,
+      component: require.resolve("./src/templates/page"),
+      path: "/" + node.slug,
       context: {
-        id: node.id
-      }
+        id: node.id,
+      },
     });
   });
 };
@@ -92,16 +92,16 @@ module.exports = {
   plugins: [
     // ...other plugins configured above
     {
-      resolve: 'gatsby-source-git',
+      resolve: "gatsby-source-git",
       options: {
-        name: '1.10.x', // the name that will be used in the version dropdown
-        remote: 'https://github.com/your-username/your-repo',
-        branch: 'v1', // the branch where your older version is maintained
+        name: "1.10.x", // the name that will be used in the version dropdown
+        remote: "https://github.com/your-username/your-repo",
+        branch: "v1", // the branch where your older version is maintained
         // only source from the directory where your docs content lives
-        patterns: 'docs/content/**'
-      }
-    }
-  ]
+        patterns: "docs/content/**",
+      },
+    },
+  ],
 };
 ```
 
@@ -134,20 +134,20 @@ With this information, we set the `path` of each page to include the branch name
 I use `path.join` to help with this. If one of the path segments passed to `join` is an empty string, it will be omitted from the computed path. This way, if `gitRemote` is null there will be no path prefix added.
 
 ```js file=gatsby-node.js
-const path = require('path');
+const path = require("path");
 
-exports.createPages = async ({actions, graphql}) => {
+exports.createPages = async ({ actions, graphql }) => {
   // query for MDX files
 
-  data.allMdx.nodes.forEach(node => {
-    const {gitRemote} = node.parent;
+  data.allMdx.nodes.forEach((node) => {
+    const { gitRemote } = node.parent;
     actions.createPage({
-      component: require.resolve('./src/templates/page'),
+      component: require.resolve("./src/templates/page"),
       // prefix older version docs pages with their branch name
-      path: path.join('/', gitRemote?.ref || '', node.slug),
+      path: path.join("/", gitRemote?.ref || "", node.slug),
       context: {
-        id: node.id
-      }
+        id: node.id,
+      },
     });
   });
 };
@@ -160,15 +160,15 @@ This method works, however, the `node.slug` property for pages sourced from git 
 Conveniently, this directory was supplied to `gatsby-source-git` earlier in the form of a glob pattern. Using `micromatch`, you can turn a glob pattern into a regular expression using their `makeRe` function. The function takes a `capture` option that turns the wildcard parts of a glob into regex capture groups.
 
 ```js
-const {makeRe} = require('micromatch');
+const { makeRe } = require("micromatch");
 
-makeRe(glob, {capture: true}); // regex with capture group for wildcard (**)
+makeRe(glob, { capture: true }); // regex with capture group for wildcard (**)
 ```
 
 Using this regular expression, we can remove the content directory from the slug by replacing any instance of the regex with only the value of the first capture group.
 
 ```js
-node.slug.replace(regex, '$1');
+node.slug.replace(regex, "$1");
 ```
 
 To find the pattern that pertains to a given node, we must first create a mapping of branch names to their configured pattern. First, I modify the `ListPages` query to include plugin options for every instance of `gatsby-source-git` in my Gatsby config.
@@ -193,10 +193,10 @@ Then I use `Array.reduce` to map branches to their respective regular expression
 
 ```js
 const versionPatterns = data.allSitePlugin.nodes.reduce((acc, node) => {
-  const {patterns, branch} = node.pluginOptions;
+  const { patterns, branch } = node.pluginOptions;
   return {
     ...acc,
-    [branch]: makeRe(patterns, {capture: true})
+    [branch]: makeRe(patterns, { capture: true }),
   };
 }, {});
 ```
@@ -204,22 +204,22 @@ const versionPatterns = data.allSitePlugin.nodes.reduce((acc, node) => {
 Lastly, I modify my path logic to prefix paths for nodes with a `gitRemote` by stripping out the content directory from the `node.slug`:
 
 ```js
-data.allMdx.nodes.forEach(node => {
-  const {gitRemote} = node.parent;
+data.allMdx.nodes.forEach((node) => {
+  const { gitRemote } = node.parent;
   actions.createPage({
-    component: require.resolve('./src/templates/page'),
+    component: require.resolve("./src/templates/page"),
     path: gitRemote
       ? path.join(
-          '/',
+          "/",
           // add the branch name as a path segment
           gitRemote.ref,
           // replace the slug with the value from the first capture group
-          node.slug.replace(versionPatterns[gitRemote.ref], '$1')
+          node.slug.replace(versionPatterns[gitRemote.ref], "$1")
         )
-      : '/' + node.slug, // create local paths normally
+      : "/" + node.slug, // create local paths normally
     context: {
-      id: node.id
-    }
+      id: node.id,
+    },
   });
 });
 ```
@@ -235,14 +235,14 @@ Then, I render an HTML `select` element with the local version as the first opti
 Finally, we rely on the parent of the version dropdown to pass a `currentRef` prop to the component. If `currentRef` is undefined, it falls back to an empty string—the value of the `option` element for the local version. This prop is then passed along as the `value` of the select so that the currently active version appears as the selected option.
 
 ```jsx file=src/components/VersionDropdown.js
-import {graphql, navigate, useStaticQuery} from 'gatsby';
+import { graphql, navigate, useStaticQuery } from "gatsby";
 
-export default function VersionDropdown({currentRef = ''}) {
-  const {sitePlugin, allGitRemote} = useStaticQuery(
+export default function VersionDropdown({ currentRef = "" }) {
+  const { sitePlugin, allGitRemote } = useStaticQuery(
     graphql`
       query ListVersions {
         # get local version name from filesystem source plugin
-        sitePlugin(name: {eq: "gatsby-source-filesystem"}) {
+        sitePlugin(name: { eq: "gatsby-source-filesystem" }) {
           pluginOptions {
             name
           }
@@ -264,13 +264,13 @@ export default function VersionDropdown({currentRef = ''}) {
     <select
       value={currentRef}
       // client side route change when an option is selected
-      onChange={event => navigate('/' + event.target.value)}
+      onChange={(event) => navigate("/" + event.target.value)}
     >
       <option value="">
         {/* the local version */}
         {sitePlugin.pluginOptions.name}
       </option>
-      {data.allGitRemote.nodes.map(node => (
+      {data.allGitRemote.nodes.map((node) => (
         // remote versions sourced via git
         <option key={node.id} value={node.ref}>
           {node.sourceInstanceName}
@@ -292,12 +292,12 @@ I set the `currentRef` on the version dropdown to `parent.gitRemote?.ref` using 
 > Optional chaining (`?.`) allows you to read an object's property without checking to see if the object exists. If the object is `null` or `undefined`, the expression short-circuits with a return value of `undefined`.
 
 ```jsx file=src/templates/page.js
-import VersionDropdown from '../components/VersionDropdown';
-import {MdxRenderer} from 'gatsby-plugin-mdx';
-import {graphql} from 'gatsby';
+import VersionDropdown from "../components/VersionDropdown";
+import { MdxRenderer } from "gatsby-plugin-mdx";
+import { graphql } from "gatsby";
 
-export default function PageTemplate({data}) {
-  const {body, parent} = data.mdx;
+export default function PageTemplate({ data }) {
+  const { body, parent } = data.mdx;
   return (
     <>
       <VersionDropdown
@@ -312,7 +312,7 @@ export default function PageTemplate({data}) {
 
 export const pageQuery = graphql`
   query GetPage($id: String!) {
-    mdx(id: {eq: $id}) {
+    mdx(id: { eq: $id }) {
       body
       parent {
         ... on File {
@@ -335,13 +335,13 @@ I decided to try using **relative paths**, i.e., `./getting-started`, but Gatsby
 To accomplish this, I leaned on another great feature of MDX: component substitution. I created a custom `RelativeLink` component that behaves differently depending on what the `href` prop looks like.
 
 ```jsx file=src/components/RelativeLink.js
-import {createContext, useContext} from 'react';
-import {isAbsolute, resolve} from 'path-browserify';
-import {Link} from 'gatsby';
+import { createContext, useContext } from "react";
+import { isAbsolute, resolve } from "path-browserify";
+import { Link } from "gatsby";
 
 export const PathContext = createContext();
 
-export default function RelativeLink({href, ...props}) {
+export default function RelativeLink({ href, ...props }) {
   const path = useContext(PathContext);
   try {
     const url = new URL(href);
@@ -373,18 +373,18 @@ Next, I need to substitute anchor tags in my page with the `RelativeLink` compon
 > For more information about component substitution in MDX, check out [their docs on the subject](https://github.com/gatsbyjs/gatsby/tree/master/packages/gatsby-plugin-mdx#components).
 
 ```jsx file=src/templates/page.js
-import RelativeLink, {PathContext} from '../components/RelativeLink';
-import VersionDropdown from '../components/VersionDropdown';
-import {MDXProvider} from '@mdx-js/react';
-import {MDXRenderer} from 'gatsby-plugin-mdx';
+import RelativeLink, { PathContext } from "../components/RelativeLink";
+import VersionDropdown from "../components/VersionDropdown";
+import { MDXProvider } from "@mdx-js/react";
+import { MDXRenderer } from "gatsby-plugin-mdx";
 
 const components = {
   // substitute anchors with a custom link component
-  a: RelativeLink
+  a: RelativeLink,
 };
 
-export default function PageTemplate({data, path}) {
-  const {body, parent} = data.mdx;
+export default function PageTemplate({ data, path }) {
+  const { body, parent } = data.mdx;
   return (
     <>
       <VersionDropdown currentRef={parent.gitRemote?.ref} />

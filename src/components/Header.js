@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import React from 'react';
+import PropTypes from "prop-types";
+import React from "react";
 import {
   Button,
   Circle,
@@ -10,26 +10,26 @@ import {
   Link,
   useColorMode,
   useColorModeValue,
-  useTheme
-} from '@chakra-ui/react';
-import {FaTwitch} from 'react-icons/fa';
-import {FiMoon, FiSun} from 'react-icons/fi';
-import {Link as GatsbyLink} from 'gatsby';
-import {Global} from '@emotion/react';
+  useTheme,
+} from "@chakra-ui/react";
+import { FaTwitch } from "react-icons/fa";
+import { FiMoon, FiSun } from "react-icons/fi";
+import { Link as GatsbyLink } from "gatsby";
+import { Global } from "@emotion/react";
 
 export const HEADER_HEIGHT = 12;
 
-export default function Header({isTransparent, ...props}) {
+export default function Header({ isTransparent, ...props }) {
   const theme = useTheme();
-  const {colorMode, toggleColorMode} = useColorMode();
-  const bgColor = useColorModeValue('white', 'gray.800');
+  const { colorMode, toggleColorMode } = useColorMode();
+  const bgColor = useColorModeValue("white", "gray.800");
   return (
     <>
       <Global
         styles={{
           html: {
-            scrollPaddingTop: theme.sizes[HEADER_HEIGHT]
-          }
+            scrollPaddingTop: theme.sizes[HEADER_HEIGHT],
+          },
         }}
       />
       <Flex
@@ -41,7 +41,7 @@ export default function Header({isTransparent, ...props}) {
         pos="sticky"
         top="0"
         zIndex="1"
-        bgColor={isTransparent ? 'transparent' : bgColor}
+        bgColor={isTransparent ? "transparent" : bgColor}
         {...props}
       >
         <Circle
@@ -82,7 +82,7 @@ export default function Header({isTransparent, ...props}) {
             <IconButton
               onClick={toggleColorMode}
               size="sm"
-              icon={colorMode === 'dark' ? <FiSun /> : <FiMoon />}
+              icon={colorMode === "dark" ? <FiSun /> : <FiMoon />}
               fontSize="xl"
               variant="ghost"
             />
@@ -106,5 +106,5 @@ export default function Header({isTransparent, ...props}) {
 }
 
 Header.propTypes = {
-  isTransparent: PropTypes.bool
+  isTransparent: PropTypes.bool,
 };

@@ -1,6 +1,6 @@
-import React from 'react';
-import {ButtonGroup, IconButton, Link} from '@chakra-ui/react';
-import {FaGithub, FaInstagram, FaTwitch, FaTwitter} from 'react-icons/fa';
+import React from "react";
+import { ButtonGroup, IconButton, Link } from "@chakra-ui/react";
+import { FaGithub, FaInstagram, FaTwitch, FaTwitter } from "react-icons/fa";
 
 function SocialButton(props) {
   return <IconButton as={Link} isExternal isRound fontSize="3xl" {...props} />;

@@ -1,13 +1,13 @@
-import Extender from './Extender';
-import React from 'react';
-import {Box, Button, Flex, Heading, SimpleGrid, Text} from '@chakra-ui/react';
-import {CONTAINER_PADDING_X, CONTAINER_PADDING_Y} from '../utils';
-import {FiArrowRight} from 'react-icons/fi';
-import {GoStar} from 'react-icons/go';
-import {graphql, useStaticQuery} from 'gatsby';
+import Extender from "./Extender";
+import React from "react";
+import { Box, Button, Flex, Heading, SimpleGrid, Text } from "@chakra-ui/react";
+import { CONTAINER_PADDING_X, CONTAINER_PADDING_Y } from "../utils";
+import { FiArrowRight } from "react-icons/fi";
+import { GoStar } from "react-icons/go";
+import { graphql, useStaticQuery } from "gatsby";
 
 export default function OpenSource() {
-  const {github} = useStaticQuery(graphql`
+  const { github } = useStaticQuery(graphql`
     query ListRepositories {
       github {
         repositoryOwner(login: "trevorblades") {
@@ -32,28 +32,28 @@ export default function OpenSource() {
   `);
   return (
     <Box px={CONTAINER_PADDING_X} py={CONTAINER_PADDING_Y} id="oss">
-      <Heading size="2xl" mb={{base: 6, md: 8}} textAlign="center">
+      <Heading size="2xl" mb={{ base: 6, md: 8 }} textAlign="center">
         <Extender>O</Extender>
         pen so<Extender factor={1 / 2}>u</Extender>rce
       </Heading>
-      <SimpleGrid columns={[1, 2, 3, 4]} spacing={{base: 4, md: 6}}>
-        {github.repositoryOwner.pinnedItems.nodes.map(repo => (
+      <SimpleGrid columns={[1, 2, 3, 4]} spacing={{ base: 4, md: 6 }}>
+        {github.repositoryOwner.pinnedItems.nodes.map((repo) => (
           <Flex
             direction="column"
             key={repo.id}
             borderWidth="1px"
-            rounded={{base: 'lg', md: 'xl'}}
+            rounded={{ base: "lg", md: "xl" }}
           >
             <Box p={[4, 5, 6]}>
-              <Heading size="lg" mb={{base: 2, md: 3}} fontFamily="mono">
+              <Heading size="lg" mb={{ base: 2, md: 3 }} fontFamily="mono">
                 {repo.name}
               </Heading>
-              <Text fontSize={{md: 'lg'}}>{repo.description}</Text>
+              <Text fontSize={{ md: "lg" }}>{repo.description}</Text>
             </Box>
             <Flex
               mt="auto"
               align="center"
-              p={{base: 1 / 2, md: 1}}
+              p={{ base: 1 / 2, md: 1 }}
               borderTopWidth="1px"
             >
               <Box fontSize="lg" as={GoStar} mx="2" />
