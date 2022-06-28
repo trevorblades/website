@@ -1,5 +1,5 @@
 ---
-title: CAPTCHA and GraphQL, done right
+title: CAPTCHA and GraphQL, The Cool Way
 description: Secure your API with reCAPTCHA and GraphQL Shield
 ---
 
@@ -58,31 +58,55 @@ When the request is in flight, the submit button is disabled, and if an error oc
 
 ### Adding reCAPTCHA
 
-```jsx {1}
+I like to use the `react-google-recaptcha` package because it's relatively easy to implement and I don't need to mess around with script tags or global variables.
+
+I render the `ReCAPTCHA` component in the form, and give it a ref that I use in the submit handler to retrieve a token. I can then pass that token along to my API to validate that the request was (probably) made by a human.
+
+For this to work, the `SignUp` mutation that was defined in the example above also must be modified to accept a `token` variable.
+
+The relevant lines are highlighted in the modified example below:
+
+```jsx {1, 8, 13, 23, 29-30, 35, 45-49}
 import ReCAPTCHA from "react-google-recaptcha";
+import { useRef } from "react";
 
-<ReCAPTCHA size="invisible" sitekey={/* your recaptcha site key here */} />;
-```
-
-```jsx {1, 5}
-import ReCAPTCHA from 'react-google-recaptcha';
-import {useRef} from 'react';
+const SIGN_UP = gql`
+  mutation SignUp(
+    $name: String!
+    $email: String!
+    $token: String! # define a token variable
+  ) {
+    signUp(
+      name: $name
+      email: $email
+      token: $token # pass the token variable as an argument
+    ) {
+      id
+      name
+      email
+    }
+  }
+`;
 
 export function SignUpForm() {
   const recaptchaRef = useRef();
+  const [signUp, { loading, error }] = useMutation(SIGN_UP);
 
-  const handleSubmit = event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     recaptchaRef.current.reset();
     const token = await recaptchaRef.current.executeAsync();
 
+    const { name, email } = event.target;
     signUp({
       variables: {
-        token
-      }
-    })
-  }
+        token,
+        name: name.value,
+        email: email.value,
+      },
+    });
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -90,9 +114,155 @@ export function SignUpForm() {
       <ReCAPTCHA
         ref={recaptchaRef}
         size="invisible"
-        sitekey={/* your recaptcha site key here */}
+        sitekey="YOUR-RECAPTCHA-SITE-KEY-HERE"
       />
     </form>
-  )
+  );
 }
+```
+
+Ok, that does it for the client-side implementation. Let's head over to the server code next. 🚀
+
+## Guarding a resolver
+
+Let's set the stage for some GraphQL resolver magic. The following is an example API that coincides with the client-side example from the previous section. It defines a `User` type and a `signUp` mutation that matches the signature of the `signUp` mutation that our form is using.
+
+```js {15, 21-24}
+import { gql, ApolloServer } from "apollo-server";
+
+const typeDefs = gql`
+  type Query {
+    me: User
+  }
+
+  type User {
+    id: ID!
+    name: String!
+    email: String!
+  }
+
+  type Mutation {
+    signUp(name: String!, email: String!, token: String!): User
+  }
+`;
+
+const resolvers = {
+  Mutation: {
+    signUp: (_, { name, email, token }) => {
+      // 1. check recaptcha token
+      // 2. save user
+    },
+  },
+};
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+});
+```
+
+Zooming in on that `signUp` resolver, we can see that it's supposed to do two things: validate the `token` argument and save the submitted information as a new user. This next section will explain how to do the former, and leave the latter up to your imagination.
+
+To validate a ReCAPTCHA token, we must make an HTTP request to Google's ReCAPTCHA validation endpoint. You can use any HTTP client you like. In this example, I'm using axios because I think it's nice.
+
+The important thing is that you send the request to `https://www.google.com/recaptcha/api/siteverify`, and you pass your secret ReCAPTCHA key and `token` argument to the request as query params called `secret` and `response`, respectively.
+
+```js
+import axios from "axios";
+import { ForbiddenError } from "apollo-server";
+
+const resolvers = {
+  signUp: async (_, { name, email, token }) => {
+    // send a request to Google's validation endpoint
+    const { data } = await axios({
+      method: "POST",
+      url: "https://www.google.com/recaptcha/api/siteverify",
+      params: {
+        // you should save your secret key as an environment variable 🤫
+        secret: process.env.RECAPTCHA_SECRET_KEY,
+        response: token,
+      },
+    });
+
+    // if the success parameter comes back as anything falsey, it means the
+    // token validation failed
+    if (!data.success) {
+      throw new ForbiddenError("Invalid ReCAPTCHA token");
+    }
+
+    // imagine: saving and returning the user ✨
+  },
+};
+```
+
+The HTTP request will return a JSON object with a `success` property. If `success` equals `true`, then it means that the token is valid and the submitter of your form is (probably) not a bot.
+
+In this example, I check to see if the token verification was unsuccessful and exit early by throwing a `ForbiddenError`. Everything following that conditional statement can safely assume that the bot test has been passed.
+
+## Taking it to the next level
+
+The solution so far works great for a single resolver like the one in this example, but what if we added another field or two that also required ReCAPTCHA validation? We would have to write the same token-checking logic many times, and the resolver functions might become bloated or disorganized.
+
+One of my favourite tools to reach to in these circumstances is called [GraphQL Shield](https://github.com/maticzav/graphql-shield). It's a library that helps you organize the access control rules for your GraphQL API.
+
+To get started, we must install `graphql-shield` into our project.
+
+```bash
+npm i graphql-shield
+```
+
+GraphQL Shield works by letting you define rules that define when fields in your schema should be allowed to be accessed. Rules are functions that follow the GraphQL resolver signature and return either true or false to allow (or deny) access to a field based on some work done in the function.
+
+In our case, we want a rule that does the HTTP request to validate the ReCAPTCHA token as we had written previously. This rule returns true if `data.success` is equal to `true`.
+
+This rule can be applied to as few or as many fields in your schema as you need. Create a mapping of field names, nested within their parent types, to whatever rule governs them. Then, pass this mapping to the `shield` function to create your permissions middleware.
+
+```js
+import { shield, rule } from "graphql-shield";
+
+const isNotBot = rule()(async (_, { token }) => {
+  const { data } = await axios({
+    method: "POST",
+    url: "https://www.google.com/recaptcha/api/siteverify",
+    params: {
+      secret: process.env.RECAPTCHA_SECRET_KEY,
+      response: token,
+    },
+  });
+
+  // rules return true/false to indicate whether the request should continue
+  return data.success === true;
+});
+
+const permissions = shield({
+  Mutation: {
+    signUp: isNotBot,
+    logIn: isNotBot,
+    forgotPassword: isNotBot,
+  },
+});
+```
+
+GraphQL Shield integrates by applying [middleware](https://github.com/maticzav/graphql-middleware) to our schema. Instead of passing `typeDefs` and `resolvers` directly to the `ApolloServer` constructor, we must first create an executable schema using the `makeExecutableSchema` export from `@graphql-tools/schema`, apply the `permissions` middleware, and then pass our superpowered schema to the constructor.
+
+First, install dependencies:
+
+```bash
+npm i graphql-middleware @graphql-tools/schema
+```
+
+And then make the server initialization adjustments using the `permissions` map from the previous code sample.
+
+```js
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { applyMiddleware } from "graphql-middleware";
+
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+});
+
+const server = new ApolloServer({
+  schema: applyMiddleware(schema, permissions),
+});
 ```

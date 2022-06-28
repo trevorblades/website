@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import dracula from "prism-react-renderer/themes/dracula";
 import fenceparser from "fenceparser";
+import parse from "parse-numeric-range";
 import {
   Box,
   Button,
@@ -19,8 +20,13 @@ export default function CodeBlock({
   file,
   metastring,
 }) {
-  console.log(metastring && fenceparser(metastring));
   const { hasCopied, onCopy } = useClipboard(children);
+
+  const { highlight } = metastring ? fenceparser(metastring) : {};
+  const linesToHighlight = highlight
+    ? parse(Object.keys(highlight).toString())
+    : [];
+
   return (
     <Highlight
       Prism={Prism}
@@ -45,16 +51,23 @@ export default function CodeBlock({
             )}
             <chakra.pre
               className={className}
-              p="4"
+              py="4"
               overflow="auto"
               fontFamily="mono"
             >
               {tokens.map((line, i) => (
-                <div key={i} {...getLineProps({ line, key: i })}>
+                <Box
+                  key={i}
+                  px="4"
+                  background={
+                    linesToHighlight.includes(i + 1) && "whiteAlpha.200"
+                  }
+                  {...getLineProps({ line, key: i })}
+                >
                   {line.map((token, key) => (
                     <span key={key} {...getTokenProps({ token, key })} />
                   ))}
-                </div>
+                </Box>
               ))}
             </chakra.pre>
           </Box>
