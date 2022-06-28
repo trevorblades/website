@@ -1,6 +1,6 @@
 import Highlight, { Prism } from "prism-react-renderer";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useMemo } from "react";
 import dracula from "prism-react-renderer/themes/dracula";
 import fenceparser from "fenceparser";
 import parse from "parse-numeric-range";
@@ -22,10 +22,14 @@ export default function CodeBlock({
 }) {
   const { hasCopied, onCopy } = useClipboard(children);
 
-  const { highlight } = metastring ? fenceparser(metastring) : {};
-  const linesToHighlight = highlight
-    ? parse(Object.keys(highlight).toString())
-    : [];
+  const linesToHighlight = useMemo(() => {
+    try {
+      const { highlight } = fenceparser(metastring);
+      return parse(Object.keys(highlight).toString());
+    } catch (error) {
+      return [];
+    }
+  }, [metastring]);
 
   return (
     <Highlight
