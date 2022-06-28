@@ -5,6 +5,8 @@ description: Secure your API with reCAPTCHA and GraphQL Shield
 
 CAPTCHA systems help reduce spam on your website by making users fill out a puzzle that is supposed to be easy for humans to solve, but difficult for bots. Google's reCAPTCHA is the most popular of these systems out there. It's common practice for web developers to implement visible reCAPTCHA puzzle or an [invisible reCAPTCHA](https://developers.google.com/recaptcha/docs/versions#recaptcha_v2_invisible_recaptcha_badge) badge in public-facing forms.
 
+Anti-bot measures like these are commonly used for public-facing forms on websites, because these are the places that bots like to target with spam or brute force attacks. Things like signup/login forms, forgot password flows, or any kind public content curation... _shudders_ 😬
+
 This post will explain how to validate requests using reCAPTCHA in a GraphQL API, and how to abstract this process so it can be applied to many fields in your schema with ease.
 
 ## Configuring your forms
@@ -243,7 +245,9 @@ const permissions = shield({
 });
 ```
 
-GraphQL Shield integrates by applying [middleware](https://github.com/maticzav/graphql-middleware) to our schema. Instead of passing `typeDefs` and `resolvers` directly to the `ApolloServer` constructor, we must first create an executable schema using the `makeExecutableSchema` export from `@graphql-tools/schema`, apply the `permissions` middleware, and then pass our superpowered schema to the constructor.
+### Stuck in the middle with you
+
+GraphQL Shield integrates by applying [middleware](https://github.com/maticzav/graphql-middleware) to our schema. Instead of passing `typeDefs` and `resolvers` directly to the `ApolloServer` constructor, we must first create an executable schema using the `makeExecutableSchema` export from `@graphql-tools/schema`, apply the middleware created by GraphQL Shield, and then pass our superpowered schema to the constructor.
 
 First, install dependencies:
 
@@ -251,7 +255,7 @@ First, install dependencies:
 npm i graphql-middleware @graphql-tools/schema
 ```
 
-And then make the server initialization adjustments using the `permissions` map from the previous code sample.
+And then make the server initialization adjustments using the `permissions` middleware from the previous code sample.
 
 ```js
 import { makeExecutableSchema } from "@graphql-tools/schema";
@@ -266,3 +270,7 @@ const server = new ApolloServer({
   schema: applyMiddleware(schema, permissions),
 });
 ```
+
+That's it! We now have a ReCAPTCHA example that scales nicely as new fields are added to the schema that require anti-bot protection.
+
+This post merely scratches the surface of all the cool things you can do with GraphQL Shield, like checking for a signed-in user, or a user with a specific role or permissions. If you want to dive deeper into this library, I'd recommend checking out the [GraphQL Shield docs](https://graphql-shield.vercel.app/docs) to learn about composing rules together, caching rules, and using custom error messages.
