@@ -1,5 +1,5 @@
 node_modules
-public
-.env
-.cache
-.vscode
+.next
+yarn-error.log
+tsconfig.tsbuildinfo
+next-env.d.ts
