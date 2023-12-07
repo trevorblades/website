@@ -5,7 +5,6 @@ const eslintConfig = {
   env: {
     node: true,
     browser: true,
-    es6: true,
   },
   extends: [
     "@trevorblades",
@@ -17,7 +16,6 @@ const eslintConfig = {
     "plugin:astro/recommended",
     "plugin:prettier/recommended",
   ],
-  parser: "@typescript-eslint/parser",
   plugins: ["simple-import-sort"],
   rules: {
     "react/prop-types": "off",
@@ -38,7 +36,9 @@ const eslintConfig = {
         parser: "@typescript-eslint/parser",
         extraFileExtensions: [".astro"],
       },
-      rules: {},
+      rules: {
+        "react/react-in-jsx-scope": "off",
+      },
     },
   ],
 };
