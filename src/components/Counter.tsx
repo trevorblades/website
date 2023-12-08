@@ -7,12 +7,12 @@ export const Counter = () => {
   return (
     <Button
       size="md"
-      color="secondary"
+      color="accent"
       onClick={() => {
         setCount((prev) => prev + 1);
       }}
     >
-      Count is {count} {import.meta.env.PUBLIC_THIS_IS_TEST}
+      Count is {count}
     </Button>
   );
 };
