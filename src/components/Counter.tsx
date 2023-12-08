@@ -1,15 +1,18 @@
 import React, { useState } from "react";
+import { Button } from "react-daisyui";
 
 export const Counter = () => {
   const [count, setCount] = useState(1);
 
   return (
-    <button
+    <Button
+      size="md"
+      color="secondary"
       onClick={() => {
         setCount((prev) => prev + 1);
       }}
     >
-      count is {count}
-    </button>
+      Count is {count} {import.meta.env.PUBLIC_THIS_IS_TEST}
+    </Button>
   );
 };
