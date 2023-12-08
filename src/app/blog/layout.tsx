@@ -7,7 +7,7 @@ export default function PostsLayout({
 }: {
   children: React.ReactNode;
 }) {
-  console.log(rest);
+  console.log(children, rest);
   return (
     <>
       <header>this is a blog</header>
