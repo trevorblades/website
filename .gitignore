@@ -3,4 +3,3 @@ node_modules
 yarn-error.log
 tsconfig.tsbuildinfo
 next-env.d.ts
-.contentlayer
