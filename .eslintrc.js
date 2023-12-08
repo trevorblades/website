@@ -13,7 +13,6 @@ const eslintConfig = {
     "plugin:jsx-a11y/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:import/recommended",
-    "plugin:mdx/recommended",
     "plugin:prettier/recommended",
   ],
   parser: "@typescript-eslint/parser",
@@ -29,6 +28,12 @@ const eslintConfig = {
     "simple-import-sort/exports": "error",
     "@typescript-eslint/consistent-type-imports": "warn",
   },
+  overrides: [
+    {
+      files: ["*.mdx"],
+      extends: "plugin:mdx/recommended",
+    },
+  ],
 };
 
 module.exports = eslintConfig;
