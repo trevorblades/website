@@ -3,7 +3,7 @@ import { readFile } from "fs/promises";
 import type { MDXComponents } from "mdx/types";
 import { compileMDX } from "next-mdx-remote/rsc";
 import path from "path";
-import React from "react";
+import React, { cache } from "react";
 import readdirp from "readdirp";
 import remarkGfm from "remark-gfm";
 import { z } from "zod";
@@ -19,42 +19,48 @@ const components: MDXComponents = {
   Button,
 };
 
-export const getPosts = async () => {
+export const getPostForSlug = cache(async (slug: string) => {
+  const post = await readFile(
+    path.join(process.cwd(), "src", "posts", `${slug}.mdx`),
+    "utf-8",
+  );
+
+  const { content, frontmatter } = await compileMDX({
+    source: post,
+    components,
+    options: {
+      parseFrontmatter: true,
+      mdxOptions: {
+        remarkPlugins: [remarkGfm],
+      },
+    },
+  });
+
+  return {
+    slug,
+    content,
+    frontmatter: z
+      .object({
+        title: z.string(),
+        description: z.string(),
+        date: z.date(),
+      })
+      .parse(frontmatter),
+  };
+});
+
+export const getPostSlugs = cache(async () => {
   const files = await readdirp.promise(
     path.join(process.cwd(), "src", "posts"),
     { fileFilter: "*.mdx" },
   );
 
-  return Promise.all(
-    files.map(async (file) => {
-      const slug = path.basename(file.basename, path.extname(file.basename));
-      const post = await readFile(
-        path.join(process.cwd(), "src", "posts", `${slug}.mdx`),
-        "utf-8",
-      );
-
-      const { content, frontmatter } = await compileMDX({
-        source: post,
-        components,
-        options: {
-          parseFrontmatter: true,
-          mdxOptions: {
-            remarkPlugins: [remarkGfm],
-          },
-        },
-      });
-
-      return {
-        slug,
-        content,
-        frontmatter: z
-          .object({
-            title: z.string(),
-            description: z.string(),
-            date: z.date(),
-          })
-          .parse(frontmatter),
-      };
-    }),
+  return files.map((file) =>
+    path.basename(file.basename, path.extname(file.basename)),
   );
-};
+});
+
+export const getPosts = cache(async () => {
+  const slugs = await getPostSlugs();
+  return Promise.all(slugs.map(getPostForSlug));
+});

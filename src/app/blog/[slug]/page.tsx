@@ -1,15 +1,23 @@
 import { Title } from "@mantine/core";
 import { format } from "date-fns";
-import { notFound } from "next/navigation";
 import React from "react";
 
-import { getPosts } from "~/posts";
+import { getPostForSlug, getPostSlugs } from "~/posts";
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: { slug: string };
+}) => {
+  const post = await getPostForSlug(params.slug);
+  return {
+    title: post.frontmatter.title,
+  };
+};
 
 export const generateStaticParams = async () => {
-  const posts = await getPosts();
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
+  const slugs = await getPostSlugs();
+  return slugs.map((slug) => ({ slug }));
 };
 
 export default async function BlogPost({
@@ -17,14 +25,7 @@ export default async function BlogPost({
 }: {
   params: { slug: string };
 }) {
-  const posts = await getPosts();
-
-  const post = posts.find((post) => post.slug === params.slug);
-
-  if (!post) {
-    notFound();
-  }
-
+  const post = await getPostForSlug(params.slug);
   return (
     <>
       <Title>{post.frontmatter.title}</Title>
