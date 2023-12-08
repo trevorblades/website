@@ -1,3 +1,6 @@
+// @ts-check
+import defaultTheme from "tailwindcss/defaultTheme";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -6,7 +9,11 @@ export default {
     "node_modules/react-daisyui/dist/**/*.js",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ["Inter Variable", ...defaultTheme.fontFamily.sans],
+      },
+    },
   },
   plugins: [require("daisyui")],
 };
