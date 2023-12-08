@@ -1,10 +1,11 @@
 // @ts-check
 
-import nextRoutes from "nextjs-routes/config";
-
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  experimental: {
+    typedRoutes: true,
+    optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
+  },
+};
 
-const withRoutes = nextRoutes();
-
-export default withRoutes(nextConfig);
+export default nextConfig;

@@ -32,6 +32,9 @@ const eslintConfig = {
     {
       files: ["*.mdx"],
       extends: "plugin:mdx/recommended",
+      rules: {
+        "react/jsx-no-undef": "off",
+      },
     },
   ],
 };

@@ -1,4 +1,4 @@
-import { Text, Title } from "@mantine/core";
+import { Button, Text, Title } from "@mantine/core";
 import { format } from "date-fns";
 import { readFile } from "fs/promises";
 import type { MDXComponents } from "mdx/types";
@@ -10,7 +10,7 @@ import readdirp from "readdirp";
 import remarkGfm from "remark-gfm";
 import { z } from "zod";
 
-export async function generateStaticParams() {
+export const getPostSlugs = async () => {
   const posts = await readdirp.promise(
     path.join(process.cwd(), "src", "posts"),
     { fileFilter: "*.mdx" },
@@ -18,7 +18,12 @@ export async function generateStaticParams() {
   return posts.map((post) =>
     path.basename(post.basename, path.extname(post.basename)),
   );
-}
+};
+
+export const generateStaticParams = async () => {
+  const slugs = await getPostSlugs();
+  return slugs.map((slug) => ({ slug }));
+};
 
 const components: MDXComponents = {
   h1: ({ children }) => <Title order={1}>{children}</Title>,
@@ -28,6 +33,7 @@ const components: MDXComponents = {
   h5: ({ children }) => <Title order={5}>{children}</Title>,
   h6: ({ children }) => <Title order={6}>{children}</Title>,
   p: ({ children }) => <Text>{children}</Text>,
+  Button,
 };
 
 export default async function BlogPost({
@@ -39,6 +45,7 @@ export default async function BlogPost({
     path.join(process.cwd(), "src", "posts", `${params.slug}.mdx`),
     "utf-8",
   );
+
   const { content, frontmatter } = await compileMDX({
     source: post,
     components,
@@ -50,7 +57,7 @@ export default async function BlogPost({
     },
   });
 
-  const metadata = z
+  const { title, description, date } = z
     .object({
       title: z.string(),
       description: z.string(),
@@ -61,11 +68,11 @@ export default async function BlogPost({
   return (
     <>
       <Head>
-        <title>{metadata.title}</title>
+        <title>{title}</title>
       </Head>
-      <Title>{metadata.title}</Title>
-      <Title order={2}>{metadata.description}</Title>
-      <Title order={3}>{format(metadata.date, "PPP")}</Title>
+      <Title>{title}</Title>
+      <Title order={2}>{description}</Title>
+      <Title order={3}>{format(date, "PPP")}</Title>
       {content}
     </>
   );
