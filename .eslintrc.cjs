@@ -11,9 +11,9 @@ const eslintConfig = {
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:jsx-a11y/recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:import/recommended",
     "plugin:astro/recommended",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
   ],
   plugins: ["simple-import-sort"],
@@ -26,6 +26,7 @@ const eslintConfig = {
   settings: {
     "import/resolver": {
       typescript: true,
+      node: true,
     },
   },
   overrides: [

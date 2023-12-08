@@ -1,12 +1,13 @@
 ---
 import { getCollection } from "astro:content";
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   const posts = await getCollection("posts");
-  console.log(posts);
   return posts.map((post) => ({
     params: { slug: post.slug },
-    props: { entry },
+    props: { entry: post },
   }));
 }
 
@@ -14,4 +15,7 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 ---
 
-<Content />
+<div>
+  <h1>{entry.data.title}</h1>
+  <Content />
+</div>
