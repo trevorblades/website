@@ -1,9 +1,11 @@
 ---
 import { Counter } from "../components/Counter";
 
-export const titsle3 = "whatever";
+const titsle3 = "whatever";
 
-export const titl = titsle3 + 3;
+const foo = { bar: 1, baz: 2 };
+
+const { bar } = foo;
 ---
 
 <html lang="en">
@@ -17,7 +19,7 @@ export const titl = titsle3 + 3;
   <body>
     <h1>Astrso</h1>
     <div>{titsle3}</div>
-    <div>{titl}</div>
+    <div>{bar}</div>
     <Counter client:visible />
   </body>
 </html>
