@@ -1,17 +1,17 @@
-import { Stack } from "@mantine/core";
+import Link from "next/link";
 import React from "react";
 
-export default function PostsLayout({
+export default function BlogLayout({
   children,
-  ...rest
 }: {
   children: React.ReactNode;
 }) {
-  console.log(children, rest);
   return (
     <>
-      <header>this is a blog</header>
-      <Stack>{children}</Stack>
+      <header>
+        <Link href="/">this is a blog</Link>
+      </header>
+      {children}
     </>
   );
 }
