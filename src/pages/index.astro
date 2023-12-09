@@ -1,4 +1,6 @@
 ---
+import { Badge, Button } from "react-daisyui";
+
 import { Counter } from "../components/Counter";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
@@ -10,8 +12,14 @@ const { bar } = foo;
 ---
 
 <BaseLayout>
-  <h1>Astrso</h1>
+  <h1 class="text-lg">
+    <span>
+      Astrso
+      <Badge>1</Badge>
+    </span>
+  </h1>
   <div>{titsle3}</div>
   <div>{bar}</div>
   <Counter client:visible />
+  <Button tag="a" href="/posts">Go to blog</Button>
 </BaseLayout>

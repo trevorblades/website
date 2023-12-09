@@ -8,17 +8,14 @@ const eslintConfig = {
   },
   extends: [
     "@trevorblades",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:jsx-a11y/recommended",
     "plugin:astro/recommended",
+    "plugin:astro/jsx-a11y-recommended",
     "plugin:import/typescript",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
   ],
   plugins: ["simple-import-sort"],
   rules: {
-    "react/prop-types": "off",
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "@typescript-eslint/consistent-type-imports": "warn",
@@ -31,14 +28,22 @@ const eslintConfig = {
   },
   overrides: [
     {
+      files: ["*.ts", "*.tsx"],
+      extends: [
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:jsx-a11y/recommended",
+      ],
+      rules: {
+        "react/prop-types": "off",
+      },
+    },
+    {
       files: ["*.astro"],
       parser: "astro-eslint-parser",
       parserOptions: {
         parser: "@typescript-eslint/parser",
         extraFileExtensions: [".astro"],
-      },
-      rules: {
-        "react/react-in-jsx-scope": "off",
       },
     },
   ],
