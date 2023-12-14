@@ -9,6 +9,13 @@ const titsle3 = "whatever";
 const foo = { bar: 1, baz: 2 };
 
 const { bar } = foo;
+
+const user = Astro.cookies.get("user");
+
+if (Astro.request.method === "POST") {
+  Astro.cookies.delete("user");
+  return Astro.redirect("/");
+}
 ---
 
 <BaseLayout>
@@ -22,4 +29,15 @@ const { bar } = foo;
   <div>{bar}</div>
   <Counter client:visible />
   <Button tag="a" href="/posts">Go to blog</Button>
+  {
+    user ? (
+      <form method="post">
+        <Button type="submit">Logout</Button>
+      </form>
+    ) : (
+      <Button tag="a" href="/api/oauth/google">
+        Sign in with Google
+      </Button>
+    )
+  }
 </BaseLayout>
