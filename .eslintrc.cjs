@@ -28,6 +28,14 @@ const eslintConfig = {
   },
   overrides: [
     {
+      files: ["*.mdx"],
+      extends: ["plugin:mdx/recommended"],
+    },
+    {
+      files: ["*.yml"],
+      extends: ["plugin:yml/standard"],
+    },
+    {
       files: ["*.ts", "*.tsx"],
       extends: [
         "plugin:react/recommended",

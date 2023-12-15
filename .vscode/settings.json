@@ -2,8 +2,10 @@
   "eslint.validate": [
     "javascript",
     "javascriptreact",
-    "astro",
     "typescript",
-    "typescriptreact"
+    "typescriptreact",
+    "astro",
+    "yaml",
+    "mdx"
   ]
 }

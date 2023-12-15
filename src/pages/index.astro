@@ -1,43 +1,46 @@
 ---
-import { Badge, Button } from "react-daisyui";
+import { getCollection } from "astro:content";
 
-import { Counter } from "../components/Counter";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const titsle3 = "whatever";
-
-const foo = { bar: 1, baz: 2 };
-
-const { bar } = foo;
-
-const user = Astro.cookies.get("user");
-
-if (Astro.request.method === "POST") {
-  Astro.cookies.delete("user");
-  return Astro.redirect("/");
-}
+const projects = await getCollection("projects");
+const jobs = await getCollection("jobs");
 ---
 
 <BaseLayout>
-  <h1 class="text-lg">
-    <span>
-      Astrso
-      <Badge>1</Badge>
-    </span>
-  </h1>
-  <div>{titsle3}</div>
-  <div>{bar}</div>
-  <Counter client:visible />
-  <Button tag="a" href="/posts">Go to blog</Button>
-  {
-    user ? (
-      <form method="post">
-        <Button type="submit">Logout</Button>
-      </form>
-    ) : (
-      <Button tag="a" href="/api/oauth/google">
-        Sign in with Google
-      </Button>
-    )
-  }
+  <div class="py-60">
+    <h1 class="text-7xl font-medium">Trevor Blades</h1>
+    <p>I'm a web developer</p>
+  </div>
+  <div class="p-4">
+    <h2 class="mb-6 text-4xl">My projects</h2>
+    <div class="space-y-4">
+      {
+        projects.map((project) => (
+          <div>
+            <h3>{project.data.title}</h3>
+            <p>{project.data.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+  <div>
+    <h2>Work experience</h2>
+    <div>
+      {
+        jobs.map((job) => (
+          <div class="p-3">
+            <h3>
+              <a href={job.data.url} target="_blank">
+                {job.data.company}
+              </a>
+            </h3>
+            <h4>{job.data.role}</h4>
+            <h5>{job.data.team}</h5>
+          </div>
+        ))
+      }
+    </div>
+  </div>
 </BaseLayout>

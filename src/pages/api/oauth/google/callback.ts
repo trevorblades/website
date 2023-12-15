@@ -17,7 +17,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
     .oauth2("v2")
     .userinfo.get({ auth: oauth2Client });
 
-  console.log(data);
+  console.log(data.id);
 
   cookies.set("user", data, {
     path: "/",
