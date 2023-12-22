@@ -7,7 +7,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
     request.url,
     {
       redirectUri: import.meta.env.GOOGLE_REDIRECT_URI,
-      codeVerifier: cookies.get("code_verifier")?.value,
+      // codeVerifier: cookies.get("code_verifier")?.value,
     },
   );
 
@@ -23,7 +23,11 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
     method: "POST",
   }).then((res) => res.json());
 
-  console.log(userInfo);
+  cookies.set("user", JSON.stringify(userInfo), {
+    httpOnly: true,
+    secure: true,
+    path: "/",
+  });
 
   return redirect("/");
 };

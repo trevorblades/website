@@ -9,17 +9,17 @@ export const client = new OAuth2Client({
 });
 
 export const GET: APIRoute = async ({ cookies }) => {
-  const codeVerifier = await generateCodeVerifier();
+  // const codeVerifier = await generateCodeVerifier();
 
   const authorizationUrl = await client.authorizationCode.getAuthorizeUri({
     redirectUri: import.meta.env.GOOGLE_REDIRECT_URI,
-    codeVerifier,
+    // codeVerifier,
     scope: ["openid", "email"],
   });
 
-  cookies.set("code_verifier", codeVerifier, {
-    httpOnly: true,
-  });
+  // cookies.set("code_verifier", codeVerifier, {
+  //   httpOnly: true,
+  // });
 
   return Response.redirect(authorizationUrl);
 };
