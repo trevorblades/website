@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Button } from "react-daisyui";
 
 export const Counter = () => {
