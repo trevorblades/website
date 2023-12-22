@@ -18,16 +18,15 @@ export const GET: APIRoute = async () => {
     scope: ["openid", "email"],
   });
 
-  const redirect = Response.redirect(authorizationUrl);
-
-  redirect.headers.set(
-    "Set-Cookie",
-    cookie.serialize("code_verifier", codeVerifier, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "strict",
-    }),
-  );
-
-  return redirect;
+  return new Response(null, {
+    status: 302,
+    headers: {
+      Location: authorizationUrl,
+      "Set-Cookie": cookie.serialize("code_verifier", codeVerifier, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+      }),
+    },
+  });
 };
