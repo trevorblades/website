@@ -12,7 +12,17 @@ const jobs = await getCollection("jobs");
   <div class="py-60">
     <h1 class="text-7xl font-medium">Trevor Blades</h1>
     <p>I'm a web developer</p>
-    <Button tag="a" href="/api/oauth/google">Log in</Button>
+    {
+      Astro.cookies.has("user") ? (
+        <Button tag="a" href="/api/logout">
+          Log out
+        </Button>
+      ) : (
+        <Button tag="a" href="/api/oauth/google">
+          Log in
+        </Button>
+      )
+    }
   </div>
   <div class="p-4">
     <h2 class="mb-6 text-4xl">My projects</h2>
