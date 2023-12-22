@@ -17,11 +17,11 @@ export const GET: APIRoute = async ({ cookies }) => {
     scope: ["openid", "email"],
   });
 
-  cookies.set("code_verifier", codeVerifier, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "strict",
-  });
+  // cookies.set("code_verifier", codeVerifier, {
+  //   httpOnly: true,
+  //   secure: true,
+  //   sameSite: "strict",
+  // });
 
   return Response.redirect(authorizationUrl);
 };
