@@ -7,7 +7,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
     request.url,
     {
       redirectUri: import.meta.env.GOOGLE_REDIRECT_URI,
-      // codeVerifier: cookies.get("code_verifier")?.value,
+      codeVerifier: cookies.get("code_verifier")?.value,
     },
   );
 

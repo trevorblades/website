@@ -13,15 +13,13 @@ export const GET: APIRoute = async ({ cookies }) => {
 
   const authorizationUrl = await client.authorizationCode.getAuthorizeUri({
     redirectUri: import.meta.env.GOOGLE_REDIRECT_URI,
-    // codeVerifier,
+    codeVerifier,
     scope: ["openid", "email"],
   });
 
-  // cookies.set("code_verifier", codeVerifier, {
-  //   httpOnly: true,
-  //   secure: true,
-  //   sameSite: "strict",
-  // });
+  cookies.set("code_verifier", codeVerifier, {
+    httpOnly: true,
+  });
 
   return Response.redirect(authorizationUrl);
 };
