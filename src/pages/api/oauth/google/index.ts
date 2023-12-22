@@ -1,3 +1,5 @@
+import path from "node:path";
+
 import { generateCodeVerifier, OAuth2Client } from "@badgateway/oauth2-client";
 import type { APIRoute } from "astro";
 import cookie from "cookie";
@@ -9,11 +11,11 @@ export const client = new OAuth2Client({
   discoveryEndpoint: "/.well-known/openid-configuration",
 });
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ url }) => {
   const codeVerifier = await generateCodeVerifier();
 
   const authorizationUrl = await client.authorizationCode.getAuthorizeUri({
-    redirectUri: import.meta.env.GOOGLE_REDIRECT_URI,
+    redirectUri: url.origin + path.join(url.pathname, "callback"),
     codeVerifier,
     scope: ["openid", "email"],
   });

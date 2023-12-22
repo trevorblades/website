@@ -4,7 +4,7 @@ import { client } from ".";
 
 export const GET: APIRoute = async ({ cookies, redirect, url }) => {
   const token = await client.authorizationCode.getTokenFromCodeRedirect(url, {
-    redirectUri: import.meta.env.GOOGLE_REDIRECT_URI,
+    redirectUri: url.origin + url.pathname,
     codeVerifier: cookies.get("code_verifier")?.value,
   });
 
