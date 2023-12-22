@@ -1,28 +1,29 @@
 import type { APIRoute } from "astro";
-import { google } from "googleapis";
 
-import { oauth2Client } from ".";
+import { client } from ".";
 
 export const GET: APIRoute = async ({ request, cookies, redirect }) => {
-  const code = new URL(request.url).searchParams.get("code");
+  const token = await client.authorizationCode.getTokenFromCodeRedirect(
+    request.url,
+    {
+      redirectUri: import.meta.env.GOOGLE_REDIRECT_URI,
+      codeVerifier: cookies.get("code_verifier")?.value,
+    },
+  );
 
-  if (!code) {
-    return new Response("No code provided", { status: 400 });
-  }
+  const { userinfo_endpoint } = await client
+    .getEndpoint("discoveryEndpoint")
+    .then((endpoint) => fetch(endpoint))
+    .then((res) => res.json());
 
-  const { tokens } = await oauth2Client.getToken(code);
-  oauth2Client.setCredentials(tokens);
+  const userInfoEndpoint = new URL(userinfo_endpoint);
+  userInfoEndpoint.searchParams.set("access_token", token.accessToken);
 
-  const { data } = await google
-    .oauth2("v2")
-    .userinfo.get({ auth: oauth2Client });
+  const userInfo = await fetch(userInfoEndpoint, {
+    method: "POST",
+  }).then((res) => res.json());
 
-  console.log(data.id);
-
-  cookies.set("user", data, {
-    path: "/",
-    httpOnly: true,
-  });
+  console.log(userInfo);
 
   return redirect("/");
 };

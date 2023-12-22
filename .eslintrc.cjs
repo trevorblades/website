@@ -19,6 +19,7 @@ const eslintConfig = {
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
     "@typescript-eslint/consistent-type-imports": "warn",
+    "@typescript-eslint/triple-slash-reference": "warn",
   },
   settings: {
     "import/resolver": {
