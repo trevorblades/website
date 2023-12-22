@@ -2,14 +2,11 @@ import type { APIRoute } from "astro";
 
 import { client } from ".";
 
-export const GET: APIRoute = async ({ request, cookies, redirect }) => {
-  const token = await client.authorizationCode.getTokenFromCodeRedirect(
-    request.url,
-    {
-      redirectUri: import.meta.env.GOOGLE_REDIRECT_URI,
-      codeVerifier: cookies.get("code_verifier")?.value,
-    },
-  );
+export const GET: APIRoute = async ({ cookies, redirect, url }) => {
+  const token = await client.authorizationCode.getTokenFromCodeRedirect(url, {
+    redirectUri: import.meta.env.GOOGLE_REDIRECT_URI,
+    codeVerifier: cookies.get("code_verifier")?.value,
+  });
 
   const { userinfo_endpoint } = await client
     .getEndpoint("discoveryEndpoint")

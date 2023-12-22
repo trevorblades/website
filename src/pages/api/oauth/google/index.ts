@@ -1,5 +1,6 @@
 import { generateCodeVerifier, OAuth2Client } from "@badgateway/oauth2-client";
 import type { APIRoute } from "astro";
+import cookie from "cookie";
 
 export const client = new OAuth2Client({
   server: "https://accounts.google.com",
@@ -8,7 +9,7 @@ export const client = new OAuth2Client({
   discoveryEndpoint: "/.well-known/openid-configuration",
 });
 
-export const GET: APIRoute = async ({ cookies }) => {
+export const GET: APIRoute = async () => {
   const codeVerifier = await generateCodeVerifier();
 
   const authorizationUrl = await client.authorizationCode.getAuthorizeUri({
@@ -19,11 +20,14 @@ export const GET: APIRoute = async ({ cookies }) => {
 
   const redirect = Response.redirect(authorizationUrl);
 
-  cookies.set("code_verifier", codeVerifier, {
-    httpOnly: true,
-    secure: true,
-    sameSite: "strict",
-  });
+  redirect.headers.set(
+    "Set-Cookie",
+    cookie.serialize("code_verifier", codeVerifier, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+    }),
+  );
 
   return redirect;
 };
