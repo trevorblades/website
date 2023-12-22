@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
-import { Button } from "react-daisyui";
 
+import { UserStatus } from "../components/UserStatus";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const projects = await getCollection("projects");
@@ -12,17 +12,7 @@ const jobs = await getCollection("jobs");
   <div class="py-60">
     <h1 class="text-7xl font-medium">Trevor Blades</h1>
     <p>I'm a web developer</p>
-    {
-      Astro.cookies.has("user") ? (
-        <Button tag="a" href="/api/logout">
-          Log out
-        </Button>
-      ) : (
-        <Button tag="a" href="/api/oauth/google">
-          Log in
-        </Button>
-      )
-    }
+    <UserStatus isLoggedIn={Astro.cookies.has("user")} />
   </div>
   <div class="p-4">
     <h2 class="mb-6 text-4xl">My projects</h2>
