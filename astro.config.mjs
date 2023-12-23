@@ -10,4 +10,9 @@ export default defineConfig({
   integrations: [react(), tailwind(), mdx()],
   output: "server",
   adapter: cloudflare(),
+  vite: {
+    ssr: {
+      noExternal: ["react-icons"],
+    },
+  },
 });

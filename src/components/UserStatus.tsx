@@ -1,4 +1,5 @@
 import { Button } from "react-daisyui";
+import { FcGoogle } from "react-icons/fc";
 
 type UserStatusProps = {
   isLoggedIn: boolean;
@@ -14,7 +15,7 @@ export const UserStatus = ({ isLoggedIn }: UserStatusProps) => {
       color="neutral"
       tag="a"
       href="/api/oauth/google"
-      // startIcon={<Google />}
+      startIcon={<FcGoogle />}
     >
       Sign in with Google
     </Button>
