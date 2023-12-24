@@ -20,8 +20,13 @@ const positions = Array.from({ length: 100 }, () => [
   const stars = document.querySelectorAll(".stars > div");
   stars.forEach((star) => {
     if (star instanceof HTMLElement) {
-      const z = Number(star.dataset.z);
-      scroll(animate(star, { y: [-200 * z, 200 * z] }));
+      const { z } = star.dataset;
+      const offset = 300 * Number(z);
+      scroll(
+        animate(star, {
+          y: [-offset, offset],
+        }),
+      );
     }
   });
 </script>
@@ -37,10 +42,11 @@ const positions = Array.from({ length: 100 }, () => [
       positions.map(([x, y, z]) => (
         <div
           class="absolute rounded-full bg-white size-0.5"
-          data-z={z}
+          data-z={z.toPrecision(4)}
           style={{
-            left: `${x * 100}%`,
-            top: `${y * 100}%`,
+            left: `${(x * 100).toPrecision(2)}%`,
+            top: `${(y * 100).toPrecision(2)}%`,
+            opacity: (1 - z).toPrecision(1),
           }}
         />
       ))
