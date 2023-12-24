@@ -6,13 +6,45 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 const projects = await getCollection("projects");
 const jobs = await getCollection("jobs");
+
+const positions = Array.from({ length: 100 }, () => [
+  Math.random(),
+  Math.random(),
+  Math.random(),
+]);
 ---
+
+<script>
+  import { animate, scroll } from "motion";
+
+  const stars = document.querySelectorAll(".stars > div");
+  stars.forEach((star) => {
+    if (star instanceof HTMLElement) {
+      const z = Number(star.dataset.z);
+      scroll(animate(star, { y: [-200 * z, 200 * z] }));
+    }
+  });
+</script>
 
 <BaseLayout>
   <div class="py-60">
     <h1 class="text-7xl font-medium">Trevor Blades</h1>
     <p>I'm a web developer</p>
     <UserStatus isLoggedIn={Astro.cookies.has("user")} />
+  </div>
+  <div class="stars h-screen relative">
+    {
+      positions.map(([x, y, z]) => (
+        <div
+          class="absolute rounded-full bg-white size-0.5"
+          data-z={z}
+          style={{
+            left: `${x * 100}%`,
+            top: `${y * 100}%`,
+          }}
+        />
+      ))
+    }
   </div>
   <div class="p-4">
     <h2 class="mb-6 text-4xl">My projects</h2>

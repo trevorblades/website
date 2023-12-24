@@ -8,11 +8,11 @@ const eslintConfig = {
   },
   extends: [
     "@trevorblades",
-    "plugin:astro/recommended",
-    "plugin:astro/jsx-a11y-recommended",
     "plugin:import/typescript",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
+    "plugin:astro/recommended",
+    "plugin:astro/jsx-a11y-recommended",
   ],
   plugins: ["simple-import-sort"],
   rules: {
